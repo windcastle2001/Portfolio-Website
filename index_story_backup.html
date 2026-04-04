@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>임광윤 (Kevin Im) | Game Live Operations & Business PM</title>
+  <meta name="description" content="글로벌 게임 라이브 서비스 운영 경험을 바탕으로 데이터 분석·VOC 인사이트·리스크 검토·AI 자동화를 실무에 적용해온 임광윤(Kevin Im)의 포트폴리오입니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<!-- ===== PDF PREVIEW MODAL ===== -->
+<div id="pdfModal" class="pdf-modal-overlay" onclick="closePdfModal()">
+  <div class="pdf-modal-box" onclick="event.stopPropagation()">
+    <div class="pdf-modal-header">
+      <span id="pdfModalTitle">문서 미리보기</span>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <a id="pdfDownloadBtn" href="#" download class="pdf-dl-btn">⬇ 다운로드</a>
+        <button onclick="closePdfModal()" class="pdf-modal-close">✕</button>
+      </div>
+    </div>
+    <iframe id="pdfFrame" src="" frameborder="0" class="pdf-iframe"></iframe>
+  </div>
+</div>
+
+<!-- ===== RESUME PICKER MODAL ===== -->
+<div id="resumePickerModal" class="picker-overlay" onclick="closeResumePicker()">
+  <div class="picker-box" onclick="event.stopPropagation()">
+    <div class="picker-header">
+      <span>Resume 선택</span>
+      <button onclick="closeResumePicker()" class="picker-close">✕</button>
+    </div>
+    <p class="picker-desc">어떤 직무의 경력기술서를 보시겠습니까?</p>
+    <div class="picker-btns">
+      <button onclick="previewPdf('pdf/resume_pm.pdf','경력기술서 – 사업 PM')" class="picker-btn">
+        <span class="picker-icon">📋</span>
+        <span>사업 PM용</span>
+        <span class="picker-sub">경력기술서_임광윤_사업PM</span>
+      </button>
+      <button onclick="previewPdf('pdf/resume_ops.pdf','경력기술서 – 운영')" class="picker-btn">
+        <span class="picker-icon">⚙️</span>
+        <span>운영용</span>
+        <span class="picker-sub">경력기술서_임광윤_운영</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== IMAGE MODAL ===== -->
+<div id="imgModal" class="modal-overlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img id="modalImg" src="" alt="확대 이미지">
+    <p id="modalCaption" class="modal-caption"></p>
+  </div>
+</div>
+
+<!-- ===== FLOATING CHAT BUTTON ===== -->
+<div id="floatChat" class="float-chat-wrap">
+  <div id="floatChatBox" class="float-chatbox" style="display:none;">
+    <div class="float-chat-header">
+      <span>💬 Kevin에게 물어보기</span>
+      <button onclick="toggleChat()" class="float-chat-close">✕</button>
+    </div>
+    <p class="float-chat-notice">경력, 프로젝트, 역량, 연락처에 대해 질문해 주세요.</p>
+    <div class="float-chat-examples">
+      <button class="chat-example-btn" onclick="submitFloatExample(this)">경력이 어떻게 되나요?</button>
+      <button class="chat-example-btn" onclick="submitFloatExample(this)">대표 프로젝트를 알려주세요</button>
+      <button class="chat-example-btn" onclick="submitFloatExample(this)">어떤 기술을 보유하고 있나요?</button>
+      <button class="chat-example-btn" onclick="submitFloatExample(this)">연락처가 어떻게 되나요?</button>
+    </div>
+    <div class="float-chatbox-messages" id="floatMessages">
+      <div class="chat-msg bot">
+        <div class="chat-bubble">안녕하세요! 임광윤(Kevin Im)의 포트폴리오 어시스턴트입니다.<br>경력·프로젝트·역량·연락처에 대해 질문해 주세요 😊</div>
+      </div>
+    </div>
+    <div class="float-chat-input-row">
+      <input type="text" id="floatChatInput" class="chat-input" placeholder="질문을 입력하세요...">
+      <button class="chat-send-btn" onclick="sendFloatChat()">↗</button>
+    </div>
+  </div>
+  <button class="float-chat-btn" onclick="toggleChat()" title="Portfolio Chat">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+    <span>Ask Kevin</span>
+  </button>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-logo" style="font-size: 26px;">Kevin Im</div>
+  <nav class="sidebar-nav">
+    <ul>
+      <li><a href="#home"         class="nav-link active" data-target="home">HOME</a></li>
+      <li><a href="#about"        class="nav-link" data-target="about">ABOUT</a></li>
+      <li><a href="#story"        class="nav-link" data-target="story">STORY</a></li>
+      <li><a href="#capabilities" class="nav-link" data-target="capabilities">CAPABILITIES</a></li>
+      <li><a href="#experience"   class="nav-link" data-target="experience">EXPERIENCE</a></li>
+      <li><a href="#projects"     class="nav-link" data-target="projects">PROJECTS</a></li>
+      <li><a href="#metrics"      class="nav-link" data-target="metrics">METRICS</a></li>
+      <li><a href="#skills"       class="nav-link" data-target="skills">SKILLS</a></li>
+      <li><a href="#contact"      class="nav-link" data-target="contact">CONTACT</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-social">
+    <a href="mailto:windcast@naver.com" class="social-icon" title="Email">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/%EA%B4%91%EC%9C%A4-%EC%9E%84-170531312/" target="_blank" class="social-icon" title="LinkedIn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="#" onclick="openResumePicker(); return false;" class="social-icon" title="Resume Download">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+    </a>
+  </div>
+  <p class="sidebar-copy">© 2026 Kevin Im.<br>All rights reserved.</p>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+  <!-- ── HOME / HERO ── -->
+  <section class="section section-hero" id="home">
+    <div class="hero-wrap">
+      <div class="hero-left">
+        <span class="hero-tag">GAME LIVE OPERATIONS &amp; BUSINESS PM</span>
+        <h1 class="hero-title">
+          MY NAME IS<br>
+          <span class="hero-grad-purple">임광윤</span><br>
+          <span class="hero-grad-pink">(KEVIN IM)</span>
+        </h1>
+        <p class="hero-sub" id="dyn-hero-subtitle">글로벌 라이브 서비스 운영 실무자</p>
+        <p class="hero-desc" id="dyn-hero-desc">
+          글로벌 게임 라이브 서비스 운영 경험을 중심으로 커리어를 쌓아왔습니다.<br>
+          데이터·VOC·리스크 검토·자동화를 실무에 적용하며,<br>
+          운영 경험을 바탕으로 사업 관점의 역할까지 확장하고자 합니다.
+        </p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn btn-dark scroll-link" data-target="projects">Projects 보기 <span class="arr">↗</span></a>
+          <a href="#contact"  class="btn btn-border scroll-link" data-target="contact">Contact</a>
+          <button class="btn btn-border-orange" onclick="openResumePicker()">Resume ↓</button>
+          <button class="btn btn-border-purple" onclick="previewPdf('pdf/portfolio.pdf','포트폴리오 – 임광윤')">포트폴리오 ↓</button>
+        </div>
+        <div class="hero-meta">
+          <span>✉ windcast@naver.com</span>
+          <span>📍 Seoul, Korea</span>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-shapes">
+          <div class="hs hs1"></div>
+          <div class="hs hs2"></div>
+          <div class="hs hs3"></div>
+          <div class="hs-dots"></div>
+        </div>
+        <div class="hero-avatar-photo">
+          <img src="img/profile2026.png" alt="임광윤 프로필 사진" onerror="this.src='img/picture.jpg'">
+        </div>
+        <span class="sparkle sp1">✦</span>
+        <span class="sparkle sp2">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section class="section" id="about">
+    <div class="section-inner">
+      <p class="sec-tag-italic">Nice to meet you!</p>
+      <h2 class="sec-title">WELCOME TO...</h2>
+      <div class="about-grid">
+        <div class="about-left">
+          <div class="avatar-wrap">
+            <div class="avatar-bg"></div>
+            <img class="avatar-photo" src="img/profile2026.png" alt="임광윤" onerror="this.src='img/picture.jpg'">
+          </div>
+          <h3 class="about-name">임광윤 (Kevin Im)</h3>
+          <p class="about-role">글로벌 라이브 서비스 운영 실무자</p>
+
+          <div class="about-youtube">
+            <a href="https://www.youtube.com/@jamhuntrix" target="_blank" class="youtube-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19a2.7 2.7 0 0 0-1.9-1.91C18.2 5 12 5 12 5s-6.2 0-7.68.28A2.7 2.7 0 0 0 2.42 7.2 28 28 0 0 0 2.14 12a28 28 0 0 0 .28 4.81 2.7 2.7 0 0 0 1.9 1.91C5.8 19 12 19 12 19s6.2 0 7.68-.28a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 21.86 12a28 28 0 0 0-.28-4.81zM9.74 15.02V8.98L15.45 12z"/></svg>
+              YouTube · 잼헌터
+            </a>
+            <span class="youtube-sub">콘텐츠 기획·운영 채널 (구독자 10,300+)</span>
+          </div>
+        </div>
+        <div class="about-right">
+          <div class="about-info-row">
+            <div class="about-info-item">✉ windcast@naver.com</div>
+            <div class="about-info-item">🎓 MBA 비즈니스데이터애널리틱스 · 동국대학교 (2026.02 수료)</div>
+            <div class="about-info-item">📋 SQLD · TOEIC 960 · Speaking 180</div>
+          </div>
+          <div class="about-stats-wrap">
+            <div class="about-stats" id="dyn-about-stats">
+              <!-- JS 로드 -->
+            </div>
+          </div>
+          <p class="about-bio" id="dyn-about-bio">
+            <!-- JS 로드 -->
+          </p>
+          <blockquote class="about-quote" id="dyn-about-quote">"운영 실무에서 얻은 데이터와 유저 인사이트를 바탕으로, 사업 관점의 의사결정과 게임의 성장에 기여하는 역할로 확장하고자 합니다."</blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STORY ── -->
+  <section class="section section-dark" id="story">
+    <div class="section-inner">
+      <p class="sec-tag-italic light">Why PM?</p>
+      <h2 class="sec-title light">운영에서 해온 일이<br>사업 PM과 연결됩니다</h2>
+      <p class="story-sub">운영 현장에서 쌓아온 경험이 사업 PM 직무와 어떻게 연결되는지 보여드립니다.</p>
+      <div class="story-grid">
+        <div class="story-col">
+          <div class="story-col-header">운영에서 해온 일</div>
+          <div class="story-item reveal">
+            <span class="story-icon">⚠️</span>
+            <div>
+              <strong>BM·밸런스 리스크 검토 및 리포팅</strong>
+              <p>출시 전 파이터 성능·BM 구조 검토 내용을 사업팀에 선제 공유</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">📊</span>
+            <div>
+              <strong>이벤트 지표 대시보드 직접 구축</strong>
+              <p>참여자·조회수·참여율 데이터를 직접 수집·시각화</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">💬</span>
+            <div>
+              <strong>유저 의견 유형화 및 정기 리포팅</strong>
+              <p>글로벌 VOC 감성별 분류 후 사업부 정기 공유</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">🔗</span>
+            <div>
+              <strong>유관부서 협업 및 Jira 이슈 관리</strong>
+              <p>개발·사업·CS팀과 실무 이슈 추적 및 조율</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">🌍</span>
+            <div>
+              <strong>글로벌 영문 공지 현지화 직접 작성</strong>
+              <p>5개 권역 톤앤매너 맞춤 공지·FAQ·CS 가이드 작성</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">🤖</span>
+            <div>
+              <strong>AI 도구 활용 자동화 워크플로 설계</strong>
+              <p>n8n / Make로 반복 업무 자동화, 업무 시간 단축 경험</p>
+            </div>
+          </div>
+        </div>
+        <div class="story-col">
+          <div class="story-col-header story-col-header-blue">사업 PM 역할로의 연결</div>
+          <div class="story-item reveal">
+            <span class="story-icon">🎯</span>
+            <div>
+              <strong>사업 방향성 제시 및 리스크 관리</strong>
+              <p>데이터 기반 의사결정 지원 및 리스크 사전 파악</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">📈</span>
+            <div>
+              <strong>데이터 기반 의사결정 지원</strong>
+              <p>운영 지표 분석으로 제품 방향성·기획 근거 제공</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">🔄</span>
+            <div>
+              <strong>유저 반응 기반 업데이트 방향 수립</strong>
+              <p>VOC 인사이트를 제품 개선 방향에 연결</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">📋</span>
+            <div>
+              <strong>프로젝트 일정 및 협업 파이프라인 관리</strong>
+              <p>멀티팀 협업 구조에서 일정·이슈 주도적 관리</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">🌐</span>
+            <div>
+              <strong>글로벌 협업 및 영문 커뮤니케이션 수행 가능</strong>
+              <p>영문 협업 커뮤니케이션 실무 경험 보유</p>
+            </div>
+          </div>
+          <div class="story-item reveal">
+            <span class="story-icon">⚡</span>
+            <div>
+              <strong>업무 프로세스 효율화 및 개선</strong>
+              <p>AI 자동화 도구를 활용한 팀 생산성 향상 경험</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CAPABILITIES ── -->
+  <section class="section" id="capabilities">
+    <div class="section-inner">
+      <p class="sec-tag-italic">What I Do</p>
+      <h2 class="sec-title">CORE CAPABILITIES</h2>
+      <div class="cap-grid">
+
+        <div class="cap-card reveal">
+          <div class="cap-icon">🌍</div>
+          <h3 class="cap-title">글로벌 라이브 서비스 운영</h3>
+          <ul class="cap-list">
+            <li>KR·EN·JP·TW·TH 5개 권역 라이브 서비스 운영 실무</li>
+            <li>영어 전공 기반 현지 톤앤매너 맞춤 영문 공지·가이드·FAQ 직접 현지화</li>
+            <li>글로벌 공식 SNS 채널 약 242건 게시물 운영</li>
+          </ul>
+        </div>
+
+        <div class="cap-card reveal">
+          <div class="cap-icon">📊</div>
+          <h3 class="cap-title">데이터 기반 운영 분석</h3>
+          <ul class="cap-list">
+            <li>포럼 이벤트 지표 대시보드 직접 구축·운영</li>
+            <li>DAU·UV·VOC 정량 지표 분석으로 이벤트 운영 개선에 기여</li>
+            <li>MBA 과정을 통한 SQL·Python·R 기반 데이터 분석 방법론 학습 및 실습 적용</li>
+          </ul>
+        </div>
+
+        <div class="cap-card reveal">
+          <div class="cap-icon">💬</div>
+          <h3 class="cap-title">VOC 분석 및 커뮤니티 인사이트</h3>
+          <ul class="cap-list">
+            <li>글로벌 5개 권역 VOC를 유형별·감성별로 정량화</li>
+            <li>세븐나이츠2 업데이트 분석 리포트로 팀 내 긍정 평가</li>
+            <li>유저 인사이트를 사업팀 공유 자료로 구조화</li>
+          </ul>
+        </div>
+
+        <div class="cap-card reveal">
+          <div class="cap-icon">⚠️</div>
+          <h3 class="cap-title">사전 리스크 검토 및 리포팅</h3>
+          <ul class="cap-list">
+            <li>신규 파이터 출시 전 메타 부적합 리스크 감지 및 의견 제시</li>
+            <li>콜라보 BM 보상 구조 검토 의견 반영 사례 보유</li>
+            <li>라이브 운영 기간 내 운영 사고 0건 유지</li>
+          </ul>
+        </div>
+
+        <div class="cap-card reveal">
+          <div class="cap-icon">🔧</div>
+          <h3 class="cap-title">운영 프로세스 개선 제안</h3>
+          <ul class="cap-list">
+            <li>운영툴 기능 개선 25건 제안, 핵심 항목 실제 반영</li>
+            <li>포럼 기능 개선 제안 4건 중 1건 실적용</li>
+            <li>SNS 운영 실무 가이드 제작으로 팀 내 업무 표준화에 기여</li>
+          </ul>
+        </div>
+
+        <div class="cap-card reveal">
+          <div class="cap-icon">🤖</div>
+          <h3 class="cap-title">AI 활용 업무 자동화</h3>
+          <ul class="cap-list">
+            <li>Make·n8n·Gemini API 기반 AI 뉴스레터(AiGS TIMES) 자동화 구축 (44호+ 발행)</li>
+            <li>SNS 게시물 디스크립션·해시태그 자동 생성으로 콘텐츠 작성 시간 단축</li>
+            <li>공지 초안·FAQ 템플릿 자동화로 반복 업무 효율화</li>
+            <li>자동화 사례 월간 경영회의 발표 및 사내 공유</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIENCE ── -->
+  <section class="section section-grad" id="experience">
+    <div class="section-inner">
+      <p class="sec-tag-italic light">Experience</p>
+      <h2 class="sec-title light">MY EXPERIENCE</h2>
+      <p class="exp-desc">글로벌 게임 라이브 운영을 중심으로, 데이터와 커뮤니티 인사이트를 통한 운영 개선 경험을 쌓아왔습니다.</p>
+      <div class="timeline">
+
+        <div class="tl-item reveal">
+          <div class="tl-left">
+            <span class="tl-period">2022.06 – 현재</span>
+            <div class="tl-logo-wrap">
+              <img src="img/logo_igs.jpg" alt="IGS 로고" class="tl-logo" onerror="this.style.display='none'">
+            </div>
+            <span class="tl-company">아이지에스(IGS)㈜ · 운영팀<br><span style="font-size:10px;opacity:0.7;">(넷마블 계열사)</span></span>
+          </div>
+          <div class="tl-right">
+            <h3 class="tl-role">GLOBAL LIVE OPERATIONS</h3>
+
+            <!-- 게임 타이틀 + 기간 -->
+            <div class="tl-game-list">
+              <div class="tl-game-item">
+                <img src="img/logo_kofafk.png" alt="KOF AFK" class="tl-game-logo" onerror="this.style.display='none'">
+                <div>
+                  <span class="tl-game-title">KOF AFK 글로벌</span>
+                  <span class="tl-game-period">2024.07 – 현재</span>
+                </div>
+              </div>
+              <div class="tl-game-item">
+                <img src="img/logo_sk2g.png" alt="세븐나이츠2 글로벌" class="tl-game-logo" onerror="this.style.display='none'">
+                <div>
+                  <span class="tl-game-title">세븐나이츠2 글로벌</span>
+                  <span class="tl-game-period">2024.03 – 2026.01</span>
+                </div>
+              </div>
+              <div class="tl-game-item">
+                <img src="img/logo_mff.png" alt="마블 퓨처파이트" class="tl-game-logo" onerror="this.style.display='none'">
+                <div>
+                  <span class="tl-game-title">마블 퓨처파이트 글로벌</span>
+                  <span class="tl-game-period">2024.12 – 2025.02</span>
+                </div>
+              </div>
+              <div class="tl-game-item">
+                <img src="img/logo_kofas.png" alt="KOF 올스타" class="tl-game-logo" onerror="this.style.display='none'">
+                <div>
+                  <span class="tl-game-title">KOF 올스타 국내/글로벌</span>
+                  <span class="tl-game-period">2022.06 – 2024.02</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="tl-desc">글로벌 5개 권역(KR/EN/JP/TW/TH) 공지·이벤트·커뮤니티·SNS 운영 실무. 사업 관점의 빌드 리스크 검토, 이벤트 지표 대시보드 구축·운영. 2024/2025 KPI A등급, 2025 스포트라이트상 수상.</p>
+
+            <!-- AiGS TF -->
+            <div class="tl-subtask">
+              <span class="tl-subtask-label">+ AiGS TF (사내 AI 활용 태스크포스) · 2025.07 – 현재</span>
+              <div class="tl-subtask-body">
+                <div class="tl-subtask-row">· Make 기반 AI 뉴스레터 자동 발행 시스템 구축·운영</div>
+                <div class="tl-subtask-row">· n8n 기반 AiGS TIMES 자동 발행 전환 (평일 1회, 44호+)</div>
+                <div class="tl-subtask-row">· SNS 디스크립션·공지 초안 자동화로 반복 업무 효율화</div>
+                <div class="tl-subtask-row">· 자동화 사례 월간 경영회의 발표 및 사내 공유</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-left">
+            <span class="tl-period">2019.11 – 2021.02</span>
+            <div class="tl-logo-wrap">
+              <img src="img/logo_airport.jpg" alt="인천공항운영서비스" class="tl-logo" onerror="this.style.display='none'">
+            </div>
+            <span class="tl-company">인천공항운영서비스 · 교통관리운영팀</span>
+          </div>
+          <div class="tl-right">
+            <h3 class="tl-role">OPERATIONS STAFF</h3>
+            <p class="tl-desc">공항 이용 고객(외국인 포함) 대상 서비스 응대 및 유관 부서 커뮤니케이션 수행.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-left">
+            <span class="tl-period">2018.01 – 2018.06</span>
+            <div class="tl-logo-wrap">
+              <img src="img/logo_kpc.png" alt="한국생산성본부" class="tl-logo" onerror="this.style.display='none'">
+            </div>
+            <span class="tl-company">한국생산성본부(KPC) · 경영혁신컨설팅센터 · 인턴</span>
+          </div>
+          <div class="tl-right">
+            <h3 class="tl-role">RESEARCH INTERN</h3>
+            <p class="tl-desc">공공기관 대상 경영혁신컨설팅 사업 보조 및 제안서 작성 지원.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS (슬라이더) ── -->
+  <section class="section" id="projects">
+    <div class="section-inner proj-header-inner">
+      <p class="sec-tag-italic">Work</p>
+      <h2 class="sec-title">KEY PROJECTS</h2>
+      <p class="proj-slider-hint">← 드래그하거나 화살표로 넘겨보세요 →</p>
+    </div>
+
+    <div class="proj-slider-container">
+      <button class="proj-arrow proj-arrow-left" id="arrowLeft" onclick="slideProj(-1)" aria-label="이전">‹</button>
+      <div class="proj-slider-viewport" id="projViewport">
+        <div class="proj-slider-track" id="projTrack">
+
+          <!-- P1: 이벤트 지표 분석 (3개 이미지) -->
+          <div class="proj-slide">
+            <div class="proj-thumb proj-thumb-multi">
+              <div class="proj-thumb-label">Event Data Dashboard</div>
+              <div class="proj-thumb-trio">
+                <img class="proj-thumb-third" src="img/dashboard1.png" alt="지표 대시보드 1" loading="lazy"
+                     onclick="openModal('img/dashboard1.png','이벤트 지표 대시보드 1')">
+                <img class="proj-thumb-third" src="img/dashboard2.png" alt="지표 대시보드 2" loading="lazy"
+                     onclick="openModal('img/dashboard2.png','이벤트 지표 대시보드 2')">
+                <img class="proj-thumb-third" src="img/event_perfect.png" alt="이벤트 제안 만점 사례" loading="lazy"
+                     onclick="openModal('img/event_perfect.png','이벤트 기획 제안 만점 평가 사례')">
+              </div>
+              <div class="proj-thumb-zoom">🔍 이미지 클릭하여 확대</div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-num">01</span>
+              <span class="proj-category">데이터 분석 · 이벤트 운영 최적화</span>
+              <h3 class="proj-title">커뮤니티 이벤트 지표 분석<br>&amp; 운영 최적화</h3>
+              <p class="proj-desc">이벤트 지표 대시보드를 직접 구축해 유형별 참여율 패턴을 분석했습니다. 대형 업데이트 기간 24개 이벤트 전수 조사, 타사 벤치마킹 포함. 퀴즈·설문형 포맷 도입 후 전 권역 최고 참여율 53%(6,182명)를 기록했습니다.</p>
+              <div class="proj-result">✓ 최고 참여율 53% &nbsp;|&nbsp; ✓ 누적 27,800명 &nbsp;|&nbsp; ✓ 24개 이벤트 전수 분석</div>
+            </div>
+          </div>
+
+          <!-- P2: VOC 구조화 -->
+          <div class="proj-slide">
+            <div class="proj-thumb proj-thumb-multi">
+              <div class="proj-thumb-label">VOC Structuring</div>
+              <div class="proj-thumb-duo">
+                <img class="proj-thumb-half" src="img/voc.png" alt="VOC 분석" loading="lazy"
+                     onclick="openModal('img/voc.png','BETA 시즌 VOC 분석 및 서비스 고도화 전략')">
+                <img class="proj-thumb-half" src="img/survey_result.png" alt="설문조사 결과" loading="lazy"
+                     onclick="openModal('img/survey_result.png','콜라보 설문 상세 결과 데이터')">
+              </div>
+              <div class="proj-thumb-zoom">🔍 이미지 클릭하여 확대</div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-num">02</span>
+              <span class="proj-category">VOC 분석 · 커뮤니티 인사이트</span>
+              <h3 class="proj-title">VOC 구조화 &amp; 인게임<br>개선안 도출</h3>
+              <p class="proj-desc">글로벌 5개 권역 커뮤니티 반응을 유형별·감성별로 정량화해 사업팀에 구조화된 리포트로 제공했습니다. 콜라보 이벤트 설문조사 데이터를 분석해 인사이트를 도출했고, 세븐나이츠2 68차 업데이트 분석 리포트는 팀 내 긍정 평가를 받았습니다.</p>
+              <div class="proj-result">✓ 팀 내 긍정 평가 &nbsp;|&nbsp; ✓ 설문 데이터 분석 &nbsp;|&nbsp; ✓ 운영 인사이트 사업팀 공유</div>
+            </div>
+          </div>
+
+          <!-- P3: 운영툴/포럼 개선 (이벤트 만점 사례 이미지) -->
+          <div class="proj-slide">
+            <div class="proj-thumb proj-thumb-multi">
+              <div class="proj-thumb-label">Tool &amp; Process Improvement</div>
+              <div class="proj-thumb-duo">
+                <img class="proj-thumb-half" src="img/event_perfect.png" alt="이벤트 제안 만점" loading="lazy"
+                     onclick="openModal('img/event_perfect.png','이벤트 기획 제안서 만점 평가 사례')">
+                <img class="proj-thumb-half" src="img/survey_result.png" alt="포럼 개선 데이터" loading="lazy"
+                     onclick="openModal('img/survey_result.png','포럼 이벤트 운영 데이터 분석')">
+              </div>
+              <div class="proj-thumb-zoom">🔍 이미지 클릭하여 확대</div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-num">03</span>
+              <span class="proj-category">기능 개선 제안 · 프로세스 최적화</span>
+              <h3 class="proj-title">운영툴 / 포럼 기능<br>개선 제안</h3>
+              <p class="proj-desc">운영자 관점에서 운영툴 개선 25건을 제안했습니다. 패키지 지급 방식, PVP 탭, 우편 템플릿, 클럽 기능 등 핵심 항목이 실제 반영됐습니다. 포럼 기능 개선 4건 제안 중 1건 실적용, 이벤트 기획 제안서는 만점 평가를 받은 사례도 있습니다.</p>
+              <div class="proj-result">✓ 포럼 1건 실적용 &nbsp;|&nbsp; ✓ 운영툴 25건 제안 &nbsp;|&nbsp; ✓ 이벤트 제안 만점 평가</div>
+            </div>
+          </div>
+
+          <!-- P4: 빌드 리스크 리포트 (risk_report + build_feedback) -->
+          <div class="proj-slide">
+            <div class="proj-thumb proj-thumb-multi">
+              <div class="proj-thumb-label">Business Risk Review</div>
+              <div class="proj-thumb-duo">
+                <img class="proj-thumb-half" src="img/risk_report.png" alt="파이터 리스크 리포트" loading="lazy"
+                     onclick="openModal('img/risk_report.png','파이터 리스크 리포트')">
+                <img class="proj-thumb-half" src="img/build_feedback.png" alt="빌드 피드백" loading="lazy"
+                     onclick="openModal('img/build_feedback.png','빌드 피드백 및 인게임 개선안')">
+              </div>
+              <div class="proj-thumb-zoom">🔍 이미지 클릭하여 확대</div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-num">04</span>
+              <span class="proj-category">사업적 관점 · 리스크 관리</span>
+              <h3 class="proj-title">빌드 검토 &amp;<br>리스크 리포트</h3>
+              <p class="proj-desc">신규 파이터 출시 전 운영자 관점에서 성능·BM 구조를 검토하고 리포트를 작성했습니다. 메타 부적합 가능성을 사업팀에 공유해 론칭 전 밸런스 조정과 BM 보상 구조 재검토에 기여했습니다. 라이브 서비스 운영 기간 내 운영 사고 0건을 유지했습니다.</p>
+              <div class="proj-result">✓ 밸런스 조정 의견 반영 &nbsp;|&nbsp; ✓ BM 구조 재검토 기여 &nbsp;|&nbsp; ✓ 운영 사고 0건</div>
+            </div>
+          </div>
+
+          <!-- P5: SNS 운영 -->
+          <div class="proj-slide">
+            <div class="proj-thumb proj-thumb-multi">
+              <div class="proj-thumb-label">Global SNS Operations</div>
+              <div class="proj-thumb-duo">
+                <img class="proj-thumb-half" src="img/insta.png" alt="KOF AFK 인스타그램" loading="lazy"
+                     onclick="openModal('img/insta.png','KOF AFK 글로벌 인스타그램 운영')">
+                <img class="proj-thumb-half" src="img/facebook.png" alt="KOF AFK 페이스북" loading="lazy"
+                     onclick="openModal('img/facebook.png','KOF AFK 글로벌 페이스북 운영')">
+              </div>
+              <div class="proj-thumb-zoom">🔍 이미지 클릭하여 확대</div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-num">05</span>
+              <span class="proj-category">글로벌 운영 · SNS 채널 관리</span>
+              <h3 class="proj-title">KOF AFK 글로벌<br>SNS &amp; 론칭 운영</h3>
+              <p class="proj-desc">KR/EN/JP/TW/TH 공식 SNS 채널(Facebook, Instagram, X) 운영을 전담했습니다. 약 242건을 5개 권역 다국어로 운영하고, 론칭 전후 이벤트 17개를 기획·운영해 누적 27,800명이 참여했습니다. 사전예약 캠페인 목표 대비 130% 달성.</p>
+              <div class="proj-result">✓ SNS 약 242건 &nbsp;|&nbsp; ✓ FB 팔로워 7.6만 &nbsp;|&nbsp; ✓ 사전예약 목표 130%</div>
+            </div>
+          </div>
+
+          <!-- P6: AI 자동화 -->
+          <div class="proj-slide">
+            <div class="proj-thumb proj-thumb-multi">
+              <div class="proj-thumb-label">AI Automation – AiGS TIMES</div>
+              <div class="proj-thumb-duo">
+                <img class="proj-thumb-half" src="img/aigs_times.png" alt="AiGS TIMES" loading="lazy"
+                     onclick="openModal('img/aigs_times.png','AiGS TIMES – AI 뉴스레터 자동화 결과물')">
+                <img class="proj-thumb-half" src="img/n8n_workflow.png" alt="n8n 워크플로우" loading="lazy"
+                     onclick="openModal('img/n8n_workflow.png','n8n 자동화 워크플로우 구성도')">
+              </div>
+              <div class="proj-thumb-zoom">🔍 이미지 클릭하여 확대</div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-num">06</span>
+              <span class="proj-category">AI 자동화 · 업무 효율화 보완 역량</span>
+              <h3 class="proj-title">AI 기반 뉴스레터 자동화<br>(AiGS TIMES)</h3>
+              <p class="proj-desc">Make + n8n + Gemini API를 활용해 AI 게임·산업 뉴스 수집·선별·편집 자동화 시스템을 구축했습니다. AiGS TIMES 44호+ 발행(평일 1회). SNS 디스크립션·공지 초안 자동화로 반복 콘텐츠 작성 시간 대폭 단축. 월간 경영회의 발표 및 사내 공유.</p>
+              <div class="proj-result">✓ 44호+ 발행 &nbsp;|&nbsp; ✓ 콘텐츠 작성 시간 단축 &nbsp;|&nbsp; ✓ 사내 공유 및 경영회의 발표</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <button class="proj-arrow proj-arrow-right" id="arrowRight" onclick="slideProj(1)" aria-label="다음">›</button>
+    </div>
+    <div class="proj-dots" id="projDots">
+      <button class="proj-dot active" onclick="goToSlide(0)"></button>
+      <button class="proj-dot" onclick="goToSlide(1)"></button>
+      <button class="proj-dot" onclick="goToSlide(2)"></button>
+      <button class="proj-dot" onclick="goToSlide(3)"></button>
+      <button class="proj-dot" onclick="goToSlide(4)"></button>
+      <button class="proj-dot" onclick="goToSlide(5)"></button>
+    </div>
+  </section>
+
+  <!-- ── METRICS ── -->
+  <section class="section section-light-gray" id="metrics">
+    <div class="section-inner">
+      <p class="sec-tag-italic">Proof</p>
+      <h2 class="sec-title">METRICS &amp; IMPACT</h2>
+      <div class="metrics-grid" id="dyn-metrics-grid">
+        <div class="metric-card reveal"><span class="metric-num">130%</span><span class="metric-label">KOF AFK 사전예약<br>목표 달성률</span></div>
+        <div class="metric-card reveal"><span class="metric-num">53%</span><span class="metric-label">포럼 이벤트 최고 참여율<br>(오로치 퀴즈, 6,182명)</span></div>
+        <div class="metric-card reveal"><span class="metric-num">27,800</span><span class="metric-label">커뮤니티 이벤트<br>누적 참여자 (5권역 6개월)</span></div>
+        <div class="metric-card reveal"><span class="metric-num">+15%</span><span class="metric-label">월평균 이벤트 참여율 개선<br>(데이터 기반 지속 최적화)</span></div>
+        <div class="metric-card reveal"><span class="metric-num">44호+</span><span class="metric-label">AI 뉴스레터 AiGS TIMES<br>발행 (평일 1회)</span></div>
+        <div class="metric-card reveal"><span class="metric-num">5,000+</span><span class="metric-label">전 권역 설문·커뮤니티 반응<br>VOC 분석 및 인사이트 구조화</span></div>
+        <div class="metric-card reveal"><span class="metric-num">24개</span><span class="metric-label">커뮤니티 이벤트 전수 분석<br>(대형 업데이트 4종)</span></div>
+        <div class="metric-card reveal"><span class="metric-num">A등급</span><span class="metric-label">2024/2025 KPI 평가<br>+ 2025 스포트라이트상</span></div>
+        <div class="metric-card reveal"><span class="metric-num">0건</span><span class="metric-label">라이브 서비스 기간<br>운영 사고 (휴먼 에러)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS & EDUCATION ── -->
+  <section class="section" id="skills">
+    <div class="section-inner">
+      <p class="sec-tag-italic">Tools &amp; Tech</p>
+      <h2 class="sec-title">SKILLS &amp; TOOLS</h2>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><span class="skill-dot"></span>Operations &amp; Collaboration</h3>
+          <div class="skill-tags">
+            <span class="tag">Jira</span><span class="tag">Google Workspace</span>
+            <span class="tag">운영툴 활용</span><span class="tag">이슈 관리</span>
+            <span class="tag">글로벌 커뮤니케이션</span><span class="tag">영문 현지화</span>
+            <span class="tag">Discord 운영</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><span class="skill-dot"></span>Data &amp; Analytics</h3>
+          <div class="skill-tags">
+            <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">R</span>
+            <span class="tag">데이터 분석</span><span class="tag">지표 리포팅</span>
+            <span class="tag">대시보드 구축</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><span class="skill-dot"></span>Automation &amp; AI</h3>
+          <div class="skill-tags">
+            <span class="tag tag-orange">Make</span><span class="tag tag-orange">n8n</span>
+            <span class="tag tag-orange">Gemini API</span><span class="tag tag-orange">Claude Code</span>
+            <span class="tag tag-orange">생성형 AI 활용</span><span class="tag tag-orange">워크플로우 자동화</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><span class="skill-dot"></span>Language &amp; Certification</h3>
+          <div class="skill-tags">
+            <span class="tag tag-purple">SQLD</span>
+            <span class="tag tag-purple">TOEIC 960점</span>
+            <span class="tag tag-purple">TOEIC Speaking 180점</span>
+            <span class="tag tag-purple">영문 현지화 실무 경험</span>
+            <span class="tag tag-purple">MBA BDA (동국대, 2026.02 수료)</span>
+            <span class="tag tag-purple">영어영문학 / 경제학 전공</span>
+          </div>
+        </div>
+      </div>
+      <div class="edu-section reveal">
+        <h3 class="edu-title">Education</h3>
+        <div class="edu-grid">
+          <div class="edu-card">
+            <span class="edu-period">2024.09 – 2026.02</span>
+            <h4 class="edu-school">동국대학교 대학원</h4>
+            <p class="edu-degree">MBA 비즈니스데이터애널리틱스 (수료)</p>
+            <p class="edu-note">kNN 분류, 연관 규칙 마이닝, 이직 예측 등 데이터 분석 방법론 실습 프로젝트 수행</p>
+          </div>
+          <div class="edu-card">
+            <span class="edu-period">2012.03 – 2019.08</span>
+            <h4 class="edu-school">동국대학교</h4>
+            <p class="edu-degree">영어영문학 주전공 / 경제학 복수전공</p>
+            <p class="edu-note">TOEIC 960 · Speaking 180 — 글로벌 커뮤니케이션 및 영문 현지화 실무 활용</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section class="section" id="contact">
+    <div class="section-inner">
+      <p class="sec-tag-italic">Get in Touch</p>
+      <h2 class="sec-title">CONTACT</h2>
+      <div class="contact-wrap-v2">
+        <div class="contact-info-col">
+          <p class="contact-desc">게임 사업 PM / 운영 포지션에 관심 있으시다면 언제든지 연락 주세요.<br>빠르게 회신 드리겠습니다.</p>
+          <a href="mailto:windcast@naver.com" class="contact-email">✉ windcast@naver.com</a>
+          <span class="contact-location">📍 Seoul, Korea</span>
+        </div>
+        <form id="contactForm" class="contact-form" onsubmit="submitContact(event)">
+          <div class="cf-row">
+            <input type="text"  id="cf-name"  class="cf-input" placeholder="성함" required>
+            <input type="email" id="cf-email" class="cf-input" placeholder="이메일" required>
+          </div>
+          <textarea id="cf-msg" class="cf-textarea" placeholder="메시지를 입력해 주세요..." rows="5" required></textarea>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <button type="submit" id="cf-submit" class="btn btn-dark btn-lg">보내기 ↗</button>
+            <span id="cf-status" class="cf-status"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>© 2026 Kevin Im. All rights reserved.</span>
+      <span>Game Live Operations &amp; Business PM</span>
+    </div>
+  </section>
+
+</main>
+
+<script src="content-loader.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

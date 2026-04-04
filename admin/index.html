@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Kevin Im Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0d0d0f; --surface:#1a1a1f; --surface2:#222228;
+      --border:#2e2e38; --text:#f0f0f5; --muted:#8888a0;
+      --orange:#ff7a2f; --blue:#4f8ef7; --green:#2ecc71; --red:#e74c3c;
+      --font:'Inter','Noto Sans KR',sans-serif; --radius:10px; --tr:all .15s ease;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+    /* ─ LOGIN ─ */
+    #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;
+      background:radial-gradient(ellipse at 30% 50%,rgba(79,142,247,.12) 0%,transparent 60%),
+                 radial-gradient(ellipse at 80% 20%,rgba(255,122,47,.08) 0%,transparent 50%);}
+    .login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;
+      padding:44px 40px;width:380px;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+    .login-logo{font-size:28px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;}
+    .login-logo span{color:var(--orange);}
+    .login-sub{font-size:12px;color:var(--muted);margin-bottom:32px;}
+    .fl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:block;}
+    .fi{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;
+      color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:var(--tr);margin-bottom:16px;}
+    .fi:focus{border-color:var(--orange);}
+    .login-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:13px;
+      font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:var(--tr);}
+    .login-btn:hover{filter:brightness(1.1);}
+    .login-err{font-size:12px;color:var(--red);margin-top:10px;min-height:18px;}
+    /* ─ APP HEADER ─ */
+    .admin-topbar{background:var(--surface);border-bottom:1px solid var(--border);
+      padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:100;}
+    .topbar-logo{font-size:15px;font-weight:700;}
+    .topbar-logo span{color:var(--orange);}
+    .topbar-actions{display:flex;gap:10px;align-items:center;}
+    .btn-preview{background:rgba(79,142,247,.15);color:var(--blue);border:1px solid rgba(79,142,247,.3);
+      border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;}
+    .btn-preview:hover{background:var(--blue);color:#fff;}
+    /* ─ LAYOUT ─ */
+    #adminApp{display:none;}
+    .admin-layout{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 52px);}
+    /* ─ SIDEBAR ─ */
+    .admin-sidebar{background:var(--surface);border-right:1px solid var(--border);
+      padding:16px 0;display:flex;flex-direction:column;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+    .nav-group-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.8px;padding:12px 20px 6px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;
+      font-size:13px;color:var(--muted);font-weight:500;transition:var(--tr);
+      border-left:2px solid transparent;user-select:none;}
+    .nav-item:hover{background:var(--surface2);color:var(--text);}
+    .nav-item.active{color:var(--orange);border-left-color:var(--orange);background:rgba(255,122,47,.07);}
+    .nav-icon{font-size:14px;width:18px;text-align:center;}
+    .sidebar-footer{margin-top:auto;padding:14px 20px;border-top:1px solid var(--border);}
+    .btn-logout{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);
+      border-radius:6px;padding:9px;font-family:var(--font);font-size:12px;cursor:pointer;transition:var(--tr);}
+    .btn-logout:hover{border-color:var(--red);color:var(--red);}
+    /* ─ MAIN ─ */
+    .admin-main{padding:28px 32px;overflow-y:auto;}
+    .page-section{display:none;}
+    .page-section.active{display:block;}
+    .page-title{font-size:20px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px;}
+    .page-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+    /* ─ CARDS ─ */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      padding:20px 22px;margin-bottom:18px;}
+    .card-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.8px;margin-bottom:14px;}
+    /* ─ FORMS ─ */
+    .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+    .form-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;}
+    .form-input,.form-textarea{background:var(--bg);border:1px solid var(--border);border-radius:7px;
+      padding:9px 12px;color:var(--text);font-family:var(--font);font-size:13.5px;
+      outline:none;transition:var(--tr);width:100%;}
+    .form-input:focus,.form-textarea:focus{border-color:var(--orange);}
+    .form-textarea{resize:vertical;min-height:72px;}
+    .form-textarea.tall{min-height:130px;}
+    .form-textarea.xtall{min-height:280px;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    /* ─ RICH TEXT TOOLBAR ─ */
+    .rte-wrap{border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+    .rte-toolbar{background:var(--surface2);padding:6px 8px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;
+      border-bottom:1px solid var(--border);}
+    .rte-btn{background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);
+      font-family:var(--font);font-size:12px;padding:3px 8px;cursor:pointer;transition:var(--tr);}
+    .rte-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+    .rte-btn.bold{font-weight:700;}
+    .rte-btn.italic{font-style:italic;}
+    .rte-sep{color:var(--border);margin:0 2px;}
+    .rte-textarea{background:var(--bg);border:none;border-radius:0;width:100%;padding:10px 12px;
+      color:var(--text);font-family:var(--font);font-size:13.5px;outline:none;resize:vertical;min-height:80px;}
+    .rte-preview-toggle{font-size:11px;color:var(--blue);cursor:pointer;text-decoration:underline;
+      padding:4px 8px;}
+    .rte-preview-box{background:var(--surface2);padding:10px 12px;font-size:13px;line-height:1.7;
+      border-top:1px solid var(--border);color:var(--text);display:none;}
+    /* ─ BUTTONS ─ */
+    .btn{padding:8px 16px;border-radius:7px;border:none;font-family:var(--font);
+      font-size:13px;font-weight:600;cursor:pointer;transition:var(--tr);}
+    .btn-primary{background:var(--orange);color:#fff;}
+    .btn-primary:hover{filter:brightness(1.1);}
+    .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+    .btn-secondary:hover{border-color:var(--text);}
+    .btn-danger{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25);}
+    .btn-danger:hover{background:var(--red);color:#fff;}
+    .btn-sm{padding:5px 10px;font-size:12px;}
+    .btn-xs{padding:3px 8px;font-size:11px;}
+    .btn-group{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap;}
+    .save-status{font-size:12px;font-weight:600;}
+    .save-status.ok{color:var(--green);}
+    .save-status.err{color:var(--red);}
+    /* ─ METRICS ─ */
+    .metric-row{display:grid;grid-template-columns:120px 1fr auto;gap:8px;align-items:center;
+      background:var(--surface2);border-radius:7px;padding:9px 10px;margin-bottom:7px;}
+    /* ─ PROJECTS ─ */
+    .proj-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+      margin-bottom:12px;overflow:hidden;}
+    .proj-header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;
+      background:var(--surface2);}
+    .proj-header:hover{background:rgba(255,255,255,.03);}
+    .proj-badge{background:var(--orange);color:#fff;font-size:10px;font-weight:700;
+      border-radius:4px;padding:2px 7px;flex-shrink:0;}
+    .proj-header-title{font-size:13px;font-weight:600;flex:1;}
+    .proj-body{padding:14px;border-top:1px solid var(--border);display:none;}
+    .proj-body.open{display:block;}
+    /* ─ EXPERIENCE ─ */
+    .exp-company-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+      margin-bottom:14px;overflow:hidden;}
+    .exp-company-header{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+    .exp-company-header:hover{background:rgba(255,255,255,.03);}
+    .exp-company-logo{width:36px;height:36px;border-radius:6px;object-fit:contain;background:var(--bg);}
+    .exp-company-name{font-size:14px;font-weight:700;flex:1;}
+    .exp-company-period{font-size:12px;color:var(--muted);}
+    .exp-company-body{border-top:1px solid var(--border);padding:14px 16px;display:none;}
+    .exp-company-body.open{display:block;}
+    .exp-job-card{background:var(--bg);border:1px solid var(--border);border-radius:7px;
+      padding:12px 14px;margin-bottom:10px;}
+    .exp-job-title{font-size:13px;font-weight:600;color:var(--orange);margin-bottom:10px;
+      display:flex;align-items:center;gap:8px;justify-content:space-between;}
+    .exp-items-area{display:flex;flex-direction:column;gap:5px;margin-top:8px;}
+    .exp-item-row{display:flex;gap:6px;align-items:center;}
+    .exp-item-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:5px;
+      padding:7px 10px;color:var(--text);font-family:var(--font);font-size:12.5px;outline:none;}
+    .exp-item-input:focus{border-color:var(--orange);}
+    /* ─ MEDIA ─ */
+    .media-preview-img{width:80px;height:80px;border-radius:8px;object-fit:cover;
+      background:var(--surface2);border:1px solid var(--border);flex-shrink:0;}
+    .media-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+    .media-info{flex:1;}
+    .media-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.6px;margin-bottom:5px;}
+    /* ─ DASHBOARD ─ */
+    .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+    .dash-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+    .dash-num{font-size:24px;font-weight:700;color:var(--orange);}
+    .dash-label{font-size:11px;color:var(--muted);margin-top:2px;}
+    /* ─ CHATBOT ─ */
+    .ctx-note{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.2);border-radius:8px;
+      padding:11px 13px;font-size:12.5px;color:#a0b8f0;margin-bottom:14px;line-height:1.7;}
+    .test-row{display:flex;gap:8px;margin-top:10px;}
+    .test-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:7px;
+      padding:9px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;}
+    .test-input:focus{border-color:var(--orange);}
+    .test-reply{margin-top:10px;font-size:13px;line-height:1.7;white-space:pre-wrap;}
+    .test-reply.loading{color:var(--muted);font-style:italic;}
+    /* ─ PREVIEW PANE ─ */
+    .preview-pane{border-top:1px solid var(--border);margin-top:20px;padding-top:16px;}
+    .preview-pane-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+    .preview-frame-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;height:480px;}
+    .preview-frame{width:100%;height:100%;border:none;background:var(--bg);}
+    /* ─ SCROLLBAR ─ */
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+    /* ─ DIVIDER ─ */
+    hr{border:none;border-top:1px solid var(--border);margin:16px 0;}
+  </style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">KI <span>Admin</span></div>
+    <div class="login-sub">임광윤 포트폴리오 관리자 패널</div>
+    <label class="fl">이메일</label>
+    <input class="fi" type="email" id="loginEmail" value="windcast@naver.com">
+    <label class="fl">비밀번호</label>
+    <input class="fi" type="password" id="loginPw" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">로그인 →</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN APP ═══ -->
+<div id="adminApp">
+  <!-- TOP BAR -->
+  <div class="admin-topbar">
+    <div class="topbar-logo">KI <span>Admin</span></div>
+    <div class="topbar-actions">
+      <a class="btn-preview" href="http://localhost:8080" target="_blank">🔗 사이트 미리보기 ↗</a>
+    </div>
+  </div>
+
+  <div class="admin-layout">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="nav-group-label">콘텐츠 편집</div>
+      <div class="nav-item active" data-page="dashboard" onclick="switchPage(this)"><span class="nav-icon">🏠</span>대시보드</div>
+      <div class="nav-item" data-page="hero" onclick="switchPage(this)"><span class="nav-icon">✨</span>Hero & About</div>
+      <div class="nav-item" data-page="experience" onclick="switchPage(this)"><span class="nav-icon">💼</span>Experience</div>
+      <div class="nav-item" data-page="metrics" onclick="switchPage(this)"><span class="nav-icon">📊</span>Metrics</div>
+      <div class="nav-item" data-page="projects" onclick="switchPage(this)"><span class="nav-icon">📂</span>Projects</div>
+      <div class="nav-item" data-page="contact" onclick="switchPage(this)"><span class="nav-icon">📞</span>Contact</div>
+      <div class="nav-group-label">파일 & AI</div>
+      <div class="nav-item" data-page="media" onclick="switchPage(this)"><span class="nav-icon">🖼️</span>파일/링크 관리</div>
+      <div class="nav-item" data-page="chatbot" onclick="switchPage(this)"><span class="nav-icon">🤖</span>챗봇 설정</div>
+      <div class="nav-group-label">미리보기</div>
+      <div class="nav-item" data-page="preview" onclick="switchPage(this)"><span class="nav-icon">👁️</span>사이트 미리보기</div>
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="doLogout()">로그아웃 →</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <!-- ═ DASHBOARD ═ -->
+      <section class="page-section active" id="page-dashboard">
+        <div class="page-title">대시보드</div>
+        <div class="page-sub">저장 후 우측 상단 "사이트 미리보기" 버튼으로 변경사항을 확인하세요.</div>
+        <div class="dash-grid">
+          <div class="dash-card"><div class="dash-num">6개</div><div class="dash-label">프로젝트 슬라이드</div></div>
+          <div class="dash-card"><div class="dash-num">9개</div><div class="dash-label">Metrics 카드</div></div>
+          <div class="dash-card"><div class="dash-num" id="dash-gemini" style="font-size:16px;">확인중...</div><div class="dash-label">Gemini API 상태</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">✅ 즉시 반영되는 항목</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.9;">
+            🤖 <strong style="color:var(--text)">챗봇 지식베이스</strong> → 저장 즉시 챗봇 답변에 반영<br>
+            💬 <strong style="color:var(--text)">Contact / Hero</strong> → 사이트 새로고침 후 반영<br>
+            📊 <strong style="color:var(--text)">Metrics / Projects</strong> → 사이트 새로고침 후 반영<br>
+            💼 <strong style="color:var(--text)">Experience / Media</strong> → (구조 데이터 저장, 향후 자동 반영)
+          </p>
+        </div>
+      </section>
+
+      <!-- ═ HERO & ABOUT ═ -->
+      <section class="page-section" id="page-hero">
+        <div class="page-title">Hero & About</div>
+        <div class="page-sub">메인 화면과 소개 섹션 텍스트를 수정합니다.</div>
+        <div class="card">
+          <div class="card-title">Hero 텍스트</div>
+          <div class="form-group"><label class="form-label">부제목</label><input class="form-input" id="hero_subtitle"></div>
+          <div class="form-group"><label class="form-label">설명 (줄바꿈은 엔터)</label><textarea class="form-textarea" id="hero_desc"></textarea></div>
+          <div class="btn-group"><button class="btn btn-primary" onclick="saveHero()">저장</button><span class="save-status" id="s-hero"></span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">About 소개</div>
+          <div class="form-group"><label class="form-label">바이오</label><textarea class="form-textarea tall" id="about_bio"></textarea></div>
+          <div class="form-group"><label class="form-label">인용문 (quote)</label><textarea class="form-textarea" id="about_quote"></textarea></div>
+          <div class="card-title" style="margin-top:24px; font-size:14px; border-bottom:1px solid var(--border); padding-bottom:10px;">About 통계 항목 (Stats)</div>
+          <div id="aboutStatsList"></div>
+          <button class="btn btn-secondary btn-sm" onclick="addAboutStat()" style="margin-top:8px;">+ 항목 추가</button>
+          
+          <div class="btn-group" style="margin-top:20px;">
+            <button class="btn btn-primary" onclick="saveAbout()">저장</button>
+            <span class="save-status" id="s-about"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═ EXPERIENCE ═ -->
+      <section class="page-section" id="page-experience">
+        <div class="page-title">Experience (경력)</div>
+        <div class="page-sub">회사별 경력 정보를 수정합니다. 로고 URL에 Cloudinary URL을 붙여넣으세요.</div>
+        <div id="expEditor"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="saveExperience()">전체 저장</button>
+          <span class="save-status" id="s-exp"></span>
+        </div>
+      </section>
+
+      <!-- ═ METRICS ═ -->
+      <section class="page-section" id="page-metrics">
+        <div class="page-title">Metrics & Impact</div>
+        <div class="page-sub">숫자 카드의 수치와 라벨을 수정합니다.</div>
+        <div class="card">
+          <div class="card-title">수치 카드</div>
+          <div id="metricList"></div>
+          <div class="btn-group" style="margin-top:12px;">
+            <button class="btn btn-primary" onclick="saveMetrics()">저장</button>
+            <button class="btn btn-secondary btn-sm" onclick="addMetric()">+ 추가</button>
+            <span class="save-status" id="s-metrics"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═ PROJECTS ═ -->
+      <section class="page-section" id="page-projects">
+        <div class="page-title">Projects</div>
+        <div class="page-sub">프로젝트 카드 내용을 수정합니다. Result 항목은 아래 툴바를 활용하세요.</div>
+        <div id="projEditor"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="saveProjects()">전체 저장</button>
+          <span class="save-status" id="s-projects"></span>
+        </div>
+      </section>
+
+      <!-- ═ CONTACT ═ -->
+      <section class="page-section" id="page-contact">
+        <div class="page-title">Contact</div>
+        <div class="card">
+          <div class="card-title">연락처 정보</div>
+          <div class="form-group"><label class="form-label">이메일</label><input class="form-input" id="contact_email"></div>
+          <div class="form-group"><label class="form-label">위치</label><input class="form-input" id="contact_location"></div>
+          <div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="contact_desc"></textarea></div>
+          <div class="btn-group"><button class="btn btn-primary" onclick="saveContact()">저장</button><span class="save-status" id="s-contact"></span></div>
+        </div>
+      </section>
+
+      <!-- ═ MEDIA ═ -->
+      <section class="page-section" id="page-media">
+        <div class="page-title">파일 / 링크 관리</div>
+        <div class="page-sub">Cloudinary에 업로드한 파일의 URL을 붙여넣거나, 로컬 파일 경로를 입력하세요.</div>
+
+        <div class="card">
+          <div class="card-title">📸 About 증명사진</div>
+          <div class="media-row">
+            <img id="prev_photo" class="media-preview-img" src="" onerror="this.src=''">
+            <div class="media-info">
+              <div class="media-label">사진 URL (Cloudinary URL 또는 img/파일명.jpg)</div>
+              <input class="form-input" id="media_photo" placeholder="https://res.cloudinary.com/..." oninput="previewImg('media_photo','prev_photo')">
+              <p style="font-size:11px;color:var(--muted);margin-top:5px;">예: img/picture.jpg 또는 Cloudinary URL 붙여넣기</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">▶️ YouTube 채널</div>
+          <div class="form-group"><label class="form-label">채널 URL</label><input class="form-input" id="media_yt_url" placeholder="https://www.youtube.com/@jamhuntrix"></div>
+          <div class="form-group"><label class="form-label">구독자 수 표시</label><input class="form-input" id="media_yt_subs" placeholder="10,300+"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📄 Resume / 포트폴리오 PDF</div>
+          <div class="form-group"><label class="form-label">경력기술서 – 사업PM (URL 또는 pdf/파일명.pdf)</label><input class="form-input" id="media_resume_pm" placeholder="pdf/resume_pm.pdf"></div>
+          <div class="form-group"><label class="form-label">경력기술서 – 운영 (URL 또는 pdf/파일명.pdf)</label><input class="form-input" id="media_resume_ops" placeholder="pdf/resume_ops.pdf"></div>
+          <div class="form-group"><label class="form-label">포트폴리오 PDF (URL 또는 pdf/파일명.pdf)</label><input class="form-input" id="media_portfolio" placeholder="pdf/portfolio.pdf"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🏢 회사 로고 / BI 이미지</div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Experience 섹션에서 각 회사의 logo_url을 직접 수정하세요. (↗ 왼쪽 메뉴 Experience)</p>
+          <div id="logoPreviewList" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="saveMedia()">저장</button>
+          <span class="save-status" id="s-media"></span>
+        </div>
+      </section>
+
+      <!-- ═ CHATBOT ═ -->
+      <section class="page-section" id="page-chatbot">
+        <div class="page-title">챗봇 설정 (Gemini AI)</div>
+        <div class="page-sub">저장 즉시 챗봇 답변에 반영됩니다. 재배포 불필요.</div>
+        <div class="card">
+          <div class="ctx-note">💡 이 내용이 Gemini AI에게 전달되는 포트폴리오 정보입니다.<br>채용담당자 질문에 정확하게 답할 수 있도록 경력, 성과, 역량을 자세히 작성해 두세요.</div>
+          <div class="form-group"><label class="form-label">챗봇 지식베이스</label><textarea class="form-textarea xtall" id="chatbot_context"></textarea></div>
+          <div class="btn-group"><button class="btn btn-primary" onclick="saveChatbot()">저장</button><span class="save-status" id="s-chatbot"></span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">챗봇 테스트</div>
+          <div class="test-row">
+            <input class="test-input" id="testQ" placeholder="예: 임광윤의 주요 성과가 뭔가요?" onkeydown="if(event.key==='Enter')testChat()">
+            <button class="btn btn-primary btn-sm" onclick="testChat()">전송</button>
+          </div>
+          <div class="test-reply" id="testR" style="display:none;"></div>
+        </div>
+      </section>
+
+      <!-- ═ PREVIEW ═ -->
+      <section class="page-section" id="page-preview">
+        <div class="page-title">사이트 미리보기</div>
+        <div class="page-sub">저장 후 아래 새로고침 버튼을 클릭하면 최신 상태가 반영됩니다.</div>
+        <div class="btn-group" style="margin-bottom:14px;">
+          <button class="btn btn-secondary" onclick="reloadPreview()">🔄 새로고침</button>
+          <a class="btn btn-secondary" href="http://localhost:8080" target="_blank">↗ 새 탭으로 열기</a>
+        </div>
+        <div class="preview-frame-wrap">
+          <iframe id="previewFrame" class="preview-frame" src="http://localhost:8080" title="사이트 미리보기"></iframe>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+/* ═══ STATE ═══ */
+let C = {};
+
+/* ═══ AUTH ═══ */
+async function doLogin() {
+  const e = document.getElementById('loginEmail').value.trim();
+  const p = document.getElementById('loginPw').value;
+  const err = document.getElementById('loginErr');
+  err.textContent = '';
+  try {
+    const r = await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})});
+    const d = await r.json();
+    if (d.ok) showApp();
+    else err.textContent = d.error || '로그인 실패';
+  } catch { err.textContent = '서버에 연결할 수 없습니다.'; }
+}
+async function doLogout() {
+  await fetch('/api/logout',{method:'POST'});
+  document.getElementById('adminApp').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+}
+async function checkAuth() {
+  try { const r=await fetch('/api/auth'); const d=await r.json(); if(d.loggedIn) showApp(); } catch{}
+}
+
+/* ═══ INIT ═══ */
+async function showApp() {
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('adminApp').style.display='block';
+  await loadContent();
+  checkGemini();
+}
+async function loadContent() {
+  try { const r=await fetch('/api/content'); C=await r.json(); populate(); } catch(e){console.error(e);}
+}
+async function checkGemini() {
+  const el=document.getElementById('dash-gemini');
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'안녕'})});
+    const d=await r.json();
+    el.textContent= d.reply && !d.reply.includes('설정되지') ? '✅ 연결됨' : '❌ 미설정';
+    el.style.color= d.reply && !d.reply.includes('설정되지') ? 'var(--green)' : 'var(--red)';
+  } catch { el.textContent='❌ 오류'; el.style.color='var(--red)'; }
+}
+
+/* ═══ NAV ═══ */
+function switchPage(el) {
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('page-'+el.dataset.page).classList.add('active');
+}
+
+/* ═══ POPULATE ═══ */
+function populate() {
+  const h=C.hero||{}, a=C.about||{}, c=C.contact||{}, m=C.media||{};
+  sv('hero_subtitle',h.subtitle||''); sv('hero_desc',h.desc||'');
+  sv('about_bio',a.bio||''); sv('about_quote',a.quote||'');
+  renderAboutStats(a.stats||[]);
+  sv('contact_email',c.email||''); sv('contact_location',c.location||''); sv('contact_desc',c.desc||'');
+  sv('chatbot_context',C.chatbot_context||'');
+  sv('media_photo',m.profile_photo||''); previewImg('media_photo','prev_photo');
+  sv('media_yt_url',m.youtube_url||''); sv('media_yt_subs',m.youtube_subscribers||'');
+  sv('media_resume_pm',m.resume_pm_pdf||''); sv('media_resume_ops',m.resume_ops_pdf||'');
+  sv('media_portfolio',m.portfolio_pdf||'');
+  renderMetrics(C.metrics||[]);
+  renderProjects(C.projects||[]);
+  renderExperience(C.experience||[]);
+  renderLogoPreview(C.experience||[]);
+}
+function sv(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
+function gv(id){ return (document.getElementById(id)||{}).value||''; }
+
+/* ═══ RICH TEXT HELPERS ═══ */
+function makeRTE(id, minH) {
+  return `
+    <div class="rte-wrap">
+      <div class="rte-toolbar">
+        <button class="rte-btn bold" onclick="rteWrap('${id}','<strong>','</strong>')" title="굵게"><b>B</b></button>
+        <button class="rte-btn italic" onclick="rteWrap('${id}','<em>','</em>')" title="기울임"><i>I</i></button>
+        <button class="rte-btn" onclick="rteWrap('${id}','<u>','</u>')" title="밑줄"><u>U</u></button>
+        <span class="rte-sep">|</span>
+        <button class="rte-btn" onclick="rteInsert('${id}','✓ ')" title="체크 삽입">✓</button>
+        <button class="rte-btn" onclick="rteInsert('${id}',' | ')" title="구분선 삽입">│</button>
+        <span class="rte-sep">|</span>
+        <span class="rte-preview-toggle" onclick="toggleRTEPreview('${id}')">HTML 미리보기</span>
+      </div>
+      <textarea class="rte-textarea" id="${id}" style="min-height:${minH||60}px"></textarea>
+      <div class="rte-preview-box" id="${id}_prev"></div>
+    </div>`;
+}
+
+function rteWrap(id, open, close) {
+  const ta = document.getElementById(id);
+  const start = ta.selectionStart, end = ta.selectionEnd;
+  const sel = ta.value.slice(start, end);
+  ta.value = ta.value.slice(0, start) + open + sel + close + ta.value.slice(end);
+  ta.selectionStart = start; ta.selectionEnd = end + open.length + close.length;
+  ta.focus();
+}
+function rteInsert(id, text) {
+  const ta = document.getElementById(id);
+  const pos = ta.selectionStart;
+  ta.value = ta.value.slice(0, pos) + text + ta.value.slice(pos);
+  ta.selectionStart = ta.selectionEnd = pos + text.length;
+  ta.focus();
+}
+function toggleRTEPreview(id) {
+  const prev = document.getElementById(id + '_prev');
+  const ta = document.getElementById(id);
+  if (prev.style.display === 'block') { prev.style.display = 'none'; return; }
+  prev.innerHTML = ta.value;
+  prev.style.display = 'block';
+}
+function previewImg(srcId, imgId) {
+  const src = gv(srcId);
+  const img = document.getElementById(imgId);
+  if (img) img.src = src || '';
+}
+
+/* ═══ ABOUT STATS ═══ */
+function renderAboutStats(stats) {
+  const list = document.getElementById('aboutStatsList');
+  list.innerHTML = '';
+  stats.forEach((s,i) => {
+    const row = document.createElement('div');
+    row.className = 'metric-row';
+    row.innerHTML = `
+      <input class="form-input" placeholder="수치 (예: 4+)" value="${esc(s.num||'')}">
+      <input class="form-input" placeholder="라벨 (줄바꿈은 \\n)" value="${esc((s.label||'').replace(/\n/g,'\\n'))}">
+      <button class="btn btn-danger btn-xs" onclick="this.closest('.metric-row').remove()" title="삭제">✕</button>`;
+    list.appendChild(row);
+  });
+}
+function addAboutStat() {
+  const list = document.getElementById('aboutStatsList');
+  const row = document.createElement('div');
+  row.className = 'metric-row';
+  row.innerHTML = `<input class="form-input" placeholder="수치"><input class="form-input" placeholder="라벨 (줄바꿈 옵션 \\n)"><button class="btn btn-danger btn-xs" onclick="this.closest('.metric-row').remove()">✕</button>`;
+  list.appendChild(row);
+}
+function getAboutStats() {
+  return Array.from(document.querySelectorAll('#aboutStatsList .metric-row')).map(r => {
+    const ins = r.querySelectorAll('input');
+    return {num: ins[0].value.trim(), label: ins[1].value.trim().replace(/\\n/g,'\n')};
+  });
+}
+
+/* ═══ METRICS ═══ */
+function renderMetrics(metrics) {
+  const list = document.getElementById('metricList');
+  list.innerHTML = '';
+  metrics.forEach((m,i) => {
+    const row = document.createElement('div');
+    row.className = 'metric-row';
+    row.innerHTML = `
+      <input class="form-input" placeholder="수치 (예: 130%)" value="${esc(m.num||'')}">
+      <input class="form-input" placeholder="라벨 (줄바꿈은 \\n)" value="${esc((m.label||'').replace(/\n/g,'\\n'))}">
+      <button class="btn btn-danger btn-xs" onclick="this.closest('.metric-row').remove()" title="삭제">✕</button>`;
+    list.appendChild(row);
+  });
+}
+function addMetric() {
+  const list = document.getElementById('metricList');
+  const row = document.createElement('div');
+  row.className = 'metric-row';
+  row.innerHTML = `<input class="form-input" placeholder="수치"><input class="form-input" placeholder="라벨"><button class="btn btn-danger btn-xs" onclick="this.closest('.metric-row').remove()">✕</button>`;
+  list.appendChild(row);
+}
+function getMetrics() {
+  return Array.from(document.querySelectorAll('#metricList .metric-row')).map(r => {
+    const ins = r.querySelectorAll('input');
+    return {num: ins[0].value.trim(), label: ins[1].value.trim().replace(/\\n/g,'\n')};
+  });
+}
+
+/* ═══ PROJECTS ═══ */
+function renderProjects(projects) {
+  const ed = document.getElementById('projEditor');
+  ed.innerHTML = '';
+  projects.forEach((p,i) => {
+    const el = document.createElement('div');
+    el.className = 'proj-item';
+    el.innerHTML = `
+      <div class="proj-header" onclick="toggleProj(${i})">
+        <span class="proj-badge">${p.num||String(i+1).padStart(2,'0')}</span>
+        <span class="proj-header-title">${esc(p.category||'프로젝트 '+(i+1))}</span>
+        <span style="color:var(--muted);font-size:18px;">▾</span>
+      </div>
+      <div class="proj-body" id="pb-${i}">
+        <div class="form-group"><label class="form-label">카테고리</label><input class="form-input" id="pc-${i}" value="${esc(p.category||'')}"></div>
+        <div class="form-group"><label class="form-label">제목 (줄바꿈은 \\n)</label><input class="form-input" id="pt-${i}" value="${esc((p.title||'').replace(/\n/g,'\\n'))}"></div>
+        <div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea tall" id="pd-${i}">${esc(p.desc||'')}</textarea></div>
+        <div class="form-group">
+          <label class="form-label">성과 (result) — <span style="color:var(--muted);font-weight:400;">툴바로 ✓ 항목 | 구분선 삽입 가능. HTML 미리보기 확인하세요.</span></label>
+          ${makeRTE('pr-'+i, 52)}
+        </div>
+      </div>`;
+    ed.appendChild(el);
+    // result 값 주입
+    const rta = document.getElementById('pr-'+i);
+    if (rta) rta.value = p.result || '';
+  });
+}
+function toggleProj(i) {
+  const b = document.getElementById('pb-'+i);
+  b.classList.toggle('open');
+}
+function getProjects() {
+  const count = document.querySelectorAll('#projEditor .proj-item').length;
+  return Array.from({length: count}, (_,i) => ({
+    num: String(i+1).padStart(2,'0'),
+    category: gv('pc-'+i),
+    title: gv('pt-'+i).replace(/\\n/g,'\n'),
+    desc: gv('pd-'+i),
+    result: gv('pr-'+i)
+  }));
+}
+
+/* ═══ EXPERIENCE ═══ */
+function renderExperience(experience) {
+  const ed = document.getElementById('expEditor');
+  ed.innerHTML = '';
+  experience.forEach((co, ci) => {
+    const card = document.createElement('div');
+    card.className = 'exp-company-card';
+    const logoSrc = co.logo_url || '';
+    let jobsHtml = (co.jobs||[]).map((job, ji) => `
+      <div class="exp-job-card">
+        <div class="exp-job-title">
+          <span>${esc(job.game||'')}</span>
+          <span style="font-size:11px;color:var(--muted);font-weight:400;">${esc(job.period||'')}</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">포지션</label><input class="form-input" id="ejpos-${ci}-${ji}" value="${esc(job.position||'')}"></div>
+          <div class="form-group"><label class="form-label">권역</label><input class="form-input" id="ejreg-${ci}-${ji}" value="${esc(job.regions||'')}"></div>
+        </div>
+        <div class="form-group"><label class="form-label">서비스명</label><input class="form-input" id="ejgame-${ci}-${ji}" value="${esc(job.game||'')}"></div>
+        <div class="form-group"><label class="form-label">기간</label><input class="form-input" id="ejperiod-${ci}-${ji}" value="${esc(job.period||'')}"></div>
+        <div class="form-group"><label class="form-label">로고 URL</label><input class="form-input" id="ejlogo-${ci}-${ji}" value="${esc(job.game_logo_url||'')}"></div>
+        <label class="form-label" style="margin-bottom:6px;">업무 내용 (항목별 한 줄씩)</label>
+        <div class="exp-items-area" id="ejitems-${ci}-${ji}">
+          ${(job.items||[]).map(it=>`<div class="exp-item-row"><input class="exp-item-input" value="${esc(it)}"><button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button></div>`).join('')}
+        </div>
+        <button class="btn btn-secondary btn-xs" style="margin-top:6px;" onclick="addExpItem(${ci},${ji})">+ 항목 추가</button>
+      </div>`).join('');
+
+    card.innerHTML = `
+      <div class="exp-company-header" onclick="toggleExpCo(${ci})">
+        <img class="exp-company-logo" id="exp-logo-${ci}" src="${esc(logoSrc)}" onerror="this.src=''">
+        <div style="flex:1;">
+          <div class="exp-company-name">${esc(co.company||'')}</div>
+          <div class="exp-company-period">${esc(co.dept||'')} | ${esc(co.period||'')}</div>
+        </div>
+        <span style="color:var(--muted);">▾</span>
+      </div>
+      <div class="exp-company-body" id="ecb-${ci}">
+        <div style="margin-bottom:12px;" class="form-grid">
+          <div class="form-group"><label class="form-label">회사명</label><input class="form-input" id="ecname-${ci}" value="${esc(co.company||'')}"></div>
+          <div class="form-group"><label class="form-label">부서/직군</label><input class="form-input" id="ecdept-${ci}" value="${esc(co.dept||'')}"></div>
+        </div>
+        <div class="form-grid" style="margin-bottom:12px;">
+          <div class="form-group"><label class="form-label">재직 기간</label><input class="form-input" id="ecperiod-${ci}" value="${esc(co.period||'')}"></div>
+          <div class="form-group"><label class="form-label">회사 로고 URL</label><input class="form-input" id="eclogo-${ci}" value="${esc(co.logo_url||'')}" oninput="document.getElementById('exp-logo-${ci}').src=this.value"></div>
+        </div>
+        <hr>
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px;">담당 서비스 / 직무</div>
+        ${jobsHtml}
+      </div>`;
+    ed.appendChild(card);
+  });
+}
+function toggleExpCo(ci) {
+  const b = document.getElementById('ecb-'+ci);
+  b.classList.toggle('open');
+}
+function addExpItem(ci, ji) {
+  const area = document.getElementById(`ejitems-${ci}-${ji}`);
+  const row = document.createElement('div');
+  row.className = 'exp-item-row';
+  row.innerHTML = `<input class="exp-item-input" placeholder="새 업무 항목"><button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button>`;
+  area.appendChild(row);
+}
+function getExperience() {
+  const coCards = document.querySelectorAll('#expEditor .exp-company-card');
+  return Array.from(coCards).map((card, ci) => {
+    const jobCards = card.querySelectorAll('.exp-job-card');
+    return {
+      company: gv(`ecname-${ci}`),
+      dept: gv(`ecdept-${ci}`),
+      period: gv(`ecperiod-${ci}`),
+      logo_url: gv(`eclogo-${ci}`),
+      jobs: Array.from(jobCards).map((jc, ji) => ({
+        game: gv(`ejgame-${ci}-${ji}`),
+        game_logo_url: gv(`ejlogo-${ci}-${ji}`),
+        period: gv(`ejperiod-${ci}-${ji}`),
+        position: gv(`ejpos-${ci}-${ji}`),
+        regions: gv(`ejreg-${ci}-${ji}`),
+        items: Array.from(jc.querySelectorAll('.exp-item-input')).map(i=>i.value.trim()).filter(Boolean)
+      }))
+    };
+  });
+}
+function renderLogoPreview(experience) {
+  const container = document.getElementById('logoPreviewList');
+  if (!container) return;
+  container.innerHTML = '';
+  experience.forEach(co => {
+    if (!co.logo_url) return;
+    const wrap = document.createElement('div');
+    wrap.style.cssText='text-align:center;';
+    wrap.innerHTML = `<img src="${esc(co.logo_url)}" style="width:48px;height:48px;border-radius:6px;object-fit:contain;background:var(--surface2);border:1px solid var(--border);" onerror="this.src=''"><div style="font-size:10px;color:var(--muted);margin-top:4px;">${esc(co.company)}</div>`;
+    container.appendChild(wrap);
+  });
+}
+
+/* ═══ SAVE FUNCS ═══ */
+async function saveHero() {
+  C.hero={subtitle:gv('hero_subtitle'),desc:gv('hero_desc')};
+  await doSave('s-hero');
+}
+async function saveAbout() {
+  C.about=C.about||{}; C.about.bio=gv('about_bio'); C.about.quote=gv('about_quote'); C.about.stats=getAboutStats();
+  await doSave('s-about');
+}
+async function saveMetrics() { C.metrics=getMetrics(); await doSave('s-metrics'); }
+async function saveProjects() { C.projects=getProjects(); await doSave('s-projects'); }
+async function saveExperience() { C.experience=getExperience(); await doSave('s-exp'); }
+async function saveContact() {
+  C.contact={email:gv('contact_email'),location:gv('contact_location'),desc:gv('contact_desc')};
+  await doSave('s-contact');
+}
+async function saveChatbot() { C.chatbot_context=gv('chatbot_context'); await doSave('s-chatbot'); }
+async function saveMedia() {
+  C.media={
+    profile_photo: gv('media_photo'),
+    youtube_url: gv('media_yt_url'),
+    youtube_subscribers: gv('media_yt_subs'),
+    resume_pm_pdf: gv('media_resume_pm'),
+    resume_ops_pdf: gv('media_resume_ops'),
+    portfolio_pdf: gv('media_portfolio')
+  };
+  await doSave('s-media');
+}
+
+async function doSave(statusId) {
+  const el = document.getElementById(statusId);
+  el.textContent = '저장 중...'; el.className='save-status';
+  try {
+    const r = await fetch('/api/content',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(C)});
+    const d = await r.json();
+    if (d.ok) { el.textContent='✓ 저장 완료!'; el.className='save-status ok'; }
+    else throw new Error(d.error);
+  } catch(e) { el.textContent='✕ 실패: '+e.message; el.className='save-status err'; }
+  setTimeout(()=>el.textContent='', 3500);
+}
+
+/* ═══ PREVIEW ═══ */
+function reloadPreview() {
+  const f = document.getElementById('previewFrame');
+  f.src = f.src; // reload
+}
+
+/* ═══ CHATBOT TEST ═══ */
+async function testChat() {
+  const q=document.getElementById('testQ').value.trim(); if(!q) return;
+  const r=document.getElementById('testR');
+  r.style.display='block'; r.className='test-reply loading'; r.textContent='AI 답변 생성 중...';
+  try {
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q})});
+    const d=await res.json();
+    r.className='test-reply'; r.textContent=d.reply;
+  } catch { r.className='test-reply'; r.textContent='오류 발생.'; }
+}
+
+/* ═══ UTIL ═══ */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+/* ═══ BOOT ═══ */
+checkAuth();
+</script>
+</body>
+</html>

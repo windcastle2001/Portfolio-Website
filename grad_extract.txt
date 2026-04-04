@@ -1,0 +1,360 @@
+============================================================
+[KNN 분석 자료(발표용)_임광윤.pdf] - 8페이지
+1
+KNN 분석
+2024127662 임광윤
+
+---
+2
+KNN 분석
+Q1. 데이터 로드 및 결측치 처리
+Step 1: “PimaIndiansDiabetes2” 데이터셋을 로드하고 결측치가 있는지 확인하라.
+Step 2: 결측치가 있다면, 제거하라.
+Q2. 데이터 분할 (Train/Validation/Test)
+Step 1: 데이터를 3:1:1 비율로 학습(train), 검증(valid), 테스트(test) 세트로 나누어라.
+Step 2: 종속 변수 "diabetes＂를 기준으로, 각 train, valid, test 세트에 대해 독립 변수 데이터셋과 종속 변수 데이터셋을 각각 생성하라.
+Q3. kNN 분류 (k=3)
+Step 1: kNN 분류를 수행하세요.
+Step 2: K가 3일 때, 학습 세트를 사용하여 검증 세트의 종속 변수 “diabetes”를 예측하고, 정확도를 계산하라.
+Q4. 최적의 k 찾기
+Step 1: 학습 세트와 검증 세트를 사용하여 최적의 k 값을 찾아라.
+Step 2: 결과를 시각화하고 최적의 k 값과 이에 해당하는 정확도를 표시하라.
+Q5. Test 데이터에 대해 kNN 분류
+Step 1: 최적의 k 값을 사용하여 kNN 분류를 다시 수행하라.
+Step 2: 이번에는 학습 세트를 사용하여 테스트 세트의 종속 변수 "diabetes"를 예측하고, 실제 값과 비교하여라. 마지막으로 정확도를 계산하라.
+
+---
+3
+Q1. 데이터 로드 및 결측치 처리
+①PimaIndiansDiabetes2 데이터 셋에는 768개의 관측치와 9개의 변수가 존재함
+②결측치는 triceps와 insulin에서 가장 많이 나타남
+③결측치를 모두 제거한 cleaned_data 데이터셋은 
+392개의 관측치와 9개의 변수가 남음
+
+---
+4
+Q2. 데이터 분할 (Train/Validation/Test)
+①데이터를 학습(train), 검증(validation), 테스트(test) 세트로 3:1:1 비율로 분할
+②학습 세트: 60% (235개) / 검증 세트: 20% (78개) / 테스트 세트: 20% (79개)
+③데이터는 독립 변수와 종속 변수(diabetes)로 각각 분리
+독립 변수: train_x / valid_x / test_x
+종속 변수: train_y / valid_y / test_y
+
+---
+5
+Q3. kNN 분류 (k=3)
+①검증 세트를 대상으로 k=3으로 설정하여 kNN 분류를 수행
+②K가 3일 때, 학습 세트를 사용하여 검증 세트의 종속 변수 “diabetes”를 예측
+③결과: 검증 세트의 정확도: 61.54%
+
+---
+============================================================
+[kNN 분석 자료_임광윤.pdf] - 7페이지
+kNN 데이터 분석 
+임광윤 
+2025-01-11 
+Table of Contents 
+Q1: 데이터 로드 및 결측치 처리 .............................................................................. 1 
+Q2: 데이터 분할 (Train/Validation/Test) ................................................................... 2 
+Q3: kNN 분류 (k=3) ................................................................................................. 3 
+Q4: 최적의 k 찾기 ................................................................................................... 4 
+Q5: Test 데이터에 대한 kNN 분류 ............................................................................ 6 
+ 
+Q1: 데이터 로드 및 결측치 처리 
+설명 
+• 
+PimaIndiansDiabetes2 데이터셋을 로드하고 결측치를 확인한 후 제거합니다. 
+# 필요한 패키지 설치 및 로드 
+if (!requireNamespace("mlbench", quietly = TRUE)) { 
+  install.packages("mlbench") 
+} 
+library(mlbench) 
+ 
+# 데이터 로드 및 구조 확인 
+data("PimaIndiansDiabetes2") 
+str(PimaIndiansDiabetes2)  # 데이터 구조 확인 
+## 'data.frame':    768 obs. of  9 variables: 
+##  $ pregnant: num  6 1 8 1 0 5 3 10 2 8 ... 
+##  $ glucose : n
+---
+##  $ mass    : num  33.6 26.6 23.3 28.1 43.1 25.6 31 35.3 30.5 NA ... 
+##  $ pedigree: num  0.627 0.351 0.672 0.167 2.288 ... 
+##  $ age     : num  50 31 32 21 33 30 26 29 53 54 ... 
+##  $ diabetes: Factor w/ 2 levels "neg","pos": 2 1 2 1 2 1 2 1 2 2 ... 
+# 결측치 확인 
+colSums(is.na(PimaIndiansDiabetes2)) 
+## pregnant  glucose pressure  triceps  insulin     mass pedigree      age  
+##        0        5       35      227      374       11        0        0  
+## diabetes  
+##        0 
+결측치 제거 
+# 결측치 제거 
+cleaned_data <- na.omit(PimaIndiansDiabetes2) 
+str(cleaned_data)  # 결측치 제거 후 데이터 구조 확인 
+## 'data.frame':    392 obs. of  9 variables: 
+##  $ pregnant: num  1 0 3 2 1 5 0 1 1 3 ... 
+##  $ glucose : num  89 137 78 197 189 166 118 103 115 126 ... 
+##  $ pressure: num  66 40 50 70 60 72 84 30 70 88 ... 
+##  $ triceps : num  23 35 32 45 23 19 47 38 30 41 ... 
+##  $ insulin : num  94 168 88 543 846 175 230 83 96 235 ... 
+##  $ mass    : num  28.1 43.1 31 30.5 30.1 25.8 45.8 43.3 34.6 39.3 ... 
+## 
+---
+ 
+indices <- sample(1:n) 
+train_indices <- indices[1:train_size] 
+valid_indices <- indices[(train_size + 1):(train_size + valid_size)] 
+test_indices <- indices[(train_size + valid_size + 1):n] 
+ 
+train_data <- cleaned_data[train_indices, ] 
+valid_data <- cleaned_data[valid_indices, ] 
+test_data <- cleaned_data[test_indices, ] 
+ 
+# 독립 변수와 종속 변수 분리 
+train_x <- train_data[, -9] 
+train_y <- train_data[, 9] 
+valid_x <- valid_data[, -9] 
+valid_y <- valid_data[, 9] 
+test_x <- test_data[, -9] 
+test_y <- test_data[, 9] 
+Q3: kNN 분류 (k=3) 
+설명 
+• 검증 세트에 대해 k=3 으로 설정한 후 kNN 분류를 수행하고, 정확도와 예측 결과를 
+확인합니다. 
+# 필요한 패키지 설치 및 로드 
+if (!requireNamespace("FNN", quietly = TRUE)) { 
+  install.packages("FNN") 
+} 
+library(FNN) 
+## Warning: 패키지 'FNN'는 R 버전 4.4.2 에서 작성되었습니다 
+# k=3 분류 수행 
+knn_pred <- knn( 
+  train = as.matrix(train_x), 
+  test = as.matrix(valid_x), 
+  cl = train_y, 
+  k = 3 
+) 
+ 
+# 정확도 계산 
+accuracy_q3 <- sum(knn_pred == valid_y) / length(valid_y) 
+cat("Q3: k=3 일 때 검증 세트의 정확도:", accuracy_q3, "\n") 
+
+---
+## Q3: k=3 일 때 검증 세트의 정확도: 0.6153846 
+# 예측 값과 실제 값 비교 
+comparison_q3 <- data.frame( 
+  Actual = valid_y, 
+  Predicted = knn_pred 
+) 
+head(comparison_q3)  # 일부 결과 출력 
+##   Actual Predicted 
+## 1    pos       neg 
+## 2    neg       neg 
+## 3    neg       neg 
+## 4    pos       pos 
+## 5    neg       pos 
+## 6    pos       pos 
+Q4: 최적의 k 찾기 
+설명 
+• 10-폴드 교차 검증을 사용하여 최적의 k 값을 탐색하고, 결과를 시각화합니다. 
+데이터 표준화 및 모델 학습 
+# 필요한 패키지 설치 및 로드 
+if (!requireNamespace("caret", quietly = TRUE)) { 
+  install.packages("caret") 
+} 
+library(caret) 
+## Warning: 패키지 'caret'는 R 버전 4.4.2 에서 작성되었습니다 
+## 필요한 패키지를 로딩중입니다: ggplot2 
+## Warning: 패키지 'ggplot2'는 R 버전 4.4.2 에서 작성되었습니다 
+## 필요한 패키지를 로딩중입니다: lattice 
+# 데이터 표준화 
+preproc <- preProcess(train_x, method = c("center", "scale")) 
+train_x_norm <- predict(preproc, train_x) 
+valid_x_norm <- predict(preproc, valid_x) 
+ 
+
+---
+# 최적의 k 값 찾기 
+control <- trainControl(method = "cv", number = 10)  # 10-폴드 교차 검증 
+model <- train( 
+  x = train_x_norm, 
+  y = train_y, 
+  method = "knn", 
+  trControl = control, 
+  tuneGrid = expand.grid(k = 1:20)  # k 값 탐색 범위 
+) 
+ 
+# 최적의 k 값 출력 
+optimal_k <- model$bestTune$k 
+optimal_accuracy <- max(model$results$Accuracy) 
+cat("Q4: 최적의 k:", optimal_k, "\n 최적의 정확도:", optimal_accuracy, "\n") 
+## Q4: 최적의 k: 11  
+## 최적의 정확도: 0.7871377 
+결과 시각화 
+plot(model, main = "k 값에 따른 정확도 변화") 
+ 
+
+---
+============================================================
+[연관 규칙 리포트_임광윤.pdf] - 11페이지
+Association Rule
+Q1: Read “products.rds” dataset using readRDS() function (same as the usage of read.csv()) and 
+coerce it into transactions.
+Q2: Check the number of transactions and items in this transactions dataset and show the first 3 
+items.
+Q3: Implement apriori algorithm using a minimum support of 0.002 and a minimum confidence of 
+0.25, and set the maximum length of rules to be 2.
+Q4: Remove redundant rule.
+Q5: Sorting the results by lift and show the first 10 rules.
+Q6: Implement apriori algorithm to find out the items which customers who bought “Banana” also 
+bought. Use a minimum support of 0.001 and a minimum confidence of 0.1, and set the maximum 
+length of rules to be 2. Inspect them by high-confidence rule.
+Use dataset “products” (in “datasets” file) to answer questions below.
+
+---
+Association Rule
+08
+데이터과학의기초–Team B Project
+Q1. readRDS() 함수를사용하여“products.rds” 데이터셋을읽고이를트랜잭션형태로변환하세요. 
+(read.csv() 함수와동일한방식으로사용됩니다.)
+➔총131,209 개의개별구매데이터를가지고있음.
+
+---
+Association Rule
+08
+데이터과학의기초–Team B Project
+Q1. readRDS() 함수를사용하여“products.rds” 데이터셋을읽고이를트랜잭션형태로변환하세요. 
+(read.csv() 함수와동일한방식으로사용됩니다.)
+➔총131,209 개의rows (트랜잭션)
+➔총39,123r 개의Columns (고유한상품개수)
+➔Density (밀도, 희소성)은약0.00269
+[자주구매한상품]
+바나나: 18,726번
+유기농바나나: 15,480번등
+한번에구매하는상품의개수:
+- 평균: 약10.55개
+- 최대: 80개
+
+---
+Association Rule
+08
+데이터과학의기초–Team B Project
+Q2. 이트랜잭션데이터셋에서트랜잭션수와아이템수를확인하고, 첫3개의아이템을표시하세요.
+➔총131,209 개의rows (트랜잭션)
+➔총39,123 개의Columns (고유한상품개수)
+
+---
+Association Rule
+08
+데이터과학의기초–Team B Project
+Q3. apriori 알고리즘을최소지지도(support) 0.002와최소신뢰도(confidence) 0.25로설정하여실행하세요. 
+규칙의최대길이는2로설정하세요.
+➔총83개의연관규칙이생성됨
+➔규칙의길이: 모든규칙이lhs + rhs로구성된2개의항목으로
+이루어짐
+- Support(지지도): 
+지지도는규칙이전체트랜잭션중얼마나자주발생하는지보여줌.
+- Confidence(신뢰도):
+신뢰도는lhs를구매했을때, rhs도구매할확률.
+- Lift ratio:
+Lhs와rhs가독립적일때보다얼마나더강한연관성을가지는지
+보여줌. 1보다크면연과성이있음. 값이클수록강한연관성
+
+---
+============================================================
+[인적자원데이터분석_임광윤.pdf] - 11페이지
+인적자원데이터분석입문
+최종과제(Option A)
+직원이직예측을위한
+로지스틱회귀와랜덤포레스트분석
+1
+2024127662 BDA 임광윤
+
+---
+데이터 탐색 및 전처리
+2
+[데이터 전처리 과정]
+[데이터 소개]
+1) 데이터 셋: HR_employee_churn
+2) 주요변수: Attrition(이직여부), Age, JobRole, MonthlyIncome 등. 총 1470개의 관측치와 35개의 변수
+1) 결측치 처리: 숫자형 변수는 중앙값으로 대체 / 결측치가 많은 변수는 제거 (30% 이상)
+2) 변수 타입 변환: 범주형 변수를 factor로 변환
+3) 상수 변수 제거: 값이 동일한 변수(상수 변수)는 분석에 기여하지 않으므로 제거 (EmployeeCount, Over18, 
+StandardHours)
+4) 이상치 탐색 및 처리: 이상치를 NA로 처리하고, 결측값은 중앙값으로 대체
+5) 데이터 저장: processed_data_rf
+상수 변수 제거
+변수 타입 변환
+결측치 처리
+이상치 탐색 및 처리
+데이터 저장
+
+---
+데이터 탐색 및 전처리
+3
+유의미한 변수 추출 (범주형)
+카이제곱 검정의 p-value < 0.05 일 때, 
+통계적으로 유의미한 관계를 가짐
+[5개 변수]
+-
+BusinessTravel 
+-
+Department
+-
+EducationField
+-
+MaritalStatus
+-
+OverTime
+
+---
+데이터 탐색 및 전처리
+4
+유의미한 변수 추출 (숫자형)
+Pearson 상관계수(절대값) ≥ 0.1 일때, 약한 상관관계
+가 있음. 아래 11개의 변수들이 이직 여부에 영향을 줌.
+[11개 변수]
+-
+Age
+-
+EnvironmentSatisfaction
+-
+JobInvolvement
+-
+JobLevel
+-
+JobSatisfaction
+-
+MonthlyIncome
+-
+StockOptionLevel
+-
+TotalWorkingYears
+-
+YearsAtCompany
+-
+YearsInCurrentRole
+-
+YearsWithCurrManager
+유의미한 16개의 변수를 제외한 다른 변수 제거
+파일명: processed_data_rf_erase
+
+---
+ML 모델 선정 및 분석
+5
+[로지스틱 회귀]
+모델 선정 이유: 
+1)
+로지스틱 회귀는 종속변수(이직 여부)가 이진형(Yes/No)일 때 적합
+2)
+데이터에서 변수들과 이직 여부 간의 관계를 수치적으로 확인 가능
+3)
+단순하게 해석 가능
+[랜덤 포레스트]
+모델 선정 이유: 
+1)
+비선형 관계 및 변수 간 상호작용 파악 가능
+2)
+변수 중요도 평가를 통해 이직 에측에 주요한 변수 도출 가능
+
+---
