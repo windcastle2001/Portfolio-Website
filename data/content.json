@@ -1,0 +1,560 @@
+{
+  "about": {
+    "bio": "아이지에스(IGS) 운영팀에서 2022년 6월부터 현재까지 글로벌 게임 라이브 서비스 운영을 담당하고 있습니다.\nKOF AFK 글로벌, 세븐나이츠2 글로벌, 마블 퓨처파이트 글로벌, KOF 올스타 등 다양한 게임 타이틀의 GM/CM 업무를 수행했으며, 유저 데이터·VOC·커뮤니티 인사이트를 바탕으로 운영 개선과 사업적 의사결정에 기여해왔습니다.\n\n동국대 MBA(비즈니스데이터애널리틱스)를 2026년 2월 졸업했습니다.",
+    "quote": "운영 실무에서 얻은 데이터와 유저 인사이트를 바탕으로, 사업 관점의 의사결정과 게임의 성장에 기여하는 역할로 확장하고자 합니다.",
+    "stats": [
+      {
+        "label": "글로벌 게임 타이틀 운영",
+        "num": "4+"
+      },
+      {
+        "label": "게임 라이브 운영 경력",
+        "num": "3년+"
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "bg_image": "img/global_ops_bg.png",
+      "category": "",
+      "icon": "🌍",
+      "items": [
+        "KR·EN·JP·TW·TH 5개 권역 라이브 서비스 운영 실무",
+        "영어 전공 기반 현지 톤앤매너 맞춤 영문 공지·가이드·FAQ 직접 현지화",
+        "글로벌 공식 SNS 채널 약 242건 게시물 운영"
+      ],
+      "title": "글로벌 라이브 서비스 운영"
+    },
+    {
+      "bg_image": "img/data_analysis_bg.png",
+      "category": "",
+      "icon": "📊",
+      "items": [
+        "포럼 이벤트 지표 대시보드 직접 구축·운영",
+        "DAU·UV·VOC 정량 지표 분석으로 이벤트 운영 개선에 기여",
+        "MBA 과정을 통한 SQL·Python·R 기반 데이터 분석 방법론 학습 및 실습 적용"
+      ],
+      "title": "데이터 기반 운영 분석"
+    },
+    {
+      "bg_image": "img/voc_insights_bg.png",
+      "category": "",
+      "icon": "💬",
+      "items": [
+        "글로벌 5개 권역 VOC를 유형별·감성별로 정량화",
+        "세븐나이츠2 업데이트 분석 리포트로 팀 내 긍정 평가",
+        "유저 인사이트를 사업팀 공유 자료로 구조화"
+      ],
+      "title": "VOC 분석 및 커뮤니티 인사이트"
+    },
+    {
+      "bg_image": "img/risk_mgmt_bg.png",
+      "category": "",
+      "icon": "⚠️",
+      "items": [
+        "신규 파이터 출시 전 메타 부적합 리스크 감지 및 의견 제시",
+        "콜라보 BM 보상 구조 검토 의견 반영 사례 보유",
+        "라이브 운영 기간 내 운영 사고 0건 유지"
+      ],
+      "title": "사전 리스크 검토 및 리포팅"
+    },
+    {
+      "bg_image": "img/process_imp_bg.png",
+      "category": "",
+      "icon": "🔧",
+      "items": [
+        "운영툴 기능 개선 25건 제안, 핵심 항목 실제 반영",
+        "포럼 기능 개선 제안 4건 중 1건 실적용",
+        "SNS 운영 실무 가이드 제작으로 팀 내 업무 표준화에 기여"
+      ],
+      "title": "운영 프로세스 개선 제안"
+    },
+    {
+      "bg_image": "img/ai_automation_bg.png",
+      "category": "",
+      "icon": "🤖",
+      "items": [
+        "Make·n8n·Gemini API 기반 AI 뉴스레터(AiGS TF 파생 작업) 자동화 구축 (60호+ 발행)",
+        "SNS 게시물 디스크립션·해시태그 자동 생성으로 콘텐츠 작성 시간 단축",
+        "공지 초안·FAQ 템플릿 자동화로 반복 업무 효율화",
+        "자동화 사례 월간 경영회의 발표 및 사내 공유"
+      ],
+      "title": "AI 활용 업무 자동화"
+    }
+  ],
+  "chatbot_context": "임광윤(Kevin Im)은 아이지에스(IGS, 넷마블 계열사)에서 2022년 6월부터 현재까지 글로벌 게임 라이브 서비스 운영을 담당하는 운영 전문가입니다.\n\n[경력]\n- IGS(아이지에스)㈜ 운영팀 (2022.06 ~ 현재)\n  · KOF AFK 글로벌 (2024.07 ~ 현재): 인게임 GM/CM, 글로벌 SNS 전담\n  · 세븐나이츠2 글로벌 (2024.03 ~ 2026.01): 인게임 운영, VOC 분석\n  · 마블 퓨처파이트 글로벌 (2023.05 ~ 2024.03): 인게임 운영 지원\n  · KOF 올스타 글로벌/국내 (2022.06 ~ 2024.01): 커뮤니티 이벤트 운영\n  · AiGS TF (2025.07 ~ 현재): AI 자동화 뉴스레터 시스템 구축·운영\n- 인천공항운영서비스 (2019.01 ~ 2021.01): 공항 운영\n- 한국생산성본부 인턴 (2018.07 ~ 2018.09)\n\n[학력]\n- 동국대학교 MBA 비즈니스데이터애널리틱스 (2024.03 ~ 2026.02 졸업)\n- 동국대학교 영어영문학/경제학 (2012.03 ~ 2019.08)\n\n[주요 성과/프로젝트]\n- KOF AFK 사전예약 캠페인 목표 130% 달성\n- 포럼 이벤트 최고 참여율 53% (오로치 퀴즈, 6,182명)\n- 커뮤니티 이벤트 누적 참여자 27,800명 (5권역 6개월)\n- VOC 5,000+ 분석 및 인사이트 구조화\n- 운영툴 기능 개선 25건 제안, 핵심 항목 반영\n- AiGS TIMES AI 뉴스레터 44호+ 발행 (Make → n8n + Gemini API)\n- KPI 2024/2025 A등급 평가 + 2025 스포트라이트상\n- 운영 사고 0건 유지\n\n[역량]\n- 영어: TOEIC 960, Speaking 180 (글로벌 커뮤니케이션, 영문 현지화)\n- 데이터: SQL/Python/R (MBA 과정), 대시보드 구축, 지표 리포팅\n- AI 자동화: Make, n8n, Gemini API\n- 운영: Jira, 운영툴, Discord, SNS 멀티채널 관리\n- 유튜브: 잼헌터(@jamhuntrix) 채널 운영, 구독자 10,300+명\n\n[연락처]\n- 이메일: windcast@naver.com\n- 위치: Seoul, Korea\n\n[이직 목표]\n사업 PM / 운영 포지션으로 이직. 글로벌 라이브 서비스 운영 실무 경험을 바탕으로 데이터 기반 의사결정과 게임 사업 성장에 기여하고자 합니다.",
+  "contact": {
+    "desc": "게임 사업 PM / 운영 포지션 인재에 \n관심 있으시다면 언제든지 연락 주세요.\n빠르게 회신 드리겠습니다.",
+    "email": "windcast@naver.com",
+    "location": "Seoul, Korea"
+  },
+  "education": [
+    {
+      "degree": "MBA 비즈니스데이터애널리틱스 (졸업)",
+      "note": "kNN 분류, 연관 규칙 마이닝, 이직 예측 등 데이터 분석 방법론 실습 프로젝트 수행",
+      "period": "2024.09 - 2026.02",
+      "school": "동국대학교 대학원"
+    },
+    {
+      "degree": "영어영문학 주전공 / 경제학 복수전공",
+      "note": "TOEIC 960 · Speaking 180 — 글로벌 커뮤니케이션 및 영문 현지화 실무 활용",
+      "period": "2012.03 - 2019.08",
+      "school": "동국대학교"
+    }
+  ],
+  "experience": [
+    {
+      "company": "아이지에스(IGS)㈜",
+      "dept": "운영팀",
+      "period": "2022.06 ~ 현재",
+      "logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715129/IGS_%EB%A1%9C%EA%B3%A0_uchijn.jpg",
+      "jobs": [
+        {
+          "game": "KOF AFK 글로벌",
+          "game_logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715133/KOFAFK_logo_global_uv5r5a.png",
+          "period": "2024.07 ~ 현재",
+          "position": "인게임 GM / CM & 글로벌 SNS",
+          "regions": "KR / EN / JP / TW / TH",
+          "items": []
+        },
+        {
+          "game": "세븐나이츠2 글로벌",
+          "game_logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715133/SK2G_BI_EN_mgqshx.png",
+          "period": "2024.03 ~ 2026.01",
+          "position": "글로벌 GM / CM",
+          "regions": "EN",
+          "items": []
+        },
+        {
+          "game": "마블 퓨처파이트 글로벌",
+          "game_logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715135/MFF_BI_t1h3k5.png",
+          "period": "2023.05 ~ 2024.03",
+          "position": "GM/CM 지원",
+          "regions": "EN",
+          "items": []
+        },
+        {
+          "game": "KOF 올스타",
+          "game_logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715133/KOF%EC%98%AC%EC%8A%A4%ED%83%80_BI_whiteBG_Glow%EC%A0%9C%EA%B1%B0_e8rdek.png",
+          "period": "2022.06 ~ 2024.01",
+          "position": "국내 & 영문 GM/CM/CS",
+          "regions": "KR / JP / EN / TW / TH",
+          "items": []
+        },
+        {
+          "game": "AiGS TF",
+          "game_logo_url": "",
+          "period": "2025.07 ~ 현재",
+          "position": "AI 자동화 & 효율화 기획 및 실행",
+          "regions": "사내 TF",
+          "items": [
+            "AI 게임·산업 뉴스 자동 수집·선별 파이프라인 구축 (Make → n8n + Gemini API)",
+            "AiGS TIMES 뉴스레터 60호+ 발행 (평일 1회)",
+            "월간 경영회의 발표 및 사내 공유",
+            "동향 자동 수집 및 분석 프로그램 기획 및 제작 & 사내 콘솔 도입",
+            "라이브스트리밍 채팅 분석 툴 기획 및 프로토타입 제작"
+          ]
+        }
+      ]
+    },
+    {
+      "company": "인천공항운영서비스",
+      "dept": "교통관리운영팀",
+      "period": "2019.01 ~ 2021.01",
+      "logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715128/%EC%9D%B8%EC%B2%9C%EA%B3%B5%ED%95%AD%EC%9A%B4%EC%98%81%EC%84%9C%EB%B9%84%EC%8A%A4_%EB%A1%9C%EA%B3%A0_p55cwx.jpg",
+      "jobs": [
+        {
+          "game": "공항 교통 관리 및 운영",
+          "game_logo_url": "",
+          "period": "2019.01 ~ 2021.01",
+          "position": "택시사업담당",
+          "regions": "",
+          "items": []
+        }
+      ]
+    },
+    {
+      "company": "한국생산성본부",
+      "dept": "경영혁신컨설팅센터",
+      "period": "2018.07 ~ 2018.09",
+      "logo_url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715128/%ED%95%9C%EA%B5%AD%EC%83%9D%EC%82%B0%EC%84%B1%EB%B3%B8%EB%B6%80_KPC_%EB%A1%9C%EA%B3%A0_bqyboy.png",
+      "jobs": [
+        {
+          "game": "일터혁신컨설팅",
+          "game_logo_url": "",
+          "period": "2018.07 ~ 2018.09",
+          "position": "PMO",
+          "regions": "",
+          "items": []
+        }
+      ]
+    }
+  ],
+  "hero": {
+    "desc": "글로벌 게임 라이브 서비스 운영 경험을 중심으로 커리어를 쌓아왔습니다.\n데이터·VOC·리스크 검토·자동화를 실무에 적용하며,\n운영 경험을 바탕으로 사업 관점의 역할까지 확장하고자 합니다.",
+    "subtitle": "글로벌 라이브 서비스 운영 실무자"
+  },
+  "media": {
+    "portfolio_pdf": "https://res.cloudinary.com/du5pjnwno/image/upload/fl_attachment/v1775293985/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4_%EC%9E%84%EA%B4%91%EC%9C%A4_cg33go.pdf",
+    "profile_about": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715229/picture_ydjlo1.jpg",
+    "profile_home": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715266/2026_%EC%82%AC%EC%A7%84_kngaep.png",
+    "resume_ops_pdf": "https://res.cloudinary.com/du5pjnwno/image/upload/fl_attachment/v1775293983/%EA%B2%BD%EB%A0%A5_%EA%B8%B0%EC%88%A0%EC%84%9C_%EC%9E%84%EA%B4%91%EC%9C%A4_%EC%9A%B4%EC%98%81_raagbp.pdf",
+    "resume_pm_pdf": "https://res.cloudinary.com/du5pjnwno/image/upload/fl_attachment/v1775293983/%EA%B2%BD%EB%A0%A5_%EA%B8%B0%EC%88%A0%EC%84%9C_%EC%9E%84%EA%B4%91%EC%9C%A4_%EC%82%AC%EC%97%85PM_yl7d6z.pdf",
+    "youtube_subscribers": "10,300+",
+    "youtube_url": "https://www.youtube.com/@jamhuntrix"
+  },
+  "metrics": [
+    {
+      "label": "KOF AFK 사전예약\n목표 달성률",
+      "num": "130%"
+    },
+    {
+      "label": "포럼 이벤트 최고 참여율\n(오로치 퀴즈, 6,182명)",
+      "num": "53%"
+    },
+    {
+      "label": "커뮤니티 이벤트\n누적 참여자 (5권역 6개월)",
+      "num": "27,800"
+    },
+    {
+      "label": "월평균 이벤트 참여율 개선\n(데이터 기반 지속 최적화)",
+      "num": "+15%"
+    },
+    {
+      "label": "AI 뉴스레터 AiGS TIMES\n발행 (평일 1회)",
+      "num": "60호+"
+    },
+    {
+      "label": "전 권역 설문·커뮤니티 반응\nVOC 분석 및 인사이트 구조화",
+      "num": "5,000+"
+    },
+    {
+      "label": "커뮤니티 이벤트 전수 분석\n(대형 업데이트 4종)",
+      "num": "24개"
+    },
+    {
+      "label": "2024/2025 KPI 평가\n+ 2025 스포트라이트상",
+      "num": "A등급"
+    },
+    {
+      "label": "라이브 서비스 기간\n운영 사고 (휴먼 에러)",
+      "num": "0건"
+    }
+  ],
+  "projects": [
+    {
+      "category": "데이터 분석 · 커뮤니티 운영",
+      "desc": "KOF ALL STAR 포럼 커뮤니티 이벤트 24개를 전수 분석하여 참여율·이탈 패턴·VOC 연관성을 정량화했습니다. \n대형 업데이트 4종 구간별 분석으로 데이터 기반 이벤트 개선을 제안, 최고 참여율 53%(오로치 퀴즈 이벤트, 참여자 6,182명)를 달성했습니다.",
+      "images": [
+        {
+          "caption": "커뮤니티 이벤트 지표 대시보드 1",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715264/%EC%A7%80%ED%91%9C_%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C_1_qzodqs.png"
+        },
+        {
+          "caption": "커뮤니티 이벤트 지표 대시보드 2",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715264/%EC%A7%80%ED%91%9C_%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C_2_kjcmhu.png"
+        },
+        {
+          "caption": "커뮤니티 이벤트 기획 만점 자료",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715300/%EC%9D%B2%EB%B2%A4%ED%8A%B8_%EC%A0%9C%EC%95%88_%EB%A7%8C%EC%A0%90_%EC%82%AC%EB%A1%80_pdk3kq.png"
+        }
+      ],
+      "num": "01",
+      "result": "✓ 최고 참여율 53% | ✓ 24개 이벤트 분석 | ✓ 팀 내 리포트 공유",
+      "title": "커뮤니티 이벤트 지표 분석"
+    },
+    {
+      "category": "VOC 분석 · 인게임 개선",
+      "desc": "글로벌 5개 권역(KR·EN·JP·TW·TH) VOC를 유형별·감성별로 정량화하여 팀 및 사업팀 공유 리포트로 구조화했습니다. \n세븐나이츠2 글로벌 업데이트 분석 리포트는 팀 내 긍정 평가를 받았으며, 커뮤니티 설문 결과가 인게임 개선에 반영된 사례를 보유하고 있습니다.",
+      "images": [
+        {
+          "caption": "인게임 개선",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715265/%EC%9D%B8%EA%B2%8C%EC%9E%84_%EA%B0%9C%EC%84%A0%EC%95%88_o72q5o.png"
+        },
+        {
+          "caption": "유저 동향 설문조사 분석",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715296/%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EC%83%81%EC%84%B8_%EA%B2%B0%EA%B3%BC_y4rdfh.png"
+        },
+        {
+          "caption": "유저 동향 데이터 정리",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715237/VOC_ysdxsx.png"
+        },
+        {
+          "caption": "업데이트 동향 리포트",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715300/%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8_%EB%8F%99%ED%96%A5_%EB%A6%AC%ED%8F%AC%ED%8A%B8_skcxle.png"
+        },
+        {
+          "caption": "KOF ALLSTAR REVIEW",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715291/KOF_ALLSTAR_Review_sarmpd.pdf"
+        }
+      ],
+      "num": "02",
+      "result": "✓ 5권역 VOC 정량화 | ✓ 설문 인게임 반영 사례 | ✓ 사업팀 공유 리포트",
+      "title": "VOC 구조화 및 인게임 개선안 도출"
+    },
+    {
+      "category": "운영툴 · 포럼 기능 개선",
+      "desc": "운영툴 기능 개선 25건을 제안했으며, 핵심 항목이 실제 반영되었습니다. 포럼 기능 개선 4건 제안 중 1건 실적용. \nSNS 운영 실무 가이드를 제작하여 팀 내 업무 표준화에 기여했습니다. 운영 환경 개선을 통한 업무 효율화 및 유저 경험 향상을 이끌었습니다.",
+      "images": [
+        {
+          "caption": "SNS 운영 실무 가이드",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715280/20250718_SNS_%ED%94%8C%EB%9E%AB%ED%8F%BC%EB%B3%84_%EC%BD%98%ED%85%90%EC%B8%A0_%EC%9A%B4%EC%98%81_%EC%8B%A4%EB%AC%B4_%EA%B0%80%EC%9D%B4%EB%93%9C_KOF_AFK.pptx_zoiage.pdf"
+        }
+      ],
+      "num": "03",
+      "result": "✓ 개선 제안 25건 | ✓ 핵심 항목 반영 | ✓ SNS 운영 가이드 제작",
+      "title": "운영툴/포럼 기능 개선 제안"
+    },
+    {
+      "category": "사전 리스크 검토",
+      "desc": "신규 파이터 출시 전 메타 부적합 리스크를 감지하고 의견을 제시했습니다. \n콜라보 BM 보상 구조 검토 의견이 반영된 사례를 보유하고 있습니다. 라이브 운영 기간 내 운영 사고(휴먼 에러) 0건을 유지하며 안정적인 서비스 운영을 달성했습니다.",
+      "images": [
+        {
+          "caption": "빌드 리스크 검토",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715240/%EB%B9%8C%EB%93%9C_%ED%94%BC%EB%93%9C%EB%B0%B1_xa8bhi.png"
+        },
+        {
+          "caption": "출시 파이터 리뷰",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715263/%ED%8C%8C%EC%9D%B4%ED%84%B0_%EB%A6%AC%EC%8A%A4%ED%81%AC_%EB%A6%AC%ED%8F%AC%ED%8A%B8_jbbw05.png"
+        }
+      ],
+      "num": "04",
+      "result": "✓ 리스크 의견 반영 사례 | ✓ 운영 사고 0건 | ✓ 사전 검토 시스템화",
+      "title": "빌드 검토 & 리스크 리포트"
+    },
+    {
+      "category": "글로벌 운영 · SNS 채널 관리",
+      "desc": "KR/EN/JP/TW/TH 공식 SNS 채널(Facebook, Instagram, X) 운영을 전담했습니다. \n약 242건을 5개 권역 다국어로 운영하고, 론칭 전후 이벤트 17개를 기획·운영해 누적 27,800명이 참여했습니다. 사전예약 캠페인 목표 대비 130% 달성.",
+      "images": [
+        {
+          "caption": "EN 인스타 콘텐츠 기획",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715271/%EC%9D%B8%EC%8A%A4%ED%83%80_xemcmc.png"
+        },
+        {
+          "caption": "EN 페이스북",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715264/%ED%8E%98%EC%9D%B4%EC%8A%A4%EB%B6%81_xkf2zl.png"
+        }
+      ],
+      "num": "05",
+      "result": "✓ SNS 약 242건 | ✓ EN FB 팔로워 7.6K | ✓ 사전예약 목표 130%",
+      "title": "KOF AFK 글로벌 SNS & 론칭 운영"
+    },
+    {
+      "category": "AI 자동화 · 업무 효율화 보완 역량",
+      "desc": "Make + n8n + Gemini API를 활용해 AI 게임·산업 뉴스 수집·선별·편집 자동화 시스템을 구축했습니다. \nAiGS TIMES 60호+ 발행(평일 1회). SNS 디스크립션·공지 초안 자동화로 반복 콘텐츠 작성 시간 대폭 단축. 월간 경영회의 발표 및 사내 공유.\n동향 자동 분류 및 분석 프로그램 제작 및 사내 콘솔 도입.",
+      "images": [
+        {
+          "caption": "AiGS 뉴스레터",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715229/AiGS_TIMES_rzaw8l.png"
+        },
+        {
+          "caption": "뉴스레터 n8n 자동화 워크플로우",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715229/n8n_%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0_wyhqvy.png"
+        },
+        {
+          "caption": "동향 분석 자동화 프로그램",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715235/TOP_AI_%EB%8F%99%ED%96%A5_%EB%B6%84%EC%84%9D_%EC%9E%90%EB%8F%99%ED%99%94_rptkz4.png"
+        },
+        {
+          "caption": "AiGS 뉴스레터 자동화 프로젝트 발표",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1774715228/Ai_%EB%89%B4%EC%8A%A4%EB%A0%88%ED%84%B0_%EB%B0%9C%ED%91%9C_1_b2u0so.jpg"
+        },
+        {
+          "caption": "라이브 스트리밍 분석 툴",
+          "url": "https://res.cloudinary.com/du5pjnwno/image/upload/q_auto/f_auto/v1775301406/%EB%9D%BC%EC%9D%B4%EB%B8%8C_%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D_%EB%B6%84%EC%84%9D_%ED%88%B4_1_kmnudu.png"
+        }
+      ],
+      "num": "06",
+      "result": "✓ 60호+ 발행 | ✓ 콘텐츠 작성 시간 단축 | ✓ 사내 공유 및 경영회의 발표",
+      "title": "AI 기반 업무 자동화 · 효율화 (AiGS TIMES)"
+    }
+  ],
+  "skills": [
+    {
+      "tags": [
+        {
+          "text": "Jira",
+          "type": "default"
+        },
+        {
+          "text": "Google Workspace",
+          "type": "default"
+        },
+        {
+          "text": "운영툴 활용",
+          "type": "default"
+        },
+        {
+          "text": "이슈 관리",
+          "type": "default"
+        },
+        {
+          "text": "글로벌 커뮤니케이션",
+          "type": "default"
+        },
+        {
+          "text": "영문 현지화",
+          "type": "default"
+        },
+        {
+          "text": "Discord 운영",
+          "type": "default"
+        }
+      ],
+      "title": "Operations & Collaboration"
+    },
+    {
+      "tags": [
+        {
+          "text": "SQL",
+          "type": "default"
+        },
+        {
+          "text": "Python",
+          "type": "default"
+        },
+        {
+          "text": "R",
+          "type": "default"
+        },
+        {
+          "text": "데이터 분석",
+          "type": "default"
+        },
+        {
+          "text": "지표 리포팅",
+          "type": "default"
+        },
+        {
+          "text": "대시보드 구축",
+          "type": "default"
+        }
+      ],
+      "title": "Data & Analytics"
+    },
+    {
+      "tags": [
+        {
+          "text": "Make",
+          "type": "orange"
+        },
+        {
+          "text": "n8n",
+          "type": "orange"
+        },
+        {
+          "text": "Gemini API",
+          "type": "orange"
+        },
+        {
+          "text": "Claude Code",
+          "type": "orange"
+        },
+        {
+          "text": "생성형 AI 활용",
+          "type": "orange"
+        },
+        {
+          "text": "워크플로우 자동화",
+          "type": "orange"
+        }
+      ],
+      "title": "Automation & AI"
+    },
+    {
+      "tags": [
+        {
+          "text": "SQLD",
+          "type": "purple"
+        },
+        {
+          "text": "TOEIC 960점",
+          "type": "purple"
+        },
+        {
+          "text": "TOEIC Speaking 180점",
+          "type": "purple"
+        },
+        {
+          "text": "영문 현지화 실무 경험",
+          "type": "purple"
+        },
+        {
+          "text": "MBA BDA (동국대, 2026.02 졸업)",
+          "type": "purple"
+        },
+        {
+          "text": "영어영문학 / 경제학 전공",
+          "type": "purple"
+        }
+      ],
+      "title": "Language & Certification"
+    }
+  ],
+  "story": {
+    "left": [
+      {
+        "desc": "출시 전 파이터 성능·BM 구조 검토 내용을 사업팀에 선제 공유",
+        "icon": "⚠️",
+        "title": "BM·밸런스 리스크 검토 및 리포팅"
+      },
+      {
+        "desc": "참여자·조회수·참여율 데이터를 직접 수집·시각화",
+        "icon": "📊",
+        "title": "이벤트 지표 대시보드 직접 구축"
+      },
+      {
+        "desc": "글로벌 VOC 감성별 분류 후 사업부 정기 공유",
+        "icon": "💬",
+        "title": "유저 의견 유형화 및 정기 리포팅"
+      },
+      {
+        "desc": "개발·사업·CS팀과 실무 이슈 추적 및 조율",
+        "icon": "🔗",
+        "title": "유관부서 협업 및 Jira 이슈 관리"
+      },
+      {
+        "desc": "5개 권역 톤앤매너 맞춤 공지·FAQ·CS 가이드 작성",
+        "icon": "🌍",
+        "title": "글로벌 영문 공지 현지화 직접 작성"
+      },
+      {
+        "desc": "n8n / Make로 반복 업무 자동화, 업무 시간 단축 경험",
+        "icon": "🤖",
+        "title": "AI 도구 활용 자동화 워크플로 설계"
+      }
+    ],
+    "right": [
+      {
+        "desc": "데이터 기반 의사결정 지원 및 리스크 사전 파악",
+        "icon": "🎯",
+        "title": "사업 방향성 제시 및 리스크 관리"
+      },
+      {
+        "desc": "운영 지표 분석으로 제품 방향성·기획 근거 제공",
+        "icon": "📈",
+        "title": "데이터 기반 의사결정 지원"
+      },
+      {
+        "desc": "VOC 인사이트를 제품 개선 방향에 연결",
+        "icon": "🔄",
+        "title": "유저 반응 기반 업데이트 방향 수립"
+      },
+      {
+        "desc": "멀티팀 협업 구조에서 일정·이슈 주도적 관리",
+        "icon": "📋",
+        "title": "프로젝트 일정 및 협업 파이프라인 관리"
+      },
+      {
+        "desc": "영문 협업 커뮤니케이션 실무 경험 보유",
+        "icon": "🌐",
+        "title": "글로벌 협업 및 영문 커뮤니케이션 수행 가능"
+      },
+      {
+        "desc": "AI 자동화 도구를 활용한 팀 생산성 향상 경험",
+        "icon": "⚡",
+        "title": "업무 프로세스 효율화 및 개선"
+      }
+    ]
+  }
+}

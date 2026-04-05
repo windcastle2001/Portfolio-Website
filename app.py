@@ -48,9 +48,15 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 # HTTPS 배포 시 아래 줄 활성화
 # app.config['SESSION_COOKIE_SECURE'] = True
 
+# ─── 정적 설정 ────────────────────────────────────────────────
+CONTENT_DIR  = Path(__file__).parent / 'data'
+CONTENT_FILE = CONTENT_DIR / 'content.json'
+
+# 데이터 디렉토리 자동 생성 (데이터 보존용)
+CONTENT_DIR.mkdir(parents=True, exist_ok=True)
+
 ADMIN_EMAIL    = os.environ.get('ADMIN_EMAIL',    'windcast@naver.com')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'tower147@@')
-CONTENT_FILE   = Path(__file__).parent / 'content.json'
 
 # SMTP 설정 (Naver)
 SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.naver.com')
