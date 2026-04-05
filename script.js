@@ -102,16 +102,45 @@ function initScrollSpy() {
       const targetId = link.getAttribute('data-target') || link.getAttribute('href')?.replace('#', '');
       const targetEl = document.getElementById(targetId);
       if (targetEl) {
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // 모바일 헤더 높이를 고려한 오프셋 계산
+        const headerHeight = window.innerWidth <= 768 ? 64 : 0;
+        const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        
+        window.scrollTo({
+          top: targetPos,
+          behavior: 'smooth'
+        });
 
-        // 모바일 사이드바 닫기
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebar && window.innerWidth <= 1024) {
-          sidebar.classList.remove('open');
+        // 모바일 사이드바 닫기 (768px 이하 대응)
+        if (window.innerWidth <= 768) {
+          closeMobileMenu();
         }
       }
     });
   });
+}
+
+/* ─── 1-1. MOBILE MENU TOGGLE ─── */
+window.toggleMobileMenu = function() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const isOpening = !sidebar.classList.contains('open');
+
+  if (isOpening) {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // 스크롤 방지
+  } else {
+    closeMobileMenu();
+  }
+};
+
+function closeMobileMenu() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('active');
+  document.body.style.overflow = ''; // 스크롤 허용
 }
 
 /* ─── 1-1. 3D TILT INIT ─── */
@@ -642,6 +671,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initMailCopy();
   initCapAnimation();
+
+  // 모바일 햄버거 버튼 이벤트 바인딩
+  const menuToggle = document.getElementById('menuToggle');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', toggleMobileMenu);
+  }
   
   // VanillaTilt 초기화 (Capabilities 포함)
   if (typeof VanillaTilt !== 'undefined') {
