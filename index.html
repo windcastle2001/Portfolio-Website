@@ -215,16 +215,27 @@
       </div>
     </section>
 
-    <!-- ── CAPABILITIES ── -->
-    <section class="section" id="capabilities">
-      <div class="section-inner">
-        <p class="sec-tag-italic">What I Do</p>
-        <h2 class="sec-title">CORE CAPABILITIES</h2>
-        <div id="dyn-capabilities-list" class="cap-grid">
-          <!-- Dynamically loaded from content.json via content-loader.js -->
+    <!-- ── CORE CAPABILITIES ── -->
+  <section class="section section-dark" id="capabilities">
+    <div class="section-inner">
+      <p class="sec-tag-italic">Expertise &amp; Vision</p>
+      <h2 class="sec-title">CORE<br>CAPABILITIES</h2>
+      
+      <div class="cap-3d-scene">
+        <div class="cap-3d-wrapper" id="dyn-capabilities-list">
+          <!-- JS dynamic load -->
         </div>
+
+        <!-- 모바일 전용 슬라이더 화살표 (CSS에서 PC 비노출) -->
+        <button class="cap-nav-btn cap-prev" id="capPrev" onclick="scrollCapSlider(-1)">‹</button>
+        <button class="cap-nav-btn cap-next" id="capNext" onclick="scrollCapSlider(1)">›</button>
       </div>
-    </section>
+
+      <div class="cap-footer">
+        <p class="cap-footer-text">※ 각 카드를 클릭하면 상세 전략과 성과 지표를 확인할 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
 
     <!-- ── EXPERIENCE ── -->
   <section class="section section-grad" id="experience">

@@ -111,6 +111,9 @@ function initScrollSpy() {
           behavior: 'smooth'
         });
 
+        // URL 해시 업데이트 (선택 사항, 부드러운 이동 방해하지 않음)
+        history.pushState(null, null, `#${targetId}`);
+
         // 모바일 사이드바 닫기 (768px 이하 대응)
         if (window.innerWidth <= 768) {
           closeMobileMenu();
@@ -610,7 +613,15 @@ function showToast(msg) {
 
 
 /* ─── 5. GSAP Signature Animations ─── */
+window.scrollCapSlider = function(dir) {
+  const wrapper = document.getElementById('dyn-capabilities-list');
+  if (!wrapper) return;
+  const scrollAmount = wrapper.offsetWidth * 0.8;
+  wrapper.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+};
+
 function initCapAnimation() {
+  if (window.innerWidth <= 768) return; // 모바일에서는 3D 효과 및 등장 애니메이션 생략 (사용자 요청)
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
   
   gsap.registerPlugin(ScrollTrigger);
