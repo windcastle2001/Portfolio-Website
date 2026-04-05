@@ -1,0 +1,969 @@
+[
+  {
+    "id": "TC001",
+    "title": "Hero content is populated after page load",
+    "description": "Verifies the Hero section renders with non-empty subtitle and description populated from dynamic content.",
+    "category": "Dynamic Content Loading",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the page content to finish loading"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the Hero section shows a populated subtitle"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the Hero section shows a populated description"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Capabilities and Projects populate from dynamic content",
+    "description": "Verifies the Capabilities cards and Projects slider render with items populated from dynamic content.",
+    "category": "Dynamic Content Loading",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the CAPABILITIES section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify capability cards are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify project cards are displayed in the projects slider"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Active sidebar section updates while scrolling",
+    "description": "Verifies the active sidebar item updates to match the section currently in view as the user scrolls down the page.",
+    "category": "Sidebar Navigation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down until the ABOUT section is the primary visible section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down until the PROJECTS section is the primary visible section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the sidebar indicates PROJECTS as the active section"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "About section content is populated after page load",
+    "description": "Verifies the About section renders with non-empty stats, bio, and a quote populated from dynamic content.",
+    "category": "Dynamic Content Loading",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the ABOUT section"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the ABOUT section content to finish loading"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the ABOUT section shows at least one stat item and a populated bio"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Jump to CONTACT via sidebar and highlight active section",
+    "description": "Verifies the user can use the sidebar to smooth-scroll to the CONTACT section and the CONTACT nav item becomes active.",
+    "category": "Sidebar Navigation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the CONTACT item in the sidebar navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the contact form is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the sidebar indicates CONTACT as the active section"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Advance to next project card using slider arrow",
+    "description": "This test verifies that a visitor can move to the next project card from the Projects section using the right arrow and the slider updates the active project.",
+    "category": "Project Slider",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click the slider right arrow control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the next project card becomes active in the slider"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Submit the contact form successfully with all required fields",
+    "description": "Verifies a visitor can complete the contact form with valid required inputs and sees a success confirmation after submission.",
+    "category": "Contact Form",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the CONTACT section"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Visitor\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"test.visitor@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Hello Kevin, I would like to discuss a role opportunity.\" into the message field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the contact form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a success confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Open gallery modal from a project thumbnail",
+    "description": "This test verifies that activating a project thumbnail opens the gallery modal and displays a gallery item with caption and counter.",
+    "category": "Image Gallery Modal",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click a project thumbnail to open the gallery"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the gallery modal is open and a gallery item with caption and counter is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Send a valid question and receive a rendered chatbot reply",
+    "description": "Verifies a visitor can submit a non-empty question in Ask Kevin and a reply message is rendered in the conversation.",
+    "category": "AI Chatbot (Ask Kevin)",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ask Kevin floating control"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"What projects best demonstrate product management impact?\" into the chat message field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the chat message"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a new assistant reply is displayed in the chat conversation"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Open portfolio PDF preview from Hero section",
+    "description": "This test verifies that a visitor can open the portfolio PDF preview from the Hero area and the PDF is displayed in an iframe modal.",
+    "category": "PDF Preview & Resume Picker",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the control to preview the portfolio from the HERO section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a PDF preview modal opens and a PDF is displayed in an iframe"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Open Ask Kevin chat window from the portfolio page",
+    "description": "Verifies a visitor can open the Ask Kevin chatbot from the landing page and the chat window becomes visible and ready for input.",
+    "category": "AI Chatbot (Ask Kevin)",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ask Kevin floating control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the chat window is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Navigate to next gallery item",
+    "description": "This test verifies that a visitor can move to the next gallery item in the modal and the displayed item and counter update accordingly.",
+    "category": "Image Gallery Modal",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click a project thumbnail to open the gallery"
+      },
+      {
+        "type": "action",
+        "description": "Click the gallery next control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the gallery displays a different item than before and the counter updates"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Return to previous project card using slider arrow",
+    "description": "This test verifies that a visitor can return to the previous project card using the left arrow and the slider updates the active project.",
+    "category": "Project Slider",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click the slider right arrow control"
+      },
+      {
+        "type": "action",
+        "description": "Click the slider left arrow control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the slider returns to the previously active project card"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Select Business PM resume and open its PDF preview",
+    "description": "This test verifies that choosing the Business PM resume option from the resume picker opens a PDF preview modal showing the selected resume.",
+    "category": "PDF Preview & Resume Picker",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the control to open the resume picker from the HERO section"
+      },
+      {
+        "type": "action",
+        "description": "Select the Business PM resume option"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a PDF preview modal opens and displays the selected resume in an iframe"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "Navigate to previous gallery item",
+    "description": "This test verifies that a visitor can move to the previous gallery item in the modal and the displayed item and counter update accordingly.",
+    "category": "Image Gallery Modal",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click a project thumbnail to open the gallery"
+      },
+      {
+        "type": "action",
+        "description": "Click the gallery next control"
+      },
+      {
+        "type": "action",
+        "description": "Click the gallery previous control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the gallery returns to the earlier item and the counter updates"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC016",
+    "title": "Navigate projects by dragging the slider",
+    "description": "This test verifies that a visitor can drag the projects slider to move to an adjacent project card and the active project updates.",
+    "category": "Project Slider",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Press ArrowRight"
+      },
+      {
+        "type": "action",
+        "description": "Press ArrowLeft"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the active project card changes after keyboard navigation"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC017",
+    "title": "Show required-field validation when contact form is incomplete",
+    "description": "Verifies the contact form prevents submission when a required field is blank and displays a validation warning.",
+    "category": "Contact Form",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the CONTACT section"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Visitor\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Checking required-field validation.\" into the message field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the contact form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a required-fields validation warning is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC018",
+    "title": "Reveal animations trigger in Experience section while scrolling",
+    "description": "Verifies that scrolling through the Experience section triggers reveal-on-scroll so newly entered items become visible.",
+    "category": "Scroll Reveal Animations",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down to the Experience section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll within the Experience section to bring additional timeline items into the viewport"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify newly entered Experience items become visible as the user scrolls"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC019",
+    "title": "Log in to admin and access editable content dashboard",
+    "description": "Verifies an admin can sign in on /admin using valid credentials and reaches the content management dashboard with editable fields.",
+    "category": "Admin Login & Content Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the admin login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin dashboard with editable content fields is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC020",
+    "title": "Jump to a project using dot indicators",
+    "description": "This test verifies that selecting a dot indicator jumps the slider to the corresponding project card.",
+    "category": "Project Slider",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click a non-active dot indicator for the projects slider"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the project card corresponding to the selected dot becomes active"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC021",
+    "title": "Close gallery modal by clicking outside overlay and return to browsing",
+    "description": "This test verifies that clicking outside the gallery viewer closes the modal and the visitor can continue browsing projects.",
+    "category": "Image Gallery Modal",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click a project thumbnail to open the gallery"
+      },
+      {
+        "type": "action",
+        "description": "Click outside the viewer overlay"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the gallery modal is closed and the projects section is visible for continued browsing"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Capabilities cards animate into view on scroll",
+    "description": "Verifies capability cards reveal when the CAPABILITIES section enters view and appear as visible content.",
+    "category": "Capabilities Card Interaction",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the CAPABILITIES section"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the cards to finish their reveal animation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify capability cards are visible and readable"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC023",
+    "title": "Download from PDF preview modal",
+    "description": "This test verifies that triggering download from the PDF preview initiates a download attempt for the currently displayed PDF.",
+    "category": "PDF Preview & Resume Picker",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the control to preview the portfolio from the HERO section"
+      },
+      {
+        "type": "action",
+        "description": "Trigger download in the PDF preview modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the browser begins a file download for the displayed PDF"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC024",
+    "title": "Capability card hover reveals background and inverts text",
+    "description": "Verifies hovering a capability card reveals its background image and changes text color to the inverted hover state.",
+    "category": "Capabilities Card Interaction",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the CAPABILITIES section"
+      },
+      {
+        "type": "action",
+        "description": "Move the pointer over a capability card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the hovered capability card shows a revealed background image and inverted text styling"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC025",
+    "title": "Block empty chatbot submissions with client-side validation",
+    "description": "Verifies submitting an empty Ask Kevin message is prevented and a validation warning is shown to the visitor.",
+    "category": "AI Chatbot (Ask Kevin)",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ask Kevin floating control"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"\" into the chat message field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the chat message"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a message validation warning is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC026",
+    "title": "Reveal animations trigger for Skills content when scrolled into view",
+    "description": "Verifies that Skills elements configured for reveal become visible as the user scrolls them into the viewport.",
+    "category": "Scroll Reveal Animations",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down to the Skills section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll within the Skills section to bring additional skill elements into the viewport"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify Skills elements become visible as they enter the viewport"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC027",
+    "title": "Reveal behavior remains consistent after scrolling past and returning to a section",
+    "description": "Verifies that reveal-visible elements remain visible and do not regress when the user scrolls away and back to a revealed section.",
+    "category": "Scroll Reveal Animations",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down to the Experience section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll within the Experience section until multiple items have entered the viewport"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down further to a later section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll back up to the Experience section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify previously revealed Experience items are still visible when returning to the section"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC028",
+    "title": "Capability card tilts with pointer movement",
+    "description": "Verifies moving the pointer across a capability card produces a visible tilt/parallax effect.",
+    "category": "Capabilities Card Interaction",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the CAPABILITIES section"
+      },
+      {
+        "type": "action",
+        "description": "Move the pointer across a capability card from one side to the other"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the capability card tilts in response to pointer movement"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC029",
+    "title": "Prevent navigation before the first project card",
+    "description": "This test verifies that attempting to move left from the first project does not navigate past the start and the first card remains active.",
+    "category": "Project Slider",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the PROJECTS section"
+      },
+      {
+        "type": "action",
+        "description": "Click the slider left arrow control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the slider remains on the first project card and does not move past the start"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC030",
+    "title": "Reject invalid admin credentials with an authentication error",
+    "description": "Verifies the admin login form shows an authentication error when incorrect credentials are submitted.",
+    "category": "Admin Login & Content Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"invalid@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"wrong-password\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the admin login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an authentication error message is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC031",
+    "title": "Reveal timing works when scrolling quickly through multiple sections",
+    "description": "Verifies that fast scrolling still reveals content in each section as it enters the viewport.",
+    "category": "Scroll Reveal Animations",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for body attribute data-content-loaded to equal true before proceeding"
+      },
+      {
+        "type": "action",
+        "description": "Scroll quickly from the top down past Experience and into Metrics"
+      },
+      {
+        "type": "action",
+        "description": "Scroll slightly to stabilize the viewport on Metrics content"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify content in the currently viewed section is visible after fast scrolling"
+      }
+    ],
+    "priority": "Low"
+  }
+]

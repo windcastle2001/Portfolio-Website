@@ -1,0 +1,21 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8080",
+  "backendAuthType": "basic token",
+  "backendUsername": "windcast@naver.com",
+  "backendPassword": "tower147@@",
+  "executionArgs": {
+    "projectName": "이직용 포폴 사이트",
+    "projectPath": "c:\\Users\\취업하자\\Desktop\\이직용 포폴 사이트",
+    "testIds": [],
+    "additionalInstruction": "Flask backend running on port 8080. Admin credentials: email=windcast@naver.com, password=tower147@@. Test all API endpoints: /api/login, /api/logout, /api/auth, /api/content (GET+POST), /api/chat, /api/contact. Verify auth protection on POST /api/content, input validation, and correct HTTP status codes.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user--alML-5dOFiyskR_o2B_f84oSA6BqQVXyd5YPwn6bVKSt9c3G5VwxuIM6f5Fq8uK7DSHW7bUPlESua7ff2xSir8p8xJS8U9wN22fA60M5lz_UpijGZ7-2Sk__FqF84-GZ9s"
+    }
+  },
+  "serverPort": 52198,
+  "proxy": "http://3870bcfe-ce49-49b8-913c-59b243ad3e6f:5QAqQuIihh19TlsUNlZ1tuuTgpCqWNE6@tun.testsprite.com:8080"
+}

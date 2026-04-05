@@ -1,9 +1,16 @@
 import os, json, secrets
 import urllib.request, urllib.error
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 from functools import wraps
 from flask import (Flask, jsonify, request, session,
                    send_from_directory, abort)
+from dotenv import load_dotenv
+
+# .env 파일 로드
+load_dotenv()
 
 # ── python-dotenv (로컬 .env 로드) ────────────────────────────
 try:
@@ -22,7 +29,7 @@ def call_gemini(prompt: str) -> str:
     )
     payload = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"maxOutputTokens": 1024, "temperature": 0.7}
+        "generationConfig": {"maxOutputTokens": 2048, "temperature": 0.7}
     }).encode('utf-8')
     req = urllib.request.Request(
         url, data=payload,
@@ -44,6 +51,12 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 ADMIN_EMAIL    = os.environ.get('ADMIN_EMAIL',    'windcast@naver.com')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'tower147@@')
 CONTENT_FILE   = Path(__file__).parent / 'content.json'
+
+# SMTP 설정 (Naver)
+SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.naver.com')
+SMTP_PORT = int(os.environ.get('SMTP_PORT', '465'))
+SMTP_USER = os.environ.get('SMTP_USER', 'windcast@naver.com')
+SMTP_PASS = os.environ.get('SMTP_PASS', '')  # .env에 naver 앱 비밀번호 설정 필요
 
 # ── 헬퍼 ──────────────────────────────────────────────────────
 def load_content() -> dict:
@@ -178,6 +191,54 @@ def update_content():
     save_content(data)
     return jsonify({'ok': True, 'message': '저장 완료!'})
 
+# ── Contact Email API ──────────────────────────────────────────
+@app.route('/api/contact', methods=['POST'])
+def send_contact_email():
+    d = request.get_json() or {}
+    from_name  = d.get('from_name',  '').strip()
+    from_email = d.get('from_email', '').strip()
+    message    = d.get('message',    '').strip()
+
+    if not from_name or not from_email or not message:
+        return jsonify({'error': '모든 항목을 입력해 주세요.'}), 400
+
+    if not SMTP_PASS:
+        # SMTP 미설정 → EmailJS fallback 안내
+        return jsonify({'error': 'SMTP_PASS가 설정되지 않았습니다.'}), 503
+
+    try:
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = f'[포트폴리오 문의] {from_name}님의 메시지'
+        msg['From']    = SMTP_USER
+        msg['To']      = 'windcast@naver.com'
+        msg['Reply-To'] = from_email
+
+        body = (
+            f'보낸 분: {from_name}\n'
+            f'이메일: {from_email}\n'
+            f'─────────────────────────\n'
+            f'{message}'
+        )
+        body_html = (
+            f'<p><b>보낸 분:</b> {from_name}</p>'
+            f'<p><b>이메일:</b> <a href="mailto:{from_email}">{from_email}</a></p>'
+            f'<hr>'
+            f'<p style="white-space:pre-wrap">{message}</p>'
+        )
+        msg.attach(MIMEText(body,      'plain',  'utf-8'))
+        msg.attach(MIMEText(body_html, 'html',   'utf-8'))
+
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(SMTP_USER, 'windcast@naver.com', msg.as_string())
+
+        print(f'[Contact] 메일 전송 완료: {from_name} <{from_email}>')
+        return jsonify({'ok': True})
+
+    except Exception as e:
+        print(f'[Contact] 메일 전송 실패: {type(e).__name__}: {e}')
+        return jsonify({'error': f'메일 전송 실패: {str(e)[:200]}'}), 500
+
 # ── Gemini Chatbot API ─────────────────────────────────────────
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -191,9 +252,13 @@ def chat():
     ctx = build_chat_context()
     prompt = (
         "당신은 임광윤(Kevin Im)의 포트폴리오 어시스턴트입니다.\n"
-        "방문자(주로 채용담당자)의 질문에 한국어로 친절하고 간결하게 답하세요.\n"
+        "방문자(주로 채용담당자)의 질문에 한국어로 친절하고 적절한 길이로 답하세요.\n"
+        "현재 날짜는 2026년 4월입니다. 시제에 맞게 답변하세요 (예: 졸업 예정 → 이미 졸업).\n"
         "포트폴리오에 없는 정보는 '해당 내용은 확인이 어렵지만 직접 연락 주시면 빠르게 답변 드리겠습니다'라고 하세요.\n"
-        "전화번호, 주민번호 등 민감한 개인정보는 절대 제공하지 마세요.\n\n"
+        "전화번호, 주민번호 등 민감한 개인정보는 절대 제공하지 마세요.\n"
+        "답변 시 **굵은글씨**, *기울임*, 줄바꿈(\\n) 등 마크다운은 절대 사용하지 마세요.\n"
+        "대신 줄바꿈이 필요하면 실제 줄바꿈 문자를 사용하고, 강조는 '〔〕' 또는 문맥으로 표현하세요.\n"
+        "중요한 항목은 · (가운뎃점) 또는 ✓ 로 시작하는 목록 형태로 정리하세요.\n\n"
         f"[포트폴리오 정보]\n{ctx}\n\n"
         f"[질문]\n{msg}"
     )

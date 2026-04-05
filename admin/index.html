@@ -172,6 +172,11 @@
       letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
     .preview-frame-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;height:480px;}
     .preview-frame{width:100%;height:100%;border:none;background:var(--bg);}
+    /* ─ DRAG & DROP ─ */
+    .drag-handle{cursor:grab;color:var(--muted);font-size:16px;padding:0 6px;user-select:none;flex-shrink:0;}
+    .drag-handle:hover{color:var(--text);}
+    .dragging{opacity:0.4;border:2px dashed var(--orange)!important;}
+    .drag-over{border-top:3px solid var(--orange)!important;}
     /* ─ SCROLLBAR ─ */
     ::-webkit-scrollbar{width:5px;}
     ::-webkit-scrollbar-track{background:transparent;}
@@ -215,6 +220,9 @@
       <div class="nav-item" data-page="experience" onclick="switchPage(this)"><span class="nav-icon">💼</span>Experience</div>
       <div class="nav-item" data-page="metrics" onclick="switchPage(this)"><span class="nav-icon">📊</span>Metrics</div>
       <div class="nav-item" data-page="projects" onclick="switchPage(this)"><span class="nav-icon">📂</span>Projects</div>
+      <div class="nav-item" data-page="skills" onclick="switchPage(this)"><span class="nav-icon">🛠️</span>Skills</div>
+      <div class="nav-item" data-page="story" onclick="switchPage(this)"><span class="nav-icon">📖</span>Story</div>
+      <div class="nav-item" data-page="capabilities" onclick="switchPage(this)"><span class="nav-icon">🛡️</span>Capabilities</div>
       <div class="nav-item" data-page="contact" onclick="switchPage(this)"><span class="nav-icon">📞</span>Contact</div>
       <div class="nav-group-label">파일 & AI</div>
       <div class="nav-item" data-page="media" onclick="switchPage(this)"><span class="nav-icon">🖼️</span>파일/링크 관리</div>
@@ -256,12 +264,36 @@
         <div class="card">
           <div class="card-title">Hero 텍스트</div>
           <div class="form-group"><label class="form-label">부제목</label><input class="form-input" id="hero_subtitle"></div>
-          <div class="form-group"><label class="form-label">설명 (줄바꿈은 엔터)</label><textarea class="form-textarea" id="hero_desc"></textarea></div>
+          <div class="form-group"><label class="form-label">설명 (줄바꿈 및 서식 적용 가능)</label>
+            <div class="rte-wrap">
+              <div class="rte-toolbar">
+                <button class="rte-btn bold" onclick="rteWrap('hero_desc','<strong>','</strong>')" title="굵게"><b>B</b></button>
+                <button class="rte-btn italic" onclick="rteWrap('hero_desc','<em>','</em>')" title="기울임"><i>I</i></button>
+                <button class="rte-btn" onclick="rteWrap('hero_desc','<u>','</u>')" title="밑줄"><u>U</u></button>
+                <span class="rte-sep">|</span>
+                <span class="rte-preview-toggle" onclick="toggleRTEPreview('hero_desc')">HTML 미리보기</span>
+              </div>
+              <textarea class="rte-textarea" id="hero_desc" style="min-height:80px"></textarea>
+              <div class="rte-preview-box" id="hero_desc_prev"></div>
+            </div>
+          </div>
           <div class="btn-group"><button class="btn btn-primary" onclick="saveHero()">저장</button><span class="save-status" id="s-hero"></span></div>
         </div>
         <div class="card">
           <div class="card-title">About 소개</div>
-          <div class="form-group"><label class="form-label">바이오</label><textarea class="form-textarea tall" id="about_bio"></textarea></div>
+          <div class="form-group"><label class="form-label">바이오 (줄바꿈 및 서식 적용 가능)</label>
+            <div class="rte-wrap">
+              <div class="rte-toolbar">
+                <button class="rte-btn bold" onclick="rteWrap('about_bio','<strong>','</strong>')" title="굵게"><b>B</b></button>
+                <button class="rte-btn italic" onclick="rteWrap('about_bio','<em>','</em>')" title="기울임"><i>I</i></button>
+                <button class="rte-btn" onclick="rteWrap('about_bio','<u>','</u>')" title="밑줄"><u>U</u></button>
+                <span class="rte-sep">|</span>
+                <span class="rte-preview-toggle" onclick="toggleRTEPreview('about_bio')">HTML 미리보기</span>
+              </div>
+              <textarea class="rte-textarea" id="about_bio" style="min-height:130px"></textarea>
+              <div class="rte-preview-box" id="about_bio_prev"></div>
+            </div>
+          </div>
           <div class="form-group"><label class="form-label">인용문 (quote)</label><textarea class="form-textarea" id="about_quote"></textarea></div>
           <div class="card-title" style="margin-top:24px; font-size:14px; border-bottom:1px solid var(--border); padding-bottom:10px;">About 통계 항목 (Stats)</div>
           <div id="aboutStatsList"></div>
@@ -279,6 +311,9 @@
         <div class="page-title">Experience (경력)</div>
         <div class="page-sub">회사별 경력 정보를 수정합니다. 로고 URL에 Cloudinary URL을 붙여넣으세요.</div>
         <div id="expEditor"></div>
+        <div style="margin-bottom:12px;">
+          <button class="btn btn-secondary" onclick="addExpCompany()">+ 회사 추가</button>
+        </div>
         <div class="btn-group">
           <button class="btn btn-primary" onclick="saveExperience()">전체 저장</button>
           <span class="save-status" id="s-exp"></span>
@@ -311,6 +346,47 @@
         </div>
       </section>
 
+      <!-- ═ SKILLS ═ -->
+      <section class="page-section" id="page-skills">
+        <div class="page-title">Skills &amp; Tools</div>
+        <div class="page-sub">스킬 그룹과 항목(태그)을 추가·수정·삭제합니다. 저장 후 사이트 새로고침 시 반영됩니다.</div>
+        <div id="skillsEditor"></div>
+        <div class="btn-group" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="saveSkills()">전체 저장</button>
+          <button class="btn btn-secondary btn-sm" onclick="addSkillGroup()">+ 그룹 추가</button>
+          <span class="save-status" id="s-skills"></span>
+        </div>
+
+        <div style="margin-top:28px;">
+          <div class="card-title" style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;">🎓 Education (학력)</div>
+          <div class="page-sub" style="margin-bottom:12px;">학력 카드를 편집합니다. 저장은 위의 '전체 저장' 버튼을 누르세요.</div>
+          <div id="educationEditor"></div>
+          <button class="btn btn-secondary btn-xs" style="margin-top:8px;" onclick="addEducation()">+ 학력 추가</button>
+        </div>
+      </section>
+
+      <!-- ═ STORY ═ -->
+      <section class="page-section" id="page-story">
+        <div class="page-title">Story (운영 vs 사업 PM)</div>
+        <div class="page-sub">2단 컬럼 구조의 Story 섹션을 관리합니다.</div>
+        <div class="form-grid">
+          <div class="card">
+            <div class="card-title">Left: 운영에서 해온 일</div>
+            <div id="story-left-list"></div>
+            <button class="btn btn-secondary btn-xs" onclick="addStoryItem('left')">+ 항목 추가</button>
+          </div>
+          <div class="card">
+            <div class="card-title">Right: 사업 PM 역할로의 연결</div>
+            <div id="story-right-list"></div>
+            <button class="btn btn-secondary btn-xs" onclick="addStoryItem('right')">+ 항목 추가</button>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="saveStory()">전체 저장</button>
+          <span class="save-status" id="s-story"></span>
+        </div>
+      </section>
+
       <!-- ═ CONTACT ═ -->
       <section class="page-section" id="page-contact">
         <div class="page-title">Contact</div>
@@ -318,27 +394,62 @@
           <div class="card-title">연락처 정보</div>
           <div class="form-group"><label class="form-label">이메일</label><input class="form-input" id="contact_email"></div>
           <div class="form-group"><label class="form-label">위치</label><input class="form-input" id="contact_location"></div>
-          <div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea" id="contact_desc"></textarea></div>
+          <div class="form-group"><label class="form-label">설명</label>
+            <div class="rte-wrap">
+              <div class="rte-toolbar">
+                <button class="rte-btn bold" onclick="rteWrap('contact_desc','<strong>','</strong>')" title="굵게"><b>B</b></button>
+                <button class="rte-btn italic" onclick="rteWrap('contact_desc','<em>','</em>')" title="기울임"><i>I</i></button>
+                <button class="rte-btn" onclick="rteWrap('contact_desc','<u>','</u>')" title="밑줄"><u>U</u></button>
+                <span class="rte-sep">|</span>
+                <span class="rte-preview-toggle" onclick="toggleRTEPreview('contact_desc')">HTML 미리보기</span>
+              </div>
+              <textarea class="rte-textarea" id="contact_desc" style="min-height:80px"></textarea>
+              <div class="rte-preview-box" id="contact_desc_prev"></div>
+            </div>
+          </div>
           <div class="btn-group"><button class="btn btn-primary" onclick="saveContact()">저장</button><span class="save-status" id="s-contact"></span></div>
+        </div>
+      </section>
+      
+      <!-- ═ CAPABILITIES ═ -->
+      <section class="page-section" id="page-capabilities">
+        <div class="page-title">Capabilities (핵심 역량)</div>
+        <div class="page-sub">홈 화면의 핵심 역량 카드와 상세 리스트(불렛 포인트)를 관리합니다.</div>
+        <div id="capabilitiesEditor"></div>
+        <div class="btn-group" style="margin-top:12px;">
+          <button class="btn btn-primary" onclick="saveCapabilities()">전체 저장</button>
+          <button class="btn btn-secondary btn-sm" onclick="addCapability()">+ 카드 추가</button>
+          <span class="save-status" id="s-cap"></span>
         </div>
       </section>
 
       <!-- ═ MEDIA ═ -->
       <section class="page-section" id="page-media">
         <div class="page-title">파일 / 링크 관리</div>
-        <div class="page-sub">Cloudinary에 업로드한 파일의 URL을 붙여넣거나, 로컬 파일 경로를 입력하세요.</div>
+        <div class="page-sub">Cloudinary에 업로드한 파일의 URL을 붙여넣으세요. 여기서 수정하면 사이트 전체에 반영됩니다.</div>
 
-        <div class="card">
-          <div class="card-title">📸 About 증명사진</div>
-          <div class="media-row">
-            <img id="prev_photo" class="media-preview-img" src="" onerror="this.src=''">
-            <div class="media-info">
-              <div class="media-label">사진 URL (Cloudinary URL 또는 img/파일명.jpg)</div>
-              <input class="form-input" id="media_photo" placeholder="https://res.cloudinary.com/..." oninput="previewImg('media_photo','prev_photo')">
-              <p style="font-size:11px;color:var(--muted);margin-top:5px;">예: img/picture.jpg 또는 Cloudinary URL 붙여넣기</p>
+        <div class="form-grid">
+          <div class="card">
+            <div class="card-title">📸 HERO 섹션 프로필 (홈)</div>
+            <div class="media-row">
+              <img id="prev_hero" class="media-preview-img" src="" onerror="this.src=''">
+              <div class="media-info">
+                <input class="form-input" id="media_photo_hero" placeholder="Cloudinary URL" oninput="previewImg('media_photo_hero','prev_hero')">
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📸 ABOUT 섹션 프로필</div>
+            <div class="media-row">
+              <img id="prev_about" class="media-preview-img" src="" onerror="this.src=''">
+              <div class="media-info">
+                <input class="form-input" id="media_photo_about" placeholder="Cloudinary URL" oninput="previewImg('media_photo_about','prev_about')">
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="card" style="margin-top:14px;">
 
         <div class="card">
           <div class="card-title">▶️ YouTube 채널</div>
@@ -463,13 +574,18 @@ function populate() {
   renderAboutStats(a.stats||[]);
   sv('contact_email',c.email||''); sv('contact_location',c.location||''); sv('contact_desc',c.desc||'');
   sv('chatbot_context',C.chatbot_context||'');
-  sv('media_photo',m.profile_photo||''); previewImg('media_photo','prev_photo');
+  sv('media_photo_hero',m.profile_home||''); previewImg('media_photo_hero','prev_hero');
+  sv('media_photo_about',m.profile_about||''); previewImg('media_photo_about','prev_about');
   sv('media_yt_url',m.youtube_url||''); sv('media_yt_subs',m.youtube_subscribers||'');
   sv('media_resume_pm',m.resume_pm_pdf||''); sv('media_resume_ops',m.resume_ops_pdf||'');
   sv('media_portfolio',m.portfolio_pdf||'');
   renderMetrics(C.metrics||[]);
   renderProjects(C.projects||[]);
+  renderSkills(C.skills||[]);
+  renderEducation(C.education||[]);
   renderExperience(C.experience||[]);
+  renderStory(C.story||{left:[],right:[]});
+  renderCapabilities(C.capabilities||[]);
   renderLogoPreview(C.experience||[]);
 }
 function sv(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
@@ -513,7 +629,8 @@ function toggleRTEPreview(id) {
   const prev = document.getElementById(id + '_prev');
   const ta = document.getElementById(id);
   if (prev.style.display === 'block') { prev.style.display = 'none'; return; }
-  prev.innerHTML = ta.value;
+  // \n → <br> 변환 후 렌더, HTML 태그도 허용
+  prev.innerHTML = ta.value.replace(/\n/g, '<br>');
   prev.style.display = 'block';
 }
 function previewImg(srcId, imgId) {
@@ -585,40 +702,385 @@ function renderProjects(projects) {
   projects.forEach((p,i) => {
     const el = document.createElement('div');
     el.className = 'proj-item';
+    el.draggable = true;
     el.innerHTML = `
       <div class="proj-header" onclick="toggleProj(${i})">
-        <span class="proj-badge">${p.num||String(i+1).padStart(2,'0')}</span>
+        <span class="drag-handle" title="드래그하여 순서 변경" onclick="event.stopPropagation()">⠿</span>
+        <span class="proj-badge">${String(i+1).padStart(2,'0')}</span>
         <span class="proj-header-title">${esc(p.category||'프로젝트 '+(i+1))}</span>
         <span style="color:var(--muted);font-size:18px;">▾</span>
       </div>
       <div class="proj-body" id="pb-${i}">
         <div class="form-group"><label class="form-label">카테고리</label><input class="form-input" id="pc-${i}" value="${esc(p.category||'')}"></div>
         <div class="form-group"><label class="form-label">제목 (줄바꿈은 \\n)</label><input class="form-input" id="pt-${i}" value="${esc((p.title||'').replace(/\n/g,'\\n'))}"></div>
-        <div class="form-group"><label class="form-label">설명</label><textarea class="form-textarea tall" id="pd-${i}">${esc(p.desc||'')}</textarea></div>
         <div class="form-group">
-          <label class="form-label">성과 (result) — <span style="color:var(--muted);font-weight:400;">툴바로 ✓ 항목 | 구분선 삽입 가능. HTML 미리보기 확인하세요.</span></label>
+          <label class="form-label">설명 (줄바꿈 및 서식 적용 가능)</label>
+          ${makeRTE('pd-'+i, 90)}
+        </div>
+        <div class="form-group">
+          <label class="form-label">성과 (result) — <span style="color:var(--muted);font-weight:400;">툴바로 ✓ 항목 | 구분선 삽입 가능.</span></label>
           ${makeRTE('pr-'+i, 52)}
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">
+            이미지 갤러리 관리 <button class="btn btn-secondary btn-xs" onclick="addProjImg(${i})">+ 이미지 추가</button>
+          </label>
+          <div id="pi-list-${i}" class="exp-items-area">
+            ${(p.images || []).map((img, imgIdx) => `
+              <div class="metric-row" style="margin-bottom:6px;">
+                <input class="form-input" placeholder="이미지 URL (Cloudinary)" value="${esc(img.url||'')}" id="pi-url-${i}-${imgIdx}">
+                <input class="form-input" placeholder="설명(선택)" value="${esc(img.caption||'')}" id="pi-cap-${i}-${imgIdx}">
+                <button class="btn btn-danger btn-xs" onclick="this.closest('.metric-row').remove()">✕</button>
+              </div>
+            `).join('')}
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:5px;">첫 번째 이미지가 카드 메인 이미지로 노출됩니다.</p>
         </div>
       </div>`;
     ed.appendChild(el);
-    // result 값 주입
+    const dta = document.getElementById('pd-'+i);
+    if (dta) dta.value = p.desc || '';
     const rta = document.getElementById('pr-'+i);
     if (rta) rta.value = p.result || '';
   });
+  makeDraggable(ed, () => renderProjects(getProjects()));
 }
 function toggleProj(i) {
   const b = document.getElementById('pb-'+i);
   b.classList.toggle('open');
 }
+
+/* ═══ SKILLS ═══ */
+function renderSkills(skills) {
+  const ed = document.getElementById('skillsEditor');
+  ed.innerHTML = '';
+  (skills || []).forEach((group, gi) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '14px';
+    const tagRows = (group.tags || []).map((tag, ti) => `
+      <div class="exp-item-row" style="flex-wrap:wrap;gap:4px;">
+        <input class="exp-item-input" id="stag-${gi}-${ti}" value="${esc(tag.text||'')}"
+          placeholder="스킬 태그명" style="flex:1;min-width:120px;">
+        <select id="stype-${gi}-${ti}" style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;
+          padding:6px 8px;color:var(--text);font-family:var(--font);font-size:12px;outline:none;">
+          <option value="default" ${(!tag.type||tag.type==='default')?'selected':''}>기본 (흰색)</option>
+          <option value="orange" ${tag.type==='orange'?'selected':''}>주황 하이라이트</option>
+          <option value="purple" ${tag.type==='purple'?'selected':''}>보라 하이라이트</option>
+        </select>
+        <button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button>
+      </div>`).join('');
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <input class="form-input" id="sgtitle-${gi}" value="${esc(group.title||'')}" placeholder="그룹명 (예: Data & Analytics)" style="flex:1;">
+        <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">그룹 삭제</button>
+      </div>
+      <div class="exp-items-area" id="staglist-${gi}">${tagRows}</div>
+      <button class="btn btn-secondary btn-xs" style="margin-top:8px;" onclick="addSkillTag(${gi})">+ 태그 추가</button>`;
+    ed.appendChild(card);
+  });
+}
+function addSkillGroup() {
+  const ed = document.getElementById('skillsEditor');
+  const idx = ed.querySelectorAll('.card').length;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.marginBottom = '14px';
+  card.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <input class="form-input" id="sgtitle-${idx}" placeholder="새 그룹명" style="flex:1;">
+      <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">그룹 삭제</button>
+    </div>
+    <div class="exp-items-area" id="staglist-${idx}"></div>
+    <button class="btn btn-secondary btn-xs" style="margin-top:8px;" onclick="addSkillTag(${idx})">+ 태그 추가</button>`;
+  ed.appendChild(card);
+}
+function addSkillTag(gi) {
+  const list = document.getElementById('staglist-'+gi);
+  if (!list) return;
+  const ti = list.querySelectorAll('.exp-item-row').length;
+  const row = document.createElement('div');
+  row.className = 'exp-item-row';
+  row.style.cssText = 'flex-wrap:wrap;gap:4px;';
+  row.innerHTML = `
+    <input class="exp-item-input" id="stag-${gi}-${ti}" placeholder="스킬 태그명" style="flex:1;min-width:120px;">
+    <select id="stype-${gi}-${ti}" style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;
+      padding:6px 8px;color:var(--text);font-family:var(--font);font-size:12px;outline:none;">
+      <option value="default">기본 (흰색)</option>
+      <option value="orange">주황 하이라이트</option>
+      <option value="purple">보라 하이라이트</option>
+    </select>
+    <button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button>`;
+  list.appendChild(row);
+}
+function getSkills() {
+  return Array.from(document.querySelectorAll('#skillsEditor .card')).map((card, gi) => ({
+    title: (document.getElementById('sgtitle-'+gi)||{}).value || '',
+    tags: Array.from(card.querySelectorAll('.exp-item-row')).map((row, ti) => ({
+      text: (document.getElementById(`stag-${gi}-${ti}`)||row.querySelector('input')||{}).value || '',
+      type: (document.getElementById(`stype-${gi}-${ti}`)||row.querySelector('select')||{}).value || 'default'
+    })).filter(t => t.text)
+  })).filter(g => g.title);
+}
+
+/* ═══ EDUCATION ═══ */
+function renderEducation(education) {
+  const ed = document.getElementById('educationEditor');
+  if (!ed) return;
+  ed.innerHTML = '';
+  (education || []).forEach((edu, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '12px';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:12px;font-weight:600;color:var(--muted);">학력 #${i+1}</span>
+        <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">삭제</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">기간</label><input class="form-input" id="edu-period-${i}" value="${esc(edu.period||'')}" placeholder="2024.09 – 2026.02"></div>
+        <div class="form-group"><label class="form-label">학교명</label><input class="form-input" id="edu-school-${i}" value="${esc(edu.school||'')}" placeholder="동국대학교 대학원"></div>
+      </div>
+      <div class="form-group"><label class="form-label">학위/전공</label><input class="form-input" id="edu-degree-${i}" value="${esc(edu.degree||'')}" placeholder="MBA 비즈니스데이터애널리틱스"></div>
+      <div class="form-group"><label class="form-label">설명/비고</label><input class="form-input" id="edu-note-${i}" value="${esc(edu.note||'')}" placeholder="주요 과목, 성과 등"></div>`;
+    ed.appendChild(card);
+  });
+}
+function addEducation() {
+  const ed = document.getElementById('educationEditor');
+  const i = ed.querySelectorAll('.card').length;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.marginBottom = '12px';
+  card.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-size:12px;font-weight:600;color:var(--muted);">새 학력</span>
+      <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">삭제</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">기간</label><input class="form-input" id="edu-period-${i}" placeholder="2024.09 – 2026.02"></div>
+      <div class="form-group"><label class="form-label">학교명</label><input class="form-input" id="edu-school-${i}" placeholder="학교명"></div>
+    </div>
+    <div class="form-group"><label class="form-label">학위/전공</label><input class="form-input" id="edu-degree-${i}" placeholder="학위/전공"></div>
+    <div class="form-group"><label class="form-label">설명/비고</label><input class="form-input" id="edu-note-${i}" placeholder="주요 과목, 성과 등"></div>`;
+  ed.appendChild(card);
+}
+function getEducation() {
+  return Array.from(document.querySelectorAll('#educationEditor .card')).map((card, i) => ({
+    period: (document.getElementById('edu-period-'+i)||{}).value || '',
+    school: (document.getElementById('edu-school-'+i)||{}).value || '',
+    degree: (document.getElementById('edu-degree-'+i)||{}).value || '',
+    note:   (document.getElementById('edu-note-'+i)||{}).value || ''
+  })).filter(e => e.school);
+}
+/* ═══ CAPABILITIES ═══ */
+function makeDraggable(container, onDropCallback) {
+  let dragged = null;
+  container.querySelectorAll('[draggable="true"]').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      dragged = card;
+      setTimeout(() => card.classList.add('dragging'), 0);
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      dragged = null;
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (dragged && dragged !== card) card.classList.add('drag-over');
+    });
+    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      if (dragged && dragged !== card) {
+        const allCards = [...container.querySelectorAll('[draggable="true"]')];
+        const fromIdx = allCards.indexOf(dragged);
+        const toIdx = allCards.indexOf(card);
+        if (fromIdx < toIdx) card.after(dragged);
+        else card.before(dragged);
+        if (onDropCallback) onDropCallback();
+      }
+    });
+  });
+}
+
+function renderCapabilities(caps) {
+  const ed = document.getElementById('capabilitiesEditor');
+  if(!ed) return;
+  ed.innerHTML = '';
+  (caps || []).forEach((cap, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.draggable = true;
+    card.style.cssText = 'margin-bottom:16px; border-left:4px solid var(--orange); cursor:default;';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="drag-handle" title="드래그하여 순서 변경">⠿</span>
+          <span style="font-size:12px;font-weight:700;color:var(--text);">역량 카드 #${i+1}</span>
+        </span>
+        <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">삭제</button>
+      </div>
+      <div class="form-grid" style="margin-bottom:12px;">
+        <div class="form-group"><label class="form-label">아이콘</label><input class="form-input" id="cap-icon-${i}" value="${esc(cap.icon||'')}" placeholder="예: 📊"></div>
+        <div class="form-group"><label class="form-label">제목</label><input class="form-input" id="cap-title-${i}" value="${esc(cap.title||'')}" placeholder="예: Data & Analytics"></div>
+      </div>
+      <div class="form-group"><label class="form-label">카테고리 배지</label><input class="form-input" id="cap-category-${i}" value="${esc(cap.category||'')}" placeholder="예: OPERATION, DATA ANALYSIS"></div>
+      <input type="hidden" class="cap-bg-image" value="${esc(cap.bg_image||'')}">
+      <div class="form-group">
+        <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">
+          상세 리스트 (Bullet Points)
+          <button class="btn btn-secondary btn-xs" onclick="addCapItem(${i})">+ 항목 추가</button>
+        </label>
+        <div id="cap-items-area-${i}" class="exp-items-area">
+          ${(cap.items || []).map(it => `
+            <div class="exp-item-row">
+              <input class="exp-item-input" value="${esc(it)}">
+              <button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    ed.appendChild(card);
+  });
+  makeDraggable(ed);
+}
+function addCapItem(capIdx) {
+  const area = document.getElementById(`cap-items-area-${capIdx}`);
+  const row = document.createElement('div');
+  row.className = 'exp-item-row';
+  row.innerHTML = `<input class="exp-item-input" placeholder="상세 역량 설명 입력"><button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button>`;
+  area.appendChild(row);
+}
+function addCapability() {
+  const ed = document.getElementById('capabilitiesEditor');
+  const i = ed.querySelectorAll('.card').length;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.draggable = true;
+  card.style.cssText = 'margin-bottom:16px; border-left:4px solid var(--orange); cursor:default;';
+  card.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="display:flex;align-items:center;gap:8px;">
+        <span class="drag-handle" title="드래그하여 순서 변경">⠿</span>
+        <span style="font-size:12px;font-weight:700;color:var(--text);">새 역량 카드</span>
+      </span>
+      <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">삭제</button>
+    </div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label class="form-label">아이콘</label><input class="form-input" id="cap-icon-${i}" placeholder="예: ✨"></div>
+      <div class="form-group"><label class="form-label">제목</label><input class="form-input" id="cap-title-${i}" placeholder="제목 입력"></div>
+    </div>
+    <div class="form-group"><label class="form-label">카테고리 배지</label><input class="form-input" id="cap-category-${i}" placeholder="예: OPERATION"></div>
+    <input type="hidden" class="cap-bg-image" value="">
+    <div class="form-group">
+      <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">상세 리스트 <button class="btn btn-secondary btn-xs" onclick="addCapItem(${i})">+ 항목 추가</button></label>
+      <div id="cap-items-area-${i}" class="exp-items-area"></div>
+    </div>`;
+  ed.appendChild(card);
+  makeDraggable(ed);
+}
+function getCapabilities() {
+  const cards = document.querySelectorAll('#capabilitiesEditor .card');
+  return Array.from(cards).map((card) => {
+    const iconInput = card.querySelector('input[id^="cap-icon-"]');
+    const titleInput = card.querySelector('input[id^="cap-title-"]');
+    const categoryInput = card.querySelector('input[id^="cap-category-"]');
+    const bgImageInput = card.querySelector('.cap-bg-image');
+    const itemInputs = card.querySelectorAll('.exp-item-input');
+    return {
+      icon: (iconInput||{}).value || '',
+      title: (titleInput||{}).value || '',
+      category: (categoryInput||{}).value || '',
+      bg_image: (bgImageInput||{}).value || '',
+      items: Array.from(itemInputs).map(input => input.value.trim()).filter(Boolean)
+    };
+  }).filter(c => c.title);
+}
+
+/* ═══ STORY ═══ */
+function renderStory(story) {
+  renderStorySide('left', story.left || []);
+  renderStorySide('right', story.right || []);
+}
+function renderStorySide(side, items) {
+  const list = document.getElementById(`story-${side}-list`);
+  list.innerHTML = '';
+  items.forEach((it, i) => {
+    const row = document.createElement('div');
+    row.className = 'card';
+    row.style.background = 'var(--bg)';
+    row.innerHTML = `
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:11px;color:var(--orange);font-weight:700;">ITEM #${i+1}</span>
+        <button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">아이콘</label><input class="form-input" value="${esc(it.icon||'')}"></div>
+        <div class="form-group"><label class="form-label">제목</label><input class="form-input" value="${esc(it.title||'')}"></div>
+      </div>
+      <div class="form-group"><label class="form-label">설명</label><input class="form-input" value="${esc(it.desc||'')}"></div>
+    `;
+    list.appendChild(row);
+  });
+}
+function addStoryItem(side) {
+  const list = document.getElementById(`story-${side}-list`);
+  const row = document.createElement('div');
+  row.className = 'card';
+  row.style.background = 'var(--bg)';
+  row.innerHTML = `
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:11px;color:var(--orange);font-weight:700;">NEW ITEM</span><button class="btn btn-danger btn-xs" onclick="this.closest('.card').remove()">✕</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">아이콘</label><input class="form-input" placeholder="예: 📊"></div>
+      <div class="form-group"><label class="form-label">제목</label><input class="form-input" placeholder="제목"></div>
+    </div>
+    <div class="form-group"><label class="form-label">설명</label><input class="form-input" placeholder="설명"></div>
+  `;
+  list.appendChild(row);
+}
+function getStorySide(side) {
+  const cards = document.querySelectorAll(`#story-${side}-list .card`);
+  return Array.from(cards).map(card => {
+    const ins = card.querySelectorAll('input');
+    return { icon: ins[0].value.trim(), title: ins[1].value.trim(), desc: ins[2].value.trim() };
+  }).filter(it => it.title);
+}
+async function saveStory() {
+  C.story = { left: getStorySide('left'), right: getStorySide('right') };
+  await doSave('s-story');
+}
+function addProjImg(i) {
+  const list = document.getElementById('pi-list-'+i);
+  const div = document.createElement('div');
+  div.className = 'metric-row';
+  div.style.marginBottom = '6px';
+  div.innerHTML = `
+    <input class="form-input" placeholder="이미지 URL (Cloudinary)">
+    <input class="form-input" placeholder="설명(선택)">
+    <button class="btn btn-danger btn-xs" onclick="this.closest('.metric-row').remove()">✕</button>
+  `;
+  list.appendChild(div);
+}
 function getProjects() {
-  const count = document.querySelectorAll('#projEditor .proj-item').length;
-  return Array.from({length: count}, (_,i) => ({
-    num: String(i+1).padStart(2,'0'),
-    category: gv('pc-'+i),
-    title: gv('pt-'+i).replace(/\\n/g,'\n'),
-    desc: gv('pd-'+i),
-    result: gv('pr-'+i)
-  }));
+  const projCards = document.querySelectorAll('#projEditor .proj-item');
+  return Array.from(projCards).map((el, i) => {
+    const qv = sel => (el.querySelector(sel)||{}).value || '';
+    const imgList = Array.from(el.querySelectorAll('.metric-row')).map(row => {
+      const ins = row.querySelectorAll('input');
+      return { url: ins[0] ? ins[0].value.trim() : '', caption: ins[1] ? ins[1].value.trim() : '' };
+    }).filter(img => img.url);
+    return {
+      num: String(i+1).padStart(2,'0'),
+      category: qv('input[id^="pc-"]'),
+      title: qv('input[id^="pt-"]').replace(/\\n/g,'\n'),
+      desc: qv('textarea[id^="pd-"]'),
+      result: qv('textarea[id^="pr-"]'),
+      images: imgList
+    };
+  });
 }
 
 /* ═══ EXPERIENCE ═══ */
@@ -632,8 +1094,9 @@ function renderExperience(experience) {
     let jobsHtml = (co.jobs||[]).map((job, ji) => `
       <div class="exp-job-card">
         <div class="exp-job-title">
-          <span>${esc(job.game||'')}</span>
+          <span>${esc(job.game||'새 서비스')}</span>
           <span style="font-size:11px;color:var(--muted);font-weight:400;">${esc(job.period||'')}</span>
+          <button class="btn btn-danger btn-xs" onclick="deleteExpJob(${ci},${ji})" style="margin-left:auto;">삭제</button>
         </div>
         <div class="form-grid">
           <div class="form-group"><label class="form-label">포지션</label><input class="form-input" id="ejpos-${ci}-${ji}" value="${esc(job.position||'')}"></div>
@@ -649,13 +1112,16 @@ function renderExperience(experience) {
         <button class="btn btn-secondary btn-xs" style="margin-top:6px;" onclick="addExpItem(${ci},${ji})">+ 항목 추가</button>
       </div>`).join('');
 
+    card.draggable = true;
     card.innerHTML = `
       <div class="exp-company-header" onclick="toggleExpCo(${ci})">
+        <span class="drag-handle" title="드래그하여 순서 변경" onclick="event.stopPropagation()">⠿</span>
         <img class="exp-company-logo" id="exp-logo-${ci}" src="${esc(logoSrc)}" onerror="this.src=''">
         <div style="flex:1;">
-          <div class="exp-company-name">${esc(co.company||'')}</div>
+          <div class="exp-company-name">${esc(co.company||'새 회사')}</div>
           <div class="exp-company-period">${esc(co.dept||'')} | ${esc(co.period||'')}</div>
         </div>
+        <button class="btn btn-danger btn-xs" onclick="event.stopPropagation();deleteExpCompany(${ci})" style="margin-right:8px;">삭제</button>
         <span style="color:var(--muted);">▾</span>
       </div>
       <div class="exp-company-body" id="ecb-${ci}">
@@ -668,11 +1134,42 @@ function renderExperience(experience) {
           <div class="form-group"><label class="form-label">회사 로고 URL</label><input class="form-input" id="eclogo-${ci}" value="${esc(co.logo_url||'')}" oninput="document.getElementById('exp-logo-${ci}').src=this.value"></div>
         </div>
         <hr>
-        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px;">담당 서비스 / 직무</div>
-        ${jobsHtml}
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;">담당 서비스 / 직무</div>
+          <button class="btn btn-secondary btn-xs" onclick="addExpJob(${ci})">+ 서비스/직무 추가</button>
+        </div>
+        <div class="exp-jobs-area">${jobsHtml}</div>
       </div>`;
     ed.appendChild(card);
   });
+  makeDraggable(ed, () => renderExperience(getExperience()));
+}
+function deleteExpCompany(ci) {
+  if (!confirm('이 회사 경력을 삭제하시겠습니까?')) return;
+  const current = getExperience();
+  current.splice(ci, 1);
+  renderExperience(current);
+}
+function deleteExpJob(ci, ji) {
+  if (!confirm('이 서비스/직무를 삭제하시겠습니까?')) return;
+  const current = getExperience();
+  if (current[ci]) {
+    current[ci].jobs.splice(ji, 1);
+    renderExperience(current);
+    // 해당 카드 body 열린 상태 유지
+    const cards = document.querySelectorAll('#expEditor .exp-company-card');
+    if (cards[ci]) {
+      const body = cards[ci].querySelector('.exp-company-body');
+      if (body) body.classList.add('open');
+    }
+  }
+}
+function addExpCompany() {
+  const current = getExperience();
+  current.push({ company:'', dept:'', period:'', logo_url:'', jobs:[] });
+  renderExperience(current);
+  const cards = document.querySelectorAll('#expEditor .exp-company-card');
+  if (cards.length) cards[cards.length-1].scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 function toggleExpCo(ci) {
   const b = document.getElementById('ecb-'+ci);
@@ -685,23 +1182,40 @@ function addExpItem(ci, ji) {
   row.innerHTML = `<input class="exp-item-input" placeholder="새 업무 항목"><button class="btn btn-danger btn-xs" onclick="this.closest('.exp-item-row').remove()">✕</button>`;
   area.appendChild(row);
 }
+function addExpJob(ci) {
+  const current = getExperience();
+  if (!current[ci]) return;
+  current[ci].jobs.push({ game:'', game_logo_url:'', period:'', position:'', regions:'', items:[] });
+  renderExperience(current);
+  // 재렌더링 후 해당 회사 카드 body 열기 (ci는 재렌더링 후 동일 인덱스)
+  const cards = document.querySelectorAll('#expEditor .exp-company-card');
+  if (cards[ci]) {
+    const body = cards[ci].querySelector('.exp-company-body');
+    if (body && !body.classList.contains('open')) body.classList.add('open');
+    cards[ci].scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+}
 function getExperience() {
   const coCards = document.querySelectorAll('#expEditor .exp-company-card');
-  return Array.from(coCards).map((card, ci) => {
+  return Array.from(coCards).map((card) => {
     const jobCards = card.querySelectorAll('.exp-job-card');
+    const qv = sel => (card.querySelector(sel)||{}).value || '';
     return {
-      company: gv(`ecname-${ci}`),
-      dept: gv(`ecdept-${ci}`),
-      period: gv(`ecperiod-${ci}`),
-      logo_url: gv(`eclogo-${ci}`),
-      jobs: Array.from(jobCards).map((jc, ji) => ({
-        game: gv(`ejgame-${ci}-${ji}`),
-        game_logo_url: gv(`ejlogo-${ci}-${ji}`),
-        period: gv(`ejperiod-${ci}-${ji}`),
-        position: gv(`ejpos-${ci}-${ji}`),
-        regions: gv(`ejreg-${ci}-${ji}`),
-        items: Array.from(jc.querySelectorAll('.exp-item-input')).map(i=>i.value.trim()).filter(Boolean)
-      }))
+      company: qv('[id^="ecname-"]'),
+      dept: qv('[id^="ecdept-"]'),
+      period: qv('[id^="ecperiod-"]'),
+      logo_url: qv('[id^="eclogo-"]'),
+      jobs: Array.from(jobCards).map((jc) => {
+        const jqv = sel => (jc.querySelector(sel)||{}).value || '';
+        return {
+          game: jqv('[id^="ejgame-"]'),
+          game_logo_url: jqv('[id^="ejlogo-"]'),
+          period: jqv('[id^="ejperiod-"]'),
+          position: jqv('[id^="ejpos-"]'),
+          regions: jqv('[id^="ejreg-"]'),
+          items: Array.from(jc.querySelectorAll('.exp-item-input')).map(i=>i.value.trim()).filter(Boolean)
+        };
+      })
     };
   });
 }
@@ -729,15 +1243,18 @@ async function saveAbout() {
 }
 async function saveMetrics() { C.metrics=getMetrics(); await doSave('s-metrics'); }
 async function saveProjects() { C.projects=getProjects(); await doSave('s-projects'); }
+async function saveSkills() { C.skills=getSkills(); C.education=getEducation(); await doSave('s-skills'); }
 async function saveExperience() { C.experience=getExperience(); await doSave('s-exp'); }
 async function saveContact() {
   C.contact={email:gv('contact_email'),location:gv('contact_location'),desc:gv('contact_desc')};
   await doSave('s-contact');
 }
+async function saveCapabilities() { C.capabilities=getCapabilities(); await doSave('s-cap'); }
 async function saveChatbot() { C.chatbot_context=gv('chatbot_context'); await doSave('s-chatbot'); }
 async function saveMedia() {
   C.media={
-    profile_photo: gv('media_photo'),
+    profile_home: gv('media_photo_hero'),
+    profile_about: gv('media_photo_about'),
     youtube_url: gv('media_yt_url'),
     youtube_subscribers: gv('media_yt_subs'),
     resume_pm_pdf: gv('media_resume_pm'),

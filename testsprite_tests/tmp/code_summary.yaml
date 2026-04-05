@@ -1,0 +1,138 @@
+version: "2"
+type: backend
+tech_stack:
+  - language: Python 3.x
+  - framework: Flask 3.0.3
+  - database: "JSON file (content.json, local filesystem)"
+  - other: "Gemini 2.5 Flash API, Naver SMTP, python-dotenv, Gunicorn (production)"
+features:
+  - name: Authentication API
+    description: Admin session management via cookie-based server-side sessions
+    files:
+      - app.py
+    endpoints:
+      - method: POST
+        path: /api/login
+        description: Create admin session with email and password
+        auth_required: false
+        request_schema:
+          body:
+            email: string
+            password: string
+        response_schema:
+          "200": '{"ok": true}'
+          "401": '{"error": "이메일 또는 비밀번호가 틀렸습니다."}'
+      - method: POST
+        path: /api/logout
+        description: Destroy admin session
+        auth_required: false
+        response_schema:
+          "200": '{"ok": true}'
+      - method: GET
+        path: /api/auth
+        description: Check current login status
+        auth_required: false
+        response_schema:
+          "200": '{"loggedIn": true|false}'
+    depends_on: []
+
+  - name: Content Engine API
+    description: Read and write portfolio content stored in content.json
+    files:
+      - app.py
+      - content.json
+    endpoints:
+      - method: GET
+        path: /api/content
+        description: Retrieve full portfolio content JSON
+        auth_required: false
+        response_schema:
+          "200": "Full content object with keys: hero, about, experience, projects, capabilities, metrics, skills, education, story, contact, media, chatbot_context"
+      - method: POST
+        path: /api/content
+        description: Overwrite content.json with new data
+        auth_required: true
+        request_schema:
+          body:
+            any: object
+        response_schema:
+          "200": '{"ok": true, "message": "저장 완료!"}'
+          "400": '{"error": "데이터가 없습니다."}'
+          "401": Unauthorized (not logged in)
+    depends_on:
+      - Authentication API
+
+  - name: Contact Email API
+    description: Send contact form submissions via Naver SMTP
+    files:
+      - app.py
+    endpoints:
+      - method: POST
+        path: /api/contact
+        description: Send contact email via Naver SMTP SSL
+        auth_required: false
+        request_schema:
+          body:
+            from_name: string
+            from_email: string
+            message: string
+        response_schema:
+          "200": '{"ok": true}'
+          "400": '{"error": "모든 항목을 입력해 주세요."}'
+          "503": '{"error": "SMTP_PASS가 설정되지 않았습니다."}'
+          "500": '{"error": "메일 전송 실패: ..."}'
+    depends_on: []
+
+  - name: Gemini Chatbot API
+    description: AI chatbot powered by Gemini 2.5 Flash API using portfolio context
+    files:
+      - app.py
+    endpoints:
+      - method: POST
+        path: /api/chat
+        description: Send user message and receive AI response based on portfolio context
+        auth_required: false
+        request_schema:
+          body:
+            message: string
+        response_schema:
+          "200": '{"reply": "string"}'
+          "400": '{"reply": "메시지를 입력해 주세요."}'
+    depends_on: []
+
+  - name: Static File Serving
+    description: Serve HTML, CSS, JS, images, and PDF files from project root
+    files:
+      - app.py
+    endpoints:
+      - method: GET
+        path: /
+        description: Serve main portfolio index.html
+        auth_required: false
+        response_schema:
+          "200": HTML page
+      - method: GET
+        path: /admin
+        description: Serve admin panel index.html
+        auth_required: false
+        response_schema:
+          "200": HTML page
+      - method: GET
+        path: "/<path:filename>"
+        description: Serve any static file (img, css, js, pdf) from project root
+        auth_required: false
+        response_schema:
+          "200": File content
+          "404": Not found
+    depends_on: []
+
+known_limitations:
+  - issue: content.json is overwritten on every POST /api/content with no backup mechanism
+    location: app.py
+    impact: Data loss possible if concurrent writes occur
+  - issue: SMTP password must be set in .env; if missing, contact form returns 503 instead of graceful fallback
+    location: app.py
+    impact: Contact form unavailable without SMTP configuration
+  - issue: Gemini API key must be set in .env; if missing, chatbot returns static fallback message
+    location: app.py
+    impact: Chatbot non-functional without API key

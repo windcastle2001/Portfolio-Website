@@ -1,0 +1,32 @@
+[
+  {
+    "id": "TC001",
+    "title": "get_content_api_should_return_full_content_json",
+    "description": "Verify that the GET /api/content endpoint returns the complete content.json data with all expected sections such as Hero, About, Capabilities, Story, Projects, Metrics, Skills, and Contact."
+  },
+  {
+    "id": "TC002",
+    "title": "post_chat_api_should_return_ai_response",
+    "description": "Test the POST /api/chat endpoint by sending a valid portfolio-related question and verify that it returns a relevant AI-generated response from the Gemini API or a default message if the API key is missing."
+  },
+  {
+    "id": "TC003",
+    "title": "post_contact_api_should_send_email_and_handle_fallback",
+    "description": "Validate the POST /api/contact endpoint by submitting a contact form with valid name, email, and message, ensuring the email is sent via SMTP or falls back to EmailJS if SMTP credentials are missing, and appropriate success or error messages are returned."
+  },
+  {
+    "id": "TC004",
+    "title": "post_login_api_should_authenticate_admin_user",
+    "description": "Test the POST /api/login endpoint with valid and invalid admin credentials to verify successful authentication returns a session or token and invalid credentials return an authentication error message."
+  },
+  {
+    "id": "TC005",
+    "title": "post_logout_api_should_invalidate_admin_session",
+    "description": "Verify that the POST /api/logout endpoint properly logs out an authenticated admin user by invalidating the session and requiring authentication to access protected admin routes afterward."
+  },
+  {
+    "id": "TC006",
+    "title": "get_auth_api_should_return_current_login_status",
+    "description": "Test the GET /api/auth endpoint to confirm it accurately returns the current authentication status of the user, indicating whether the admin is logged in or not."
+  }
+]
