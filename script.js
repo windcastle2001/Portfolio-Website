@@ -98,23 +98,31 @@ function initScrollSpy() {
 
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
-      e.preventDefault();
-      const targetId = link.getAttribute('data-target') || link.getAttribute('href')?.replace('#', '');
+      const href = link.getAttribute('href');
+      const targetId = link.dataset.target || (href && href.startsWith('#') ? href.slice(1) : null);
+      
+      if (!targetId || targetId === "") return; // ID가 없으면 기본 동작 수행 (외부 링크 등)
+
       const targetEl = document.getElementById(targetId);
       if (targetEl) {
-        // 모바일 헤더 높이를 고려한 오프셋 계산
-        const headerHeight = window.innerWidth <= 768 ? 64 : 0;
-        const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        e.preventDefault();
         
+        // 헤더 높이 계산 (PC는 0, 모바일은 64px)
+        const headerOffset = window.innerWidth <= 768 ? 70 : 10;
+        const elementPosition = targetEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
         window.scrollTo({
-          top: targetPos,
+          top: offsetPosition,
           behavior: 'smooth'
         });
 
-        // URL 해시 업데이트 (선택 사항, 부드러운 이동 방해하지 않음)
-        history.pushState(null, null, `#${targetId}`);
+        // URL 해시 업데이트
+        if (history.pushState) {
+          history.pushState(null, null, `#${targetId}`);
+        }
 
-        // 모바일 사이드바 닫기 (768px 이하 대응)
+        // 모바일 사이드바 닫기
         if (window.innerWidth <= 768) {
           closeMobileMenu();
         }

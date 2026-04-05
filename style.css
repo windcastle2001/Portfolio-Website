@@ -1606,12 +1606,15 @@ img { display: block; }
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
     gap: 16px !important;
-    padding: 10px 30px !important;
+    padding: 10px 40px !important; /* 양옆 패딩 충분히 주어 1번 카드 접근성 확보 */
     width: 100% !important;
     height: auto !important;
     position: relative !important;
     transform: none !important;
-    -ms-overflow-style: none;  /* IE and Edge */
+    justify-content: flex-start !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    -ms-overflow-style: none;
     scrollbar-width: none;  /* Firefox */
   }
   .cap-3d-wrapper::-webkit-scrollbar {
@@ -1698,7 +1701,44 @@ img { display: block; }
   }
 
   .section-hero {
-    padding-top: 20px !important; /* 최상단 공백 대폭 감소 */
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 10px !important; /* 최상단 공백 극최소화 */
+    padding-bottom: 40px !important;
+    display: block !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+
+  .hero-wrap {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+
+  .hero-right {
+    margin-bottom: 20px;
+  }
+
+  /* Metrics & Impact 3x3 모바일 최적화 */
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .metric-card {
+    padding: 12px 6px !important;
+  }
+
+  .metric-num {
+    font-size: 18px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .metric-label {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
   }
 
   /* 모바일에서 챗봇 가리기 (디자인 복잡도 감소) */
