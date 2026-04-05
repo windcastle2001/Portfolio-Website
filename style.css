@@ -1603,12 +1603,40 @@ img { display: block; }
     transform: scale(1) !important; /* CSS에서 강제 축소하던 것 해제 */
   }
 
-  .cap-3d-card {
-    width: 100% !important;
-    max-width: 340px;
-    margin: 0 auto;
-    height: auto;
-    min-height: 280px;
+  /* Capabilities 섹션 모바일 최격화: 이미지를 선명하게 (사용자 요청) */
+  .cap-3d-bg {
+    opacity: 0.8 !important; /* 배경 이미지 더 잘 보이게 */
+  }
+
+  .cap-3d-overlay {
+    opacity: 0.4 !important; /* 어두운 레이어 연하게 */
+  }
+
+  .cap-3d-bg img {
+    filter: none !important; /* 그레이스케일 및 밝기 필터 제거 */
+  }
+
+  .cap-3d-inner {
+    background: rgba(255, 255, 255, 0.4) !important; /* 카드 본체 더 투명하게 */
+    backdrop-filter: blur(4px) !important;
+  }
+
+  .cap-3d-title {
+    color: #fff !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .cap-3d-list li p {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+
+  .sidebar-logo {
+    display: block;
+    color: var(--white);
+    margin-bottom: 40px;
+    font-size: 24px;
+    font-weight: 900;
   }
 
   .story-grid {
