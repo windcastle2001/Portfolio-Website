@@ -80,9 +80,10 @@ window.submitContact = async function (e) {
 
 /* ─── 1. SIDEBAR ACTIVE LINK + SMOOTH SCROLL ─── */
 function initScrollSpy() {
-  const sections = document.querySelectorAll('main .section[id]');
+  const sections = document.querySelectorAll('main .section[id], section[id]');
   const navLinks = document.querySelectorAll('.nav-link, .scroll-link');
 
+  // ── 1. ACTIVE LINK HIGHLIGHT (IntersectionObserver) ──
   function setActive(id) {
     navLinks.forEach(a => {
       const target = a.dataset.target || a.getAttribute('href')?.replace('#', '');
@@ -92,43 +93,43 @@ function initScrollSpy() {
 
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-  }, { threshold: 0.25 });
+  }, { threshold: 0.2, rootMargin: '0px 0px -50% 0px' });
 
   sections.forEach(s => obs.observe(s));
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      const href = link.getAttribute('href');
-      const targetId = link.dataset.target || (href && href.startsWith('#') ? href.slice(1) : null);
-      
-      if (!targetId || targetId === "") return; // ID가 없으면 기본 동작 수행 (외부 링크 등)
+  // ── 2. GLOBAL SMOOTH SCROLL (Event Delegation - More Robust) ──
+  document.addEventListener('click', e => {
+    const link = e.target.closest('.nav-link, .scroll-link');
+    if (!link) return;
 
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        
-        // 헤더 높이 계산 (PC는 0, 모바일은 64px)
-        const headerOffset = window.innerWidth <= 768 ? 70 : 10;
-        const elementPosition = targetEl.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const href = link.getAttribute('href');
+    // 외부 링크는 가로채지 않음
+    if (href && !href.startsWith('#')) return;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+    const targetId = link.dataset.target || (href && href.startsWith('#') ? href.slice(1) : null);
+    if (!targetId) return;
 
-        // URL 해시 업데이트
-        if (history.pushState) {
-          history.pushState(null, null, `#${targetId}`);
-        }
+    const targetEl = document.getElementById(targetId);
+    if (targetEl) {
+      e.preventDefault();
+      e.stopPropagation();
 
-        // 모바일 사이드바 닫기
-        if (window.innerWidth <= 768) {
-          closeMobileMenu();
-        }
-      }
-    });
-  });
+      const headerOffset = window.innerWidth <= 768 ? 70 : 0;
+      const elementPosition = targetEl.getBoundingRect?.() ? targetEl.getBoundingClientRect().top + window.pageYOffset : targetEl.offsetTop;
+      const offsetPosition = elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+
+      // URL 업데이트
+      if (history.pushState) history.pushState(null, null, `#${targetId}`);
+
+      // 모바일 사이드바 닫기
+      if (window.innerWidth <= 768) closeMobileMenu();
+    }
+  }, { capture: true }); // Capture 단계에서 가로채어 다른 스크립트와의 충돌 방지
 }
 
 /* ─── 1-1. MOBILE MENU TOGGLE ─── */

@@ -49,7 +49,7 @@ img { display: block; }
   display: flex;
   flex-direction: column;
   padding: 32px 24px;
-  z-index: 1000;
+  z-index: 2000;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -77,11 +77,14 @@ img { display: block; }
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: rgba(255,255,255,0.55);
-  padding: 9px 6px 8px;
+  color: rgba(255,255,255,0.85) !important; /* 딤 처리 제거 (시인성 확보) */
+  padding: 9px 10px 8px; /* 클릭 영역 확대 */
   border-bottom: 2px solid transparent;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: pointer;
+  position: relative;
+  z-index: 5;
+  pointer-events: auto !important;
 }
 .nav-link:hover {
   color: var(--white);
@@ -1522,7 +1525,7 @@ img { display: block; }
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.1); /* 딤(Dim) 처리 최소화 */
-  z-index: 999;
+  z-index: 1999; /* 사이드바(2000) 바로 아래에 위치 */
   display: none;
   opacity: 0;
   transition: opacity 0.3s;
