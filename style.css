@@ -639,37 +639,42 @@ img { display: block; }
 }
 .modal-overlay.open { display:flex; }
 
-.modal-box { 
-  background:transparent; 
+.modal-box {
+  background:transparent;
   width:100%; height:100%;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  cursor:default; position:relative; animation:scaleIn .2s; 
-  padding: 20px;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  cursor:default; position:relative; animation:scaleIn .2s;
+  padding: 68px 56px 20px;
+  box-sizing: border-box;
 }
 
 .modal-viewport {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  overflow: hidden;
 }
 
-.modal-viewport img, .modal-viewport iframe { 
-  max-width: 85vw; 
-  max-height: 80vh; 
-  display: block; 
+.modal-viewport img, .modal-viewport iframe {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
   margin: 0 auto;
-  border-radius: 12px; 
-  object-fit: contain; 
+  border-radius: 12px;
+  object-fit: contain;
   border: none;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
 .modal-viewport iframe {
-  width: 85vw;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
   background: #fff;
 }
 
@@ -735,8 +740,11 @@ img { display: block; }
   .gallery-nav { width: 44px; height: 44px; font-size: 24px; background: rgba(0,0,0,0.5); }
   .gallery-prev { left: 15px; }
   .gallery-next { right: 15px; }
-  .modal-close { top: 20px; right: 20px; width: 36px; height: 36px; font-size: 18px; }
-  .modal-viewport { height: 60vh; }
+  .modal-close { top: 14px; right: 14px; width: 36px; height: 36px; font-size: 18px; }
+  .modal-box { padding: 56px 50px 14px; }
+  .modal-gallery-btn { width: 36px; height: 36px; font-size: 22px; }
+  .modal-gallery-prev { left: 4px; }
+  .modal-gallery-next { right: 4px; }
 }
 
 /* Resume Picker Modal */

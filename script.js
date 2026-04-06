@@ -226,7 +226,9 @@ function initSlider() {
     if (!slide) return 420;
     const style = window.getComputedStyle(slide);
     const marginRight = parseInt(style.marginRight) || 0;
-    return slide.offsetWidth + marginRight;
+    const trackStyle = window.getComputedStyle(track);
+    const gap = parseInt(trackStyle.gap) || parseInt(trackStyle.columnGap) || 0;
+    return slide.offsetWidth + marginRight + gap;
   }
 
   function goTo(idx) {
