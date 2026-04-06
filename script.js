@@ -101,21 +101,19 @@ function initScrollSpy() {
       e.preventDefault();
       const targetId = link.getAttribute('data-target') || link.getAttribute('href')?.replace('#', '');
       const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        // 모바일 헤더 높이를 고려한 오프셋 계산
+      if (!targetEl) return;
+
+      // 모바일: 사이드바를 먼저 닫아 overflow:hidden 해제 후 스크롤
+      if (window.innerWidth <= 768) {
+        closeMobileMenu();
+      }
+
+      // overflow 복원이 반영된 뒤 스크롤 (50ms 대기)
+      setTimeout(() => {
         const headerHeight = window.innerWidth <= 768 ? 64 : 0;
         const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        
-        window.scrollTo({
-          top: targetPos,
-          behavior: 'smooth'
-        });
-
-        // 모바일 사이드바 닫기 (768px 이하 대응)
-        if (window.innerWidth <= 768) {
-          closeMobileMenu();
-        }
-      }
+        window.scrollTo({ top: targetPos, behavior: 'smooth' });
+      }, 50);
     });
   });
 }
