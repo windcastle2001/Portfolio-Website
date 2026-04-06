@@ -108,11 +108,9 @@ function initScrollSpy() {
         closeMobileMenu();
       }
 
-      // overflow 복원이 반영된 뒤 스크롤 (50ms 대기)
+      // overflow 복원 후 scrollIntoView (scroll-margin-top이 모바일 헤더 보정)
       setTimeout(() => {
-        const headerHeight = window.innerWidth <= 768 ? 64 : 0;
-        const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        window.scrollTo({ top: targetPos, behavior: 'smooth' });
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 50);
     });
   });
@@ -412,7 +410,31 @@ window.closeModal = function() {
   }
 };
 
-/* ─── 6. PDF & RESUME PICKER ─── */
+/* ─── 6. PDF DOWNLOAD ─── */
+window.downloadPdf = async function (src, filename) {
+  try {
+    const res = await fetch(src);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = (filename || 'document') + '.pdf';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(blobUrl); }, 100);
+  } catch {
+    // CORS 등 실패 시 새 탭에서 열기 (브라우저가 자동 다운로드)
+    const a = document.createElement('a');
+    a.href = src;
+    a.target = '_blank';
+    a.download = (filename || 'document') + '.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+};
+
+/* ─── 6-1. PDF PREVIEW (gallery용 - 기존 유지) ─── */
 window.previewPdf = function (src, title) {
   closeResumePicker();
   const overlay = document.getElementById('pdfModal');

@@ -127,7 +127,7 @@ img { display: block; }
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
-  scroll-margin-top: 0 !important;
+  scroll-margin-top: 0;
 }
 .section-hero {
   min-height: 100vh !important;
@@ -1564,6 +1564,7 @@ img { display: block; }
 
   .section {
     padding: 60px 20px !important;
+    scroll-margin-top: 70px;
   }
 
   .hero-wrap {

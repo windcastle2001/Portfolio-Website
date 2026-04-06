@@ -76,13 +76,13 @@
     }
 
     window.previewPortfolio = function () {
-      if (med.portfolio_pdf) window.previewPdf(med.portfolio_pdf, '포트폴리오 – 임광윤');
+      if (med.portfolio_pdf) window.downloadPdf(med.portfolio_pdf, '포트폴리오_임광윤');
     };
 
     const resumePmBtn  = document.querySelector('.picker-btns .picker-btn:nth-child(1)');
     const resumeOpsBtn = document.querySelector('.picker-btns .picker-btn:nth-child(2)');
-    if (resumePmBtn  && med.resume_pm_pdf)  resumePmBtn.onclick  = () => window.previewPdf(med.resume_pm_pdf,  '경력기술서 – 사업 PM');
-    if (resumeOpsBtn && med.resume_ops_pdf) resumeOpsBtn.onclick = () => window.previewPdf(med.resume_ops_pdf, '경력기술서 – 운영');
+    if (resumePmBtn  && med.resume_pm_pdf)  resumePmBtn.onclick  = () => { window.closeResumePicker(); window.downloadPdf(med.resume_pm_pdf,  '경력기술서_임광윤_사업PM'); };
+    if (resumeOpsBtn && med.resume_ops_pdf) resumeOpsBtn.onclick = () => { window.closeResumePicker(); window.downloadPdf(med.resume_ops_pdf, '경력기술서_임광윤_운영'); };
 
     // ── 5. Projects: 대표 이미지 1장 + 배지 ────────────────
     const track = document.getElementById('projTrack');
