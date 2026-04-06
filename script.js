@@ -124,11 +124,13 @@ function initScrollSpy() {
 window.toggleMobileMenu = function() {
   const sidebar = document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebarOverlay');
+  const menuToggle = document.getElementById('menuToggle');
   const isOpening = !sidebar.classList.contains('open');
 
   if (isOpening) {
     sidebar.classList.add('open');
     overlay.classList.add('active');
+    if (menuToggle) menuToggle.classList.add('active');
     document.body.style.overflow = 'hidden'; // 스크롤 방지
   } else {
     closeMobileMenu();
@@ -138,8 +140,10 @@ window.toggleMobileMenu = function() {
 function closeMobileMenu() {
   const sidebar = document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebarOverlay');
+  const menuToggle = document.getElementById('menuToggle');
   if (sidebar) sidebar.classList.remove('open');
   if (overlay) overlay.classList.remove('active');
+  if (menuToggle) menuToggle.classList.remove('active');
   document.body.style.overflow = ''; // 스크롤 허용
 }
 
@@ -663,6 +667,35 @@ function initCapAnimation() {
   setTimeout(() => ScrollTrigger.refresh(), 1000);
 }
 
+/* ─── 6. CAPABILITIES MOBILE SLIDER ─── */
+function initCapSlider() {
+  if (window.innerWidth > 768) return;
+  const grid = document.querySelector('.cap-grid');
+  const leftBtn = document.querySelector('.cap-arrow-left');
+  const rightBtn = document.querySelector('.cap-arrow-right');
+  const indicator = document.getElementById('capSliderIndicator');
+  if (!grid || !leftBtn || !rightBtn) return;
+
+  let currentIndex = 0;
+  const getCards = () => grid.querySelectorAll('.cap-3d-card');
+
+  function goToCard(index) {
+    const cards = getCards();
+    if (!cards.length) return;
+    currentIndex = Math.max(0, Math.min(index, cards.length - 1));
+    const card = cards[currentIndex];
+    grid.scrollTo({ left: card.offsetLeft - (grid.offsetWidth - card.offsetWidth) / 2, behavior: 'smooth' });
+    if (indicator) indicator.textContent = (currentIndex + 1) + ' / ' + cards.length;
+  }
+
+  leftBtn.addEventListener('click', () => goToCard(currentIndex - 1));
+  rightBtn.addEventListener('click', () => goToCard(currentIndex + 1));
+
+  // 초기 상태
+  const cards = getCards();
+  if (indicator && cards.length) indicator.textContent = '1 / ' + cards.length;
+}
+
 /* ─── Initialization ─── */
 document.addEventListener('DOMContentLoaded', () => {
   initScrollSpy();
@@ -677,10 +710,28 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuToggle) {
     menuToggle.addEventListener('click', toggleMobileMenu);
   }
-  
+
   // VanillaTilt 초기화 (Capabilities 포함)
   if (typeof VanillaTilt !== 'undefined') {
     VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
   }
+
+  // 콘텐츠 로딩 완료 후 처리
+  document.addEventListener('contentLoaded', () => {
+    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    initCapSlider();
+  });
+
+  // GSAP 미작동 시 카드 강제 표시 (3초 후)
+  setTimeout(() => {
+    document.querySelectorAll('.cap-3d-card').forEach(card => {
+      if (getComputedStyle(card).opacity === '0') {
+        card.style.opacity = '1';
+        card.style.transform = 'none';
+      }
+    });
+    // contentLoaded가 이미 발생했을 수 있으므로 슬라이더도 초기화 시도
+    initCapSlider();
+  }, 3000);
 });
 
