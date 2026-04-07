@@ -238,6 +238,37 @@ def auth_check():
 def get_content():
     return jsonify(load_content())
 
+@app.route('/api/mongo-health')
+def mongo_health():
+    """MongoDB 연결/쓰기 상태 진단용."""
+    info = {
+        'mongo_uri_set': bool(MONGO_URI),
+        'mongo_db': MONGO_DB,
+    }
+    if not MONGO_URI:
+        info['status'] = 'no_uri'
+        return jsonify(info)
+    try:
+        col = get_collection()
+        # ping
+        col.database.command('ping')
+        info['ping'] = 'ok'
+        doc = col.find_one({'_id': 'main'}, {'_id': 1})
+        info['has_main_doc'] = bool(doc)
+        # write test
+        from datetime import datetime
+        col.update_one(
+            {'_id': '__healthcheck__'},
+            {'$set': {'ts': datetime.utcnow().isoformat()}},
+            upsert=True
+        )
+        info['write'] = 'ok'
+        info['status'] = 'healthy'
+    except Exception as e:
+        info['status'] = 'error'
+        info['error'] = f'{type(e).__name__}: {str(e)[:300]}'
+    return jsonify(info)
+
 @app.route('/api/download/<path:filepath>')
 def download_file(filepath):
     """모바일 호환 PDF 다운로드 (Content-Disposition 헤더 강제)"""

@@ -75,6 +75,15 @@
       if (el) el.src = med.profile_about;
     }
 
+    if (med.youtube_subscribers) {
+      const ysEl = document.getElementById('dyn-youtube-sub');
+      if (ysEl) ysEl.textContent = `콘텐츠 기획·운영 채널 (구독자 ${med.youtube_subscribers})`;
+    }
+    if (med.youtube_url) {
+      const ylEl = document.querySelector('.about-youtube .youtube-link');
+      if (ylEl) ylEl.href = med.youtube_url;
+    }
+
     window.previewPortfolio = function () {
       if (med.portfolio_pdf) window.downloadPdf(med.portfolio_pdf, '포트폴리오_임광윤');
     };
