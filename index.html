@@ -1,207 +1,225 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>임광윤 (Kevin Im) | Game Live Operations & Business PM</title>
-  <meta name="description" content="글로벌 게임 라이브 서비스 운영 경험을 바탕으로 데이터 분석·VOC 인사이트·리스크 검토·AI 자동화를 실무에 적용해온 임광윤(Kevin Im)의 포트폴리오입니다.">
+  <meta name="description"
+    content="글로벌 게임 라이브 서비스 운영 경험을 바탕으로 데이터 분석·VOC 인사이트·리스크 검토·AI 자동화를 실무에 적용해온 임광윤(Kevin Im)의 포트폴리오입니다.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
+
 <body>
 
-<!-- ===== PDF PREVIEW MODAL ===== -->
-<div id="pdfModal" class="pdf-modal-overlay" onclick="closePdfModal()">
-  <div class="pdf-modal-box" onclick="event.stopPropagation()">
-    <div class="pdf-modal-header">
-      <span id="pdfModalTitle">문서 미리보기</span>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <a id="pdfDownloadBtn" href="#" download class="pdf-dl-btn">⬇ 다운로드</a>
-        <button onclick="closePdfModal()" class="pdf-modal-close">✕</button>
-      </div>
-    </div>
-    <iframe id="pdfFrame" src="" frameborder="0" class="pdf-iframe"></iframe>
-  </div>
-</div>
-
-<!-- ===== RESUME PICKER MODAL ===== -->
-<div id="resumePickerModal" class="picker-overlay" onclick="closeResumePicker()">
-  <div class="picker-box" onclick="event.stopPropagation()">
-    <div class="picker-header">
-      <span>Resume 선택</span>
-      <button onclick="closeResumePicker()" class="picker-close">✕</button>
-    </div>
-    <p class="picker-desc">어떤 직무의 경력기술서를 보시겠습니까?</p>
-    <div class="picker-btns">
-      <button class="picker-btn">
-        <span class="picker-icon">📋</span>
-        <span>사업 PM용</span>
-        <span class="picker-sub">경력기술서_임광윤_사업PM</span>
-      </button>
-      <button class="picker-btn">
-        <span class="picker-icon">⚙️</span>
-        <span>운영용</span>
-        <span class="picker-sub">경력기술서_임광윤_운영</span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== IMAGE MODAL (Unified Gallery) ===== -->
-<div id="imgModal" class="modal-overlay" onclick="closeModal()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    
-    <!-- Unified Media Viewport -->
-    <div id="modalViewport" class="modal-viewport">
-      <!-- JS generates <img> or <iframe> dynamically here -->
-    </div>
-
-    <button class="modal-gallery-btn modal-gallery-prev" id="modalPrev" onclick="galleryNav(-1)">‹</button>
-    <button class="modal-gallery-btn modal-gallery-next" id="modalNext" onclick="galleryNav(1)">›</button>
-    
-    <div class="modal-info">
-      <p id="modalCaption" class="modal-caption"></p>
-      <span id="modalCounter" class="modal-counter"></span>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- ===== SIDEBAR ===== -->
-<aside class="sidebar">
-  <div class="sidebar-logo" style="font-size: 26px;">Kevin Im</div>
-  <nav class="sidebar-nav">
-    <ul>
-      <li><a href="#home"         class="nav-link active" data-target="home">HOME</a></li>
-      <li><a href="#about"        class="nav-link" data-target="about">ABOUT</a></li>
-      <li><a href="#story"        class="nav-link" data-target="story">STORY</a></li>
-      <li><a href="#capabilities" class="nav-link" data-target="capabilities">CAPABILITIES</a></li>
-      <li><a href="#experience"   class="nav-link" data-target="experience">EXPERIENCE</a></li>
-      <li><a href="#projects"     class="nav-link" data-target="projects">PROJECTS</a></li>
-      <li><a href="#metrics"      class="nav-link" data-target="metrics">METRICS</a></li>
-      <li><a href="#skills"       class="nav-link" data-target="skills">SKILLS</a></li>
-      <li><a href="#contact"      class="nav-link" data-target="contact">CONTACT</a></li>
-    </ul>
-  </nav>
-  <div class="sidebar-social">
-    <a href="javascript:void(0)" id="mail-copy-btn" class="social-icon" title="Email">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-    </a>
-    <a href="https://www.linkedin.com/in/%EA%B4%91%EC%9C%A4-%EC%9E%84-170531312/" target="_blank" class="social-icon" title="LinkedIn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-    </a>
-    <a href="#" onclick="openResumePicker(); return false;" class="social-icon" title="Resume Download">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-    </a>
-  </div>
-  <p class="sidebar-copy">© 2026 Kevin Im.<br>All rights reserved.</p>
-</aside>
-
-<!-- ===== MOBILE HEADER ===== -->
-<header class="mobile-header">
-  <div class="mobile-logo">Kevin Im</div>
-  <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">
-    <span class="bar"></span>
-    <span class="bar"></span>
-    <span class="bar"></span>
-  </button>
-</header>
-
-<!-- ===== SIDEBAR OVERLAY ===== -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileMenu()"></div>
-
-<!-- ===== MAIN CONTENT ===== -->
-<main class="main-content">
-
-  <!-- ── HOME / HERO ── -->
-  <section class="section section-hero" id="home">
-    <div class="hero-wrap">
-      <div class="hero-left">
-        <span class="hero-tag">GAME LIVE OPERATIONS &amp; BUSINESS PM</span>
-        <h1 class="hero-title">
-          MY NAME IS<br>
-          <span class="hero-grad-purple">임광윤</span><br>
-          <span class="hero-grad-pink">(KEVIN IM)</span>
-        </h1>
-        <p class="hero-sub" id="dyn-hero-subtitle">글로벌 라이브 서비스 운영 실무자</p>
-        <p class="hero-desc" id="dyn-hero-desc">
-          글로벌 게임 라이브 서비스 운영 경험을 중심으로 커리어를 쌓아왔습니다.<br>
-          데이터·VOC·리스크 검토·자동화를 실무에 적용하며,<br>
-          운영 경험을 바탕으로 사업 관점의 역할까지 확장하고자 합니다.
-        </p>
-        <div class="hero-btns">
-          <a href="#projects" class="btn btn-dark scroll-link" data-target="projects">Projects 보기 <span class="arr">↗</span></a>
-          <a href="#contact"  class="btn btn-border scroll-link" data-target="contact">Contact</a>
-          <button class="btn btn-border-orange" id="btn-resume" onclick="openResumePicker()">Resume ↓</button>
-          <button class="btn btn-border-purple" id="btn-portfolio" onclick="previewPortfolio()">포트폴리오 ↓</button>
-        </div>
-        <div class="hero-meta">
-          <span>✉ windcast@naver.com</span>
-          <span>📍 Seoul, Korea</span>
+  <!-- ===== PDF PREVIEW MODAL ===== -->
+  <div id="pdfModal" class="pdf-modal-overlay" onclick="closePdfModal()">
+    <div class="pdf-modal-box" onclick="event.stopPropagation()">
+      <div class="pdf-modal-header">
+        <span id="pdfModalTitle">문서 미리보기</span>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <a id="pdfDownloadBtn" href="#" download class="pdf-dl-btn">⬇ 다운로드</a>
+          <button onclick="closePdfModal()" class="pdf-modal-close">✕</button>
         </div>
       </div>
-      <div class="hero-right">
-        <div class="hero-shapes">
-          <div class="hs hs1"></div>
-          <div class="hs hs2"></div>
-          <div class="hs hs3"></div>
-          <div class="hs-dots"></div>
-        </div>
-        <div class="hero-avatar-photo">
-          <img src="" alt="임광윤 프로필 사진" id="hero-profile-img" onerror="this.src='img/picture.jpg'">
-        </div>
-        <span class="sparkle sp1">✦</span>
-        <span class="sparkle sp2">✦</span>
+      <iframe id="pdfFrame" src="" frameborder="0" class="pdf-iframe"></iframe>
+    </div>
+  </div>
+
+  <!-- ===== RESUME PICKER MODAL ===== -->
+  <div id="resumePickerModal" class="picker-overlay" onclick="closeResumePicker()">
+    <div class="picker-box" onclick="event.stopPropagation()">
+      <div class="picker-header">
+        <span>Resume 선택</span>
+        <button onclick="closeResumePicker()" class="picker-close">✕</button>
+      </div>
+      <p class="picker-desc">어떤 직무의 경력기술서를 보시겠습니까?</p>
+      <div class="picker-btns">
+        <button class="picker-btn">
+          <span class="picker-icon">📋</span>
+          <span>사업 PM용</span>
+          <span class="picker-sub">경력기술서_임광윤_사업PM</span>
+        </button>
+        <button class="picker-btn">
+          <span class="picker-icon">⚙️</span>
+          <span>운영용</span>
+          <span class="picker-sub">경력기술서_임광윤_운영</span>
+        </button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ── ABOUT ── -->
-  <section class="section" id="about">
-    <div class="section-inner">
-      <p class="sec-tag-italic">Nice to meet you!</p>
-      <h2 class="sec-title">WELCOME TO...</h2>
-      <div class="about-grid">
-        <div class="about-left">
-          <div class="avatar-wrap">
-            <div class="avatar-bg"></div>
-            <img class="avatar-photo" src="" alt="임광윤" id="about-profile-img" onerror="this.src='img/picture.jpg'">
+  <!-- ===== IMAGE MODAL (Unified Gallery) ===== -->
+  <div id="imgModal" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+
+      <!-- Unified Media Viewport -->
+      <div id="modalViewport" class="modal-viewport">
+        <!-- JS generates <img> or <iframe> dynamically here -->
+      </div>
+
+      <button class="modal-gallery-btn modal-gallery-prev" id="modalPrev" onclick="galleryNav(-1)">‹</button>
+      <button class="modal-gallery-btn modal-gallery-next" id="modalNext" onclick="galleryNav(1)">›</button>
+
+      <div class="modal-info">
+        <p id="modalCaption" class="modal-caption"></p>
+        <span id="modalCounter" class="modal-counter"></span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo" style="font-size: 26px;">Kevin Im</div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="#home" class="nav-link active" data-target="home">HOME</a></li>
+        <li><a href="#about" class="nav-link" data-target="about">ABOUT</a></li>
+        <li><a href="#story" class="nav-link" data-target="story">STORY</a></li>
+        <li><a href="#capabilities" class="nav-link" data-target="capabilities">CAPABILITIES</a></li>
+        <li><a href="#experience" class="nav-link" data-target="experience">EXPERIENCE</a></li>
+        <li><a href="#projects" class="nav-link" data-target="projects">PROJECTS</a></li>
+        <li><a href="#metrics" class="nav-link" data-target="metrics">METRICS</a></li>
+        <li><a href="#skills" class="nav-link" data-target="skills">SKILLS</a></li>
+        <li><a href="#contact" class="nav-link" data-target="contact">CONTACT</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-social">
+      <a href="javascript:void(0)" id="mail-copy-btn" class="social-icon" title="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/%EA%B4%91%EC%9C%A4-%EC%9E%84-170531312/" target="_blank" class="social-icon"
+        title="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      </a>
+      <a href="#" onclick="openResumePicker(); return false;" class="social-icon" title="Resume Download">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+        </svg>
+      </a>
+    </div>
+    <p class="sidebar-copy">© 2026 Kevin Im.<br>All rights reserved.</p>
+  </aside>
+
+  <!-- ===== MOBILE HEADER ===== -->
+  <header class="mobile-header">
+    <div class="mobile-logo">Kevin Im</div>
+    <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </header>
+
+  <!-- ===== SIDEBAR OVERLAY ===== -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ── HOME / HERO ── -->
+    <section class="section section-hero" id="home">
+      <div class="hero-wrap">
+        <div class="hero-left">
+          <span class="hero-tag">GAME LIVE OPERATIONS &amp; BUSINESS PM</span>
+          <h1 class="hero-title">
+            MY NAME IS<br>
+            <span class="hero-grad-purple">임광윤</span><br>
+            <span class="hero-grad-pink">(KEVIN IM)</span>
+          </h1>
+          <p class="hero-sub" id="dyn-hero-subtitle">글로벌 라이브 서비스 운영 실무자</p>
+          <p class="hero-desc" id="dyn-hero-desc">
+            글로벌 게임 라이브 서비스 운영 경험을 중심으로 커리어를 쌓아왔습니다.<br>
+            데이터·VOC·리스크 검토·자동화를 실무에 적용하며,<br>
+            운영 경험을 바탕으로 사업 관점의 역할까지 확장하고자 합니다.
+          </p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn btn-dark scroll-link" data-target="projects">Projects 보기 <span
+                class="arr">↗</span></a>
+            <a href="#contact" class="btn btn-border scroll-link" data-target="contact">Contact</a>
+            <button class="btn btn-border-orange" id="btn-resume" onclick="openResumePicker()">Resume ↓</button>
+            <button class="btn btn-border-purple" id="btn-portfolio" onclick="previewPortfolio()">포트폴리오 ↓</button>
           </div>
-          <h3 class="about-name">임광윤 (Kevin Im)</h3>
-          <p class="about-role">글로벌 라이브 서비스 운영 실무자</p>
-
-          <div class="about-youtube">
-            <a href="https://www.youtube.com/@jamhuntrix" target="_blank" class="youtube-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19a2.7 2.7 0 0 0-1.9-1.91C18.2 5 12 5 12 5s-6.2 0-7.68.28A2.7 2.7 0 0 0 2.42 7.2 28 28 0 0 0 2.14 12a28 28 0 0 0 .28 4.81 2.7 2.7 0 0 0 1.9 1.91C5.8 19 12 19 12 19s6.2 0 7.68-.28a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 21.86 12a28 28 0 0 0-.28-4.81zM9.74 15.02V8.98L15.45 12z"/></svg>
-              YouTube · 잼헌터
-            </a>
-            <span class="youtube-sub">콘텐츠 기획·운영 채널 (구독자 10,300+)</span>
+          <div class="hero-meta">
+            <span>✉ windcast@naver.com</span>
+            <span>📍 Seoul, Korea</span>
           </div>
         </div>
-        <div class="about-right">
-          <div class="about-info-row">
-            <div class="about-info-item">✉ windcast@naver.com</div>
-            <div class="about-info-item">🎓 MBA 비즈니스데이터애널리틱스 · 동국대학교 (2026.02 수료)</div>
-            <div class="about-info-item">📋 SQLD · TOEIC 960 · Speaking 180</div>
+        <div class="hero-right">
+          <div class="hero-shapes">
+            <div class="hs hs1"></div>
+            <div class="hs hs2"></div>
+            <div class="hs hs3"></div>
+            <div class="hs-dots"></div>
           </div>
-          <div class="about-stats-wrap">
-            <div class="about-stats" id="dyn-about-stats">
-              <!-- JS 로드 -->
+          <div class="hero-avatar-photo">
+            <img src="" alt="임광윤 프로필 사진" id="hero-profile-img" onerror="this.src='img/picture.jpg'">
+          </div>
+          <span class="sparkle sp1">✦</span>
+          <span class="sparkle sp2">✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section class="section" id="about">
+      <div class="section-inner">
+        <p class="sec-tag-italic">Nice to meet you!</p>
+        <h2 class="sec-title">WELCOME TO...</h2>
+        <div class="about-grid">
+          <div class="about-left">
+            <div class="avatar-wrap">
+              <div class="avatar-bg"></div>
+              <img class="avatar-photo" src="" alt="임광윤" id="about-profile-img" onerror="this.src='img/picture.jpg'">
+            </div>
+            <h3 class="about-name">임광윤 (Kevin Im)</h3>
+            <p class="about-role">글로벌 라이브 서비스 운영 실무자</p>
+
+            <div class="about-youtube">
+              <a href="https://www.youtube.com/@jamhuntrix" target="_blank" class="youtube-link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M21.58 7.19a2.7 2.7 0 0 0-1.9-1.91C18.2 5 12 5 12 5s-6.2 0-7.68.28A2.7 2.7 0 0 0 2.42 7.2 28 28 0 0 0 2.14 12a28 28 0 0 0 .28 4.81 2.7 2.7 0 0 0 1.9 1.91C5.8 19 12 19 12 19s6.2 0 7.68-.28a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 21.86 12a28 28 0 0 0-.28-4.81zM9.74 15.02V8.98L15.45 12z" />
+                </svg>
+                YouTube · 잼헌터
+              </a>
+              <span class="youtube-sub">콘텐츠 기획·운영 채널 (구독자 10,300+)</span>
             </div>
           </div>
-          <p class="about-bio" id="dyn-about-bio">
-            <!-- JS 로드 -->
-          </p>
-          <blockquote class="about-quote" id="dyn-about-quote">"운영 실무에서 얻은 데이터와 유저 인사이트를 바탕으로, 사업 관점의 의사결정과 게임의 성장에 기여하는 역할로 확장하고자 합니다."</blockquote>
+          <div class="about-right">
+            <div class="about-info-row">
+              <div class="about-info-item">✉ windcast@naver.com</div>
+              <div class="about-info-item">🎓 MBA 비즈니스데이터애널리틱스 · 동국대학교 (2026.02 졸업)</div>
+              <div class="about-info-item">📋 SQLD · TOEIC 960 · Speaking 180</div>
+            </div>
+            <div class="about-stats-wrap">
+              <div class="about-stats" id="dyn-about-stats">
+                <!-- JS 로드 -->
+              </div>
+            </div>
+            <p class="about-bio" id="dyn-about-bio">
+              <!-- JS 로드 -->
+            </p>
+            <blockquote class="about-quote" id="dyn-about-quote">"운영 실무에서 얻은 데이터와 유저 인사이트를 바탕으로, 사업 관점의 의사결정과 게임의 성장에
+              기여하는 역할로 확장하고자 합니다."</blockquote>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
     <!-- ── STORY ── -->
     <section class="section section-dark" id="story">
@@ -232,152 +250,161 @@
     </section>
 
     <!-- ── EXPERIENCE ── -->
-  <section class="section section-grad" id="experience">
-    <div class="section-inner">
-      <p class="sec-tag-italic light">Experience</p>
-      <h2 class="sec-title light">MY EXPERIENCE</h2>
-      <p class="exp-desc">글로벌 게임 라이브 운영을 중심으로, 데이터와 커뮤니티 인사이트를 통한 운영 개선 경험을 쌓아왔습니다.</p>
-      <div class="timeline" id="dyn-experience-list">
-        <!-- content-loader.js에서 content.json 데이터로 동적 생성됩니다. -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ── PROJECTS (슬라이더) ── -->
-  <section class="section" id="projects">
-    <div class="section-inner proj-header-inner">
-      <p class="sec-tag-italic">Work</p>
-      <h2 class="sec-title">KEY PROJECTS</h2>
-      <p class="proj-slider-hint">← 드래그하거나 화살표로 넘겨보세요 →</p>
-    </div>
-
-    <div class="proj-slider-container">
-      <button class="proj-arrow proj-arrow-left" id="arrowLeft" onclick="slideProj(-1)" aria-label="이전">‹</button>
-      <div class="proj-slider-viewport" id="projViewport">
-        <div class="proj-slider-track" id="projTrack">
-          <!-- JS에서 content.json 데이터를 바탕으로 동적 생성됩니다. -->
+    <section class="section section-grad" id="experience">
+      <div class="section-inner">
+        <p class="sec-tag-italic light">Experience</p>
+        <h2 class="sec-title light">MY EXPERIENCE</h2>
+        <p class="exp-desc">글로벌 게임 라이브 운영을 중심으로, 데이터와 커뮤니티 인사이트를 통한 운영 개선 경험을 쌓아왔습니다.</p>
+        <div class="timeline" id="dyn-experience-list">
+          <!-- content-loader.js에서 content.json 데이터로 동적 생성됩니다. -->
         </div>
       </div>
-      <button class="proj-arrow proj-arrow-right" id="arrowRight" onclick="slideProj(1)" aria-label="다음">›</button>
-    </div>
-    <div class="proj-dots" id="projDots">
-      <!-- JS에서 동적 생성됩니다. -->
-    </div>
-  </section>
+    </section>
 
-  <!-- ── METRICS ── -->
-  <section class="section section-light-gray" id="metrics">
-    <div class="section-inner">
-      <p class="sec-tag-italic">Proof</p>
-      <h2 class="sec-title">METRICS &amp; IMPACT</h2>
-      <div class="metrics-grid" id="dyn-metrics-grid">
-        <div class="metric-card reveal"><span class="metric-num">130%</span><span class="metric-label">KOF AFK 사전예약<br>목표 달성률</span></div>
-        <div class="metric-card reveal"><span class="metric-num">53%</span><span class="metric-label">포럼 이벤트 최고 참여율<br>(오로치 퀴즈, 6,182명)</span></div>
-        <div class="metric-card reveal"><span class="metric-num">27,800</span><span class="metric-label">커뮤니티 이벤트<br>누적 참여자 (5권역 6개월)</span></div>
-        <div class="metric-card reveal"><span class="metric-num">+15%</span><span class="metric-label">월평균 이벤트 참여율 개선<br>(데이터 기반 지속 최적화)</span></div>
-        <div class="metric-card reveal"><span class="metric-num">44호+</span><span class="metric-label">AI 뉴스레터 AiGS TIMES<br>발행 (평일 1회)</span></div>
-        <div class="metric-card reveal"><span class="metric-num">5,000+</span><span class="metric-label">전 권역 설문·커뮤니티 반응<br>VOC 분석 및 인사이트 구조화</span></div>
-        <div class="metric-card reveal"><span class="metric-num">24개</span><span class="metric-label">커뮤니티 이벤트 전수 분석<br>(대형 업데이트 4종)</span></div>
-        <div class="metric-card reveal"><span class="metric-num">A등급</span><span class="metric-label">2024/2025 KPI 평가<br>+ 2025 스포트라이트상</span></div>
-        <div class="metric-card reveal"><span class="metric-num">0건</span><span class="metric-label">라이브 서비스 기간<br>운영 사고 (휴먼 에러)</span></div>
+    <!-- ── PROJECTS (슬라이더) ── -->
+    <section class="section" id="projects">
+      <div class="section-inner proj-header-inner">
+        <p class="sec-tag-italic">Work</p>
+        <h2 class="sec-title">KEY PROJECTS</h2>
+        <p class="proj-slider-hint">← 드래그하거나 화살표로 넘겨보세요 →</p>
       </div>
-    </div>
-  </section>
 
-  <!-- ── SKILLS & EDUCATION ── -->
-  <section class="section" id="skills">
-    <div class="section-inner">
-      <p class="sec-tag-italic">Tools &amp; Tech</p>
-      <h2 class="sec-title">SKILLS &amp; TOOLS</h2>
-      <div class="skills-grid">
-        <div class="skill-group reveal">
-          <h3 class="skill-group-title"><span class="skill-dot"></span>Operations &amp; Collaboration</h3>
-          <div class="skill-tags">
-            <span class="tag">Jira</span><span class="tag">Google Workspace</span>
-            <span class="tag">운영툴 활용</span><span class="tag">이슈 관리</span>
-            <span class="tag">글로벌 커뮤니케이션</span><span class="tag">영문 현지화</span>
-            <span class="tag">Discord 운영</span>
+      <div class="proj-slider-container">
+        <button class="proj-arrow proj-arrow-left" id="arrowLeft" onclick="slideProj(-1)" aria-label="이전">‹</button>
+        <div class="proj-slider-viewport" id="projViewport">
+          <div class="proj-slider-track" id="projTrack">
+            <!-- JS에서 content.json 데이터를 바탕으로 동적 생성됩니다. -->
           </div>
         </div>
-        <div class="skill-group reveal">
-          <h3 class="skill-group-title"><span class="skill-dot"></span>Data &amp; Analytics</h3>
-          <div class="skill-tags">
-            <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">R</span>
-            <span class="tag">데이터 분석</span><span class="tag">지표 리포팅</span>
-            <span class="tag">대시보드 구축</span>
-          </div>
-        </div>
-        <div class="skill-group reveal">
-          <h3 class="skill-group-title"><span class="skill-dot"></span>Automation &amp; AI</h3>
-          <div class="skill-tags">
-            <span class="tag tag-orange">Make</span><span class="tag tag-orange">n8n</span>
-            <span class="tag tag-orange">Gemini API</span><span class="tag tag-orange">Claude Code</span>
-            <span class="tag tag-orange">생성형 AI 활용</span><span class="tag tag-orange">워크플로우 자동화</span>
-          </div>
-        </div>
-        <div class="skill-group reveal">
-          <h3 class="skill-group-title"><span class="skill-dot"></span>Language &amp; Certification</h3>
-          <div class="skill-tags">
-            <span class="tag tag-purple">SQLD</span>
-            <span class="tag tag-purple">TOEIC 960점</span>
-            <span class="tag tag-purple">TOEIC Speaking 180점</span>
-            <span class="tag tag-purple">영문 현지화 실무 경험</span>
-            <span class="tag tag-purple">MBA BDA (동국대, 2026.02 수료)</span>
-            <span class="tag tag-purple">영어영문학 / 경제학 전공</span>
-          </div>
+        <button class="proj-arrow proj-arrow-right" id="arrowRight" onclick="slideProj(1)" aria-label="다음">›</button>
+      </div>
+      <div class="proj-dots" id="projDots">
+        <!-- JS에서 동적 생성됩니다. -->
+      </div>
+    </section>
+
+    <!-- ── METRICS ── -->
+    <section class="section section-light-gray" id="metrics">
+      <div class="section-inner">
+        <p class="sec-tag-italic">Proof</p>
+        <h2 class="sec-title">METRICS &amp; IMPACT</h2>
+        <div class="metrics-grid" id="dyn-metrics-grid">
+          <div class="metric-card reveal"><span class="metric-num">130%</span><span class="metric-label">KOF AFK
+              사전예약<br>목표 달성률</span></div>
+          <div class="metric-card reveal"><span class="metric-num">53%</span><span class="metric-label">포럼 이벤트 최고
+              참여율<br>(오로치 퀴즈, 6,182명)</span></div>
+          <div class="metric-card reveal"><span class="metric-num">27,800</span><span class="metric-label">커뮤니티
+              이벤트<br>누적 참여자 (5권역 6개월)</span></div>
+          <div class="metric-card reveal"><span class="metric-num">+15%</span><span class="metric-label">월평균 이벤트 참여율
+              개선<br>(데이터 기반 지속 최적화)</span></div>
+          <div class="metric-card reveal"><span class="metric-num">44호+</span><span class="metric-label">AI 뉴스레터 AiGS
+              TIMES<br>발행 (평일 1회)</span></div>
+          <div class="metric-card reveal"><span class="metric-num">5,000+</span><span class="metric-label">전 권역 설문·커뮤니티
+              반응<br>VOC 분석 및 인사이트 구조화</span></div>
+          <div class="metric-card reveal"><span class="metric-num">24개</span><span class="metric-label">커뮤니티 이벤트 전수
+              분석<br>(대형 업데이트 4종)</span></div>
+          <div class="metric-card reveal"><span class="metric-num">A등급</span><span class="metric-label">2024/2025 KPI
+              평가<br>+ 2025 스포트라이트상</span></div>
+          <div class="metric-card reveal"><span class="metric-num">0건</span><span class="metric-label">라이브 서비스 기간<br>운영
+              사고 (휴먼 에러)</span></div>
         </div>
       </div>
-      <div class="edu-section reveal">
-        <h3 class="edu-title">Education</h3>
-        <div class="edu-grid">
-          <div class="edu-card">
-            <span class="edu-period">2024.09 – 2026.02</span>
-            <h4 class="edu-school">동국대학교 대학원</h4>
-            <p class="edu-degree">MBA 비즈니스데이터애널리틱스 (수료)</p>
-            <p class="edu-note">kNN 분류, 연관 규칙 마이닝, 이직 예측 등 데이터 분석 방법론 실습 프로젝트 수행</p>
+    </section>
+
+    <!-- ── SKILLS & EDUCATION ── -->
+    <section class="section" id="skills">
+      <div class="section-inner">
+        <p class="sec-tag-italic">Tools &amp; Tech</p>
+        <h2 class="sec-title">SKILLS &amp; TOOLS</h2>
+        <div class="skills-grid">
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title"><span class="skill-dot"></span>Operations &amp; Collaboration</h3>
+            <div class="skill-tags">
+              <span class="tag">Jira</span><span class="tag">Google Workspace</span>
+              <span class="tag">운영툴 활용</span><span class="tag">이슈 관리</span>
+              <span class="tag">글로벌 커뮤니케이션</span><span class="tag">영문 현지화</span>
+              <span class="tag">Discord 운영</span>
+            </div>
           </div>
-          <div class="edu-card">
-            <span class="edu-period">2012.03 – 2019.08</span>
-            <h4 class="edu-school">동국대학교</h4>
-            <p class="edu-degree">영어영문학 주전공 / 경제학 복수전공</p>
-            <p class="edu-note">TOEIC 960 · Speaking 180 — 글로벌 커뮤니케이션 및 영문 현지화 실무 활용</p>
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title"><span class="skill-dot"></span>Data &amp; Analytics</h3>
+            <div class="skill-tags">
+              <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">R</span>
+              <span class="tag">데이터 분석</span><span class="tag">지표 리포팅</span>
+              <span class="tag">대시보드 구축</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title"><span class="skill-dot"></span>Automation &amp; AI</h3>
+            <div class="skill-tags">
+              <span class="tag tag-orange">Make</span><span class="tag tag-orange">n8n</span>
+              <span class="tag tag-orange">Gemini API</span><span class="tag tag-orange">Claude Code</span>
+              <span class="tag tag-orange">생성형 AI 활용</span><span class="tag tag-orange">워크플로우 자동화</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title"><span class="skill-dot"></span>Language &amp; Certification</h3>
+            <div class="skill-tags">
+              <span class="tag tag-purple">SQLD</span>
+              <span class="tag tag-purple">TOEIC 960점</span>
+              <span class="tag tag-purple">TOEIC Speaking 180점</span>
+              <span class="tag tag-purple">영문 현지화 실무 경험</span>
+              <span class="tag tag-purple">MBA BDA (동국대, 2026.02 졸업)</span>
+              <span class="tag tag-purple">영어영문학 / 경제학 전공</span>
+            </div>
+          </div>
+        </div>
+        <div class="edu-section reveal">
+          <h3 class="edu-title">Education</h3>
+          <div class="edu-grid">
+            <div class="edu-card">
+              <span class="edu-period">2024.09 – 2026.02</span>
+              <h4 class="edu-school">동국대학교 대학원</h4>
+              <p class="edu-degree">MBA 비즈니스데이터애널리틱스 (졸업)</p>
+              <p class="edu-note">kNN 분류, 연관 규칙 마이닝, 이직 예측 등 데이터 분석 방법론 실습 프로젝트 수행</p>
+            </div>
+            <div class="edu-card">
+              <span class="edu-period">2012.03 – 2019.08</span>
+              <h4 class="edu-school">동국대학교</h4>
+              <p class="edu-degree">영어영문학 주전공 / 경제학 복수전공</p>
+              <p class="edu-note">TOEIC 960 · Speaking 180 — 글로벌 커뮤니케이션 및 영문 현지화 실무 활용</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── CONTACT ── -->
-  <section class="section" id="contact">
-    <div class="section-inner">
-      <p class="sec-tag-italic">Get in Touch</p>
-      <h2 class="sec-title">CONTACT</h2>
+    <!-- ── CONTACT ── -->
+    <section class="section" id="contact">
+      <div class="section-inner">
+        <p class="sec-tag-italic">Get in Touch</p>
+        <h2 class="sec-title">CONTACT</h2>
         <div class="contact-wrap-v2">
           <div class="contact-info-col">
             <p id="dyn-contact-desc" class="contact-desc">게임 사업 PM / 운영 포지션에 관심 있으시다면 언제든지 연락 주세요.<br>빠르게 회신 드리겠습니다.</p>
             <a href="mailto:windcast@naver.com" id="dyn-contact-email" class="contact-email">✉ windcast@naver.com</a>
             <span id="dyn-contact-location" class="contact-location">📍 Seoul, Korea</span>
           </div>
-        <form id="contactForm" class="contact-form" onsubmit="submitContact(event)">
-          <div class="cf-row">
-            <input type="text"  id="cf-name"  class="cf-input" placeholder="성함" required>
-            <input type="email" id="cf-email" class="cf-input" placeholder="이메일" required>
-          </div>
-          <textarea id="cf-msg" class="cf-textarea" placeholder="메시지를 입력해 주세요..." rows="5" required></textarea>
-          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-            <button type="submit" id="cf-submit" class="btn btn-dark btn-lg">보내기 ↗</button>
-            <span id="cf-status" class="cf-status"></span>
-          </div>
-        </form>
+          <form id="contactForm" class="contact-form" onsubmit="submitContact(event)">
+            <div class="cf-row">
+              <input type="text" id="cf-name" class="cf-input" placeholder="성함" required>
+              <input type="email" id="cf-email" class="cf-input" placeholder="이메일" required>
+            </div>
+            <textarea id="cf-msg" class="cf-textarea" placeholder="메시지를 입력해 주세요..." rows="5" required></textarea>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <button type="submit" id="cf-submit" class="btn btn-dark btn-lg">보내기 ↗</button>
+              <span id="cf-status" class="cf-status"></span>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-    <div class="footer-bar">
-      <span>© 2026 Kevin Im. All rights reserved.</span>
-      <span>Game Live Operations &amp; Business PM</span>
-    </div>
-  </section>
+      <div class="footer-bar">
+        <span>© 2026 Kevin Im. All rights reserved.</span>
+        <span>Game Live Operations &amp; Business PM</span>
+      </div>
+    </section>
 
-</main>
+  </main>
 
   <!-- ===== FLOATING CHAT BUTTON ===== -->
   <div id="floatChat" class="float-chat-wrap">
@@ -405,18 +432,20 @@
     </div>
     <button class="float-chat-btn" onclick="toggleChat()" title="Portfolio Chat">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
+        <path
+          d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
       </svg>
       <span>Ask Kevin</span>
     </button>
   </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
   <!-- GSAP for signature animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  
+
   <script src="script.js"></script>
   <script src="content-loader.js"></script>
 </body>
+
 </html>
