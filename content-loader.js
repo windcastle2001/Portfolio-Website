@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  fetch('/api/content')
-    .then(r => r.json())
+  fetch('/api/content', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : r.json().then(err => Promise.reject(err)))
     .then(apply)
     .catch(err => console.warn('[content-loader] fetch 실패:', err));
 
@@ -75,6 +75,7 @@
       if (el) el.src = med.profile_about;
     }
 
+    renderYoutubeMeta(med);
     if (med.youtube_subscribers) {
       const ysEl = document.getElementById('dyn-youtube-sub');
       if (ysEl) ysEl.textContent = `콘텐츠 기획·운영 채널 (구독자 ${med.youtube_subscribers})`;
@@ -350,6 +351,13 @@
   function nl2br(s) {
     if (!s) return '';
     return String(s).replace(/\n/g, '<br>');
+  }
+  function renderYoutubeMeta(med) {
+    const ysEl = document.getElementById('dyn-youtube-sub');
+    if (!ysEl) return;
+    const subs = ((med || {}).youtube_subscribers || '').trim();
+    if (!subs) return;
+    ysEl.textContent = `콘텐츠 기획·운영 채널 (구독자 ${subs})`;
   }
   function esc(s) {
     return String(s || '').replace(/[&<>"']/g, function (m) {
