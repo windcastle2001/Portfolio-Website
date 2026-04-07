@@ -419,8 +419,8 @@ window.downloadPdf = async function (src, filename) {
   // 모바일은 Blob 다운로드가 막혀있는 경우가 많음 → 서버 강제 다운로드 엔드포인트 사용
   const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile) {
-    const fname = src.split('/').pop();
-    window.location.href = '/api/download/' + encodeURIComponent(fname);
+    const cleanSrc = src.replace(/^\/+/, '');
+    window.location.href = '/api/download/' + cleanSrc;
     return;
   }
   try {

@@ -238,13 +238,14 @@ def auth_check():
 def get_content():
     return jsonify(load_content())
 
-@app.route('/api/download/<path:filename>')
-def download_file(filename):
+@app.route('/api/download/<path:filepath>')
+def download_file(filepath):
     """모바일 호환 PDF 다운로드 (Content-Disposition 헤더 강제)"""
-    safe = Path(filename).name
-    if not safe.lower().endswith('.pdf'):
+    safe_name = Path(filepath).name
+    safe_dir  = str(Path(filepath).parent)
+    if not safe_name.lower().endswith('.pdf'):
         abort(403)
-    return send_from_directory('.', safe, as_attachment=True, download_name=safe)
+    return send_from_directory(safe_dir, safe_name, as_attachment=True, download_name=safe_name)
 
 @app.route('/api/content', methods=['POST'])
 @login_required
