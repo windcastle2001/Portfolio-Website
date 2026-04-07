@@ -64,16 +64,66 @@ SMTP_PORT = int(os.environ.get('SMTP_PORT', '465'))
 SMTP_USER = os.environ.get('SMTP_USER', 'windcast@naver.com')
 SMTP_PASS = os.environ.get('SMTP_PASS', '')  # .env에 naver 앱 비밀번호 설정 필요
 
+# ── MongoDB (선택) ────────────────────────────────────────────
+MONGO_URI = os.environ.get('MONGO_URI', '')
+MONGO_DB  = os.environ.get('MONGO_DB', 'portfolio')
+_mongo_collection = None
+
+def get_collection():
+    """Mongo content 컬렉션 반환. URI 없으면 None."""
+    global _mongo_collection
+    if not MONGO_URI:
+        return None
+    if _mongo_collection is None:
+        from pymongo import MongoClient
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+        _mongo_collection = client[MONGO_DB]['content']
+    return _mongo_collection
+
 # ── 헬퍼 ──────────────────────────────────────────────────────
-def load_content() -> dict:
+def _load_from_file() -> dict:
     if CONTENT_FILE.exists():
         with open(CONTENT_FILE, 'r', encoding='utf-8') as f:
             return json.load(f)
     return {}
 
-def save_content(data: dict):
+def _save_to_file(data: dict):
     with open(CONTENT_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+def load_content() -> dict:
+    col = get_collection()
+    if col is None:
+        return _load_from_file()
+    try:
+        doc = col.find_one({'_id': 'main'})
+        if doc:
+            doc.pop('_id', None)
+            return doc
+        # Mongo 비어있고 로컬 파일 있으면 자동 마이그레이션
+        local = _load_from_file()
+        if local:
+            col.replace_one({'_id': 'main'}, {**local, '_id': 'main'}, upsert=True)
+            print('[Mongo] content.json → Atlas 자동 마이그레이션 완료')
+            return local
+        return {}
+    except Exception as e:
+        print(f'[Mongo load error] {type(e).__name__}: {e} → 파일 fallback')
+        return _load_from_file()
+
+def save_content(data: dict):
+    col = get_collection()
+    # 항상 로컬 백업
+    try:
+        _save_to_file(data)
+    except Exception as e:
+        print(f'[File save error] {e}')
+    if col is None:
+        return
+    try:
+        col.replace_one({'_id': 'main'}, {**data, '_id': 'main'}, upsert=True)
+    except Exception as e:
+        print(f'[Mongo save error] {type(e).__name__}: {e}')
 
 def build_chat_context() -> str:
     """content.json 전체 + 포트폴리오 MD 파일을 읽어 챗봇 컨텍스트 자동 빌드"""
@@ -187,6 +237,14 @@ def auth_check():
 @app.route('/api/content')
 def get_content():
     return jsonify(load_content())
+
+@app.route('/api/download/<path:filename>')
+def download_file(filename):
+    """모바일 호환 PDF 다운로드 (Content-Disposition 헤더 강제)"""
+    safe = Path(filename).name
+    if not safe.lower().endswith('.pdf'):
+        abort(403)
+    return send_from_directory('.', safe, as_attachment=True, download_name=safe)
 
 @app.route('/api/content', methods=['POST'])
 @login_required

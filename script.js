@@ -272,7 +272,9 @@ function initSlider() {
     if (!isDragging) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > DRAG_THRESHOLD) wasDragged = true;
-    track.style.transform = `translateX(-${startScrollX - dx}px)`;
+    const maxOffset = Math.max(0, ((window.TOTAL_SLIDES || 1) - 1) * getSlideW());
+    const pos = Math.min(maxOffset, Math.max(0, startScrollX - dx));
+    track.style.transform = `translateX(-${pos}px)`;
   });
 
   track.addEventListener('pointerup', e => {
@@ -414,6 +416,13 @@ window.closeModal = function() {
 
 /* ─── 6. PDF DOWNLOAD ─── */
 window.downloadPdf = async function (src, filename) {
+  // 모바일은 Blob 다운로드가 막혀있는 경우가 많음 → 서버 강제 다운로드 엔드포인트 사용
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile) {
+    const fname = src.split('/').pop();
+    window.location.href = '/api/download/' + encodeURIComponent(fname);
+    return;
+  }
   try {
     const res = await fetch(src);
     const blob = await res.blob();
