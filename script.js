@@ -419,8 +419,14 @@ window.downloadPdf = async function (src, filename) {
   // 모바일은 Blob 다운로드가 막혀있는 경우가 많음 → 서버 강제 다운로드 엔드포인트 사용
   const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile) {
-    const cleanSrc = src.replace(/^\/+/, '');
-    window.location.href = '/api/download/' + cleanSrc;
+    // 모바일은 Blob 다운로드가 막혀있어 fetch가 실패함.
+    // Cloudinary URL은 fl_attachment 플래그가 포함되어 있어 직접 이동해도 자동 다운로드됨.
+    // 로컬 PDF의 경우 /api/download/ 엔드포인트가 Content-Disposition 헤더를 강제함.
+    if (/^https?:\/\//i.test(src)) {
+      window.location.href = src;
+    } else {
+      window.location.href = '/api/download/' + src.replace(/^\/+/, '');
+    }
     return;
   }
   try {
