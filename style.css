@@ -626,6 +626,12 @@ img { display: block; }
    ============================================================ */
 .reveal { opacity:0; transform:translateY(18px); transition:opacity .5s ease,transform .5s ease; }
 .reveal.visible { opacity:1; transform:translateY(0); }
+#dyn-experience-list .reveal,
+#dyn-experience-list .reveal.visible {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
 
 /* ============================================================
    IMAGE MODAL (Unified Gallery)
@@ -1134,6 +1140,9 @@ img { display: block; }
 .cap-3d-card.is-hovered .cap-3d-plus .i-arr {
   transform: translate(0, 0);
   opacity: 1;
+}
+.cap-3d-plus {
+  display: none !important;
 }
 
 /* =========================================================
