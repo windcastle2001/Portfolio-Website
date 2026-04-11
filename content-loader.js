@@ -262,7 +262,7 @@
         // 게임 아이템 (tl-game-list 안에만)
         const gameItemsHtml = jobs.map(job => {
           const logoHtml = job.game_logo_url
-            ? `<img src="${esc(job.game_logo_url)}" alt="${esc(job.game)}" class="tl-game-logo" onerror="this.style.display='none'">`
+            ? `<img src="${esc(job.game_logo_url)}" alt="${esc(job.game)}" class="tl-game-logo" loading="eager" decoding="async" fetchpriority="high" width="85" height="36" onerror="this.style.display='none'">`
             : '';
           return `<div class="tl-game-item">
             ${logoHtml}
@@ -286,7 +286,7 @@
         }).join('');
 
         const logoHtml = co.logo_url
-          ? `<img src="${esc(co.logo_url)}" alt="${esc(co.company)}" class="tl-logo" onerror="this.style.display='none'">`
+          ? `<img src="${esc(co.logo_url)}" alt="${esc(co.company)}" class="tl-logo" loading="eager" decoding="async" fetchpriority="high" width="120" height="40" onerror="this.style.display='none'">`
           : '';
 
         return `<div class="tl-item reveal visible">
