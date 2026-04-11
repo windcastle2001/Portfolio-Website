@@ -14,7 +14,7 @@
     return /\.pdf(\?|$)/i.test(url || '');
   }
 
-  function apply(C) {
+  async function apply(C) {
     if (!C) return;
 
     // ── 1. Hero ──────────────────────────────────────────────
@@ -256,6 +256,12 @@
     // ── 8. Experience ──────────────────────
     const expList = document.getElementById('dyn-experience-list');
     if (expList && Array.isArray(C.experience) && C.experience.length) {
+      const experienceImageUrls = C.experience.flatMap(co => [
+        co.logo_url,
+        ...(co.jobs || []).map(job => job.game_logo_url)
+      ]).filter(Boolean);
+      await preloadImages(experienceImageUrls, 1400);
+
       expList.innerHTML = C.experience.map(co => {
         const jobs = co.jobs || [];
 
@@ -351,6 +357,20 @@
   function nl2br(s) {
     if (!s) return '';
     return String(s).replace(/\n/g, '<br>');
+  }
+  function preloadImages(urls, timeoutMs) {
+    const uniqueUrls = Array.from(new Set((urls || []).filter(Boolean)));
+    if (!uniqueUrls.length) return Promise.resolve();
+
+    return Promise.race([
+      Promise.allSettled(uniqueUrls.map(url => new Promise(resolve => {
+        const img = new Image();
+        img.decoding = 'async';
+        img.onload = img.onerror = () => resolve();
+        img.src = url;
+      }))),
+      new Promise(resolve => setTimeout(resolve, timeoutMs || 1200))
+    ]);
   }
   function renderYoutubeMeta(med) {
     const ysEl = document.getElementById('dyn-youtube-sub');
