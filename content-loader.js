@@ -260,7 +260,7 @@
         co.logo_url,
         ...(co.jobs || []).map(job => job.game_logo_url)
       ]).filter(Boolean);
-      await preloadImages(experienceImageUrls, 1400);
+      await preloadImages(experienceImageUrls);
 
       expList.innerHTML = C.experience.map(co => {
         const jobs = co.jobs || [];
@@ -358,19 +358,22 @@
     if (!s) return '';
     return String(s).replace(/\n/g, '<br>');
   }
-  function preloadImages(urls, timeoutMs) {
+  function preloadImages(urls) {
     const uniqueUrls = Array.from(new Set((urls || []).filter(Boolean)));
     if (!uniqueUrls.length) return Promise.resolve();
 
-    return Promise.race([
-      Promise.allSettled(uniqueUrls.map(url => new Promise(resolve => {
-        const img = new Image();
-        img.decoding = 'async';
-        img.onload = img.onerror = () => resolve();
-        img.src = url;
-      }))),
-      new Promise(resolve => setTimeout(resolve, timeoutMs || 1200))
-    ]);
+    return Promise.allSettled(uniqueUrls.map(url => new Promise(resolve => {
+      const timeoutId = setTimeout(resolve, 3500);
+      const done = () => {
+        clearTimeout(timeoutId);
+        resolve();
+      };
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = done;
+      img.onerror = done;
+      img.src = url;
+    })));
   }
   function renderYoutubeMeta(med) {
     const ysEl = document.getElementById('dyn-youtube-sub');
