@@ -5,6 +5,52 @@
 const EMAILJS_PUBLIC_KEY = '8Og_DDRJ23tbyZHiG';
 const EMAILJS_SERVICE_ID = 'service_cpvb348';
 const EMAILJS_TEMPLATE_ID = 'template_xjr6p5h';
+let emailJsLoadPromise = null;
+let capEffectsScheduled = false;
+
+function loadEmailJs() {
+  if (typeof emailjs !== 'undefined') {
+    if (EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    }
+    return Promise.resolve(emailjs);
+  }
+  if (emailJsLoadPromise) return emailJsLoadPromise;
+
+  emailJsLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.async = true;
+    script.onload = () => {
+      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+      }
+      resolve(emailjs);
+    };
+    script.onerror = () => reject(new Error('EmailJS load failed'));
+    document.head.appendChild(script);
+  });
+
+  return emailJsLoadPromise;
+}
+
+function scheduleCapEffects() {
+  if (capEffectsScheduled) return;
+  capEffectsScheduled = true;
+
+  const run = () => {
+    initCapAnimation();
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
+    }
+  };
+
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(run, { timeout: 1200 });
+  } else {
+    setTimeout(run, 250);
+  }
+}
 
 window.addEventListener('load', () => {
   if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
@@ -56,6 +102,12 @@ window.submitContact = async function (e) {
     if (res.status !== 503) throw new Error(data.error || '서버 오류');
   } catch (backendErr) {
     console.warn('[Contact] backend fallback to EmailJS:', backendErr);
+  }
+
+  try {
+    await loadEmailJs();
+  } catch (emailLoadErr) {
+    console.warn('[Contact] EmailJS load failed:', emailLoadErr);
   }
 
   if (typeof emailjs === 'undefined') {
@@ -740,7 +792,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSparkles();
   initSlider();
   initMailCopy();
-  initCapAnimation();
 
   // 모바일 햄버거 버튼 이벤트 바인딩
   const menuToggle = document.getElementById('menuToggle');
@@ -748,15 +799,11 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.addEventListener('click', toggleMobileMenu);
   }
 
-  // VanillaTilt 초기화 (Capabilities 포함)
-  if (typeof VanillaTilt !== 'undefined') {
-    VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
-  }
-
   // 콘텐츠 로딩 완료 후 처리
   document.addEventListener('contentLoaded', () => {
     if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
     initCapSlider();
+    scheduleCapEffects();
   });
 
   // GSAP 미작동 시 카드 강제 표시 (3초 후)
